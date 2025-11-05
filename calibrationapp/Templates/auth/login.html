@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-md mx-auto bg-white rounded-lg p-6 shadow">
+  <h1 class="text-xl font-semibold mb-4">Log in</h1>
+
+  <!-- Django's auth view injects a 'form' with username+password -->
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="mt-2 px-4 py-2 bg-indigo-600 text-white rounded">Login</button>
+  </form>
+
+  <p class="mt-4 text-sm">No account?
+    <a class="text-indigo-600" href="{% url 'signup' %}">Sign up</a>
+  </p>
+</div>
+{% endblock %}

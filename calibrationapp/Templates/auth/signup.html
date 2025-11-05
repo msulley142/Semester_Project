@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-md mx-auto bg-white rounded-lg p-6 shadow">
+  <h1 class="text-xl font-semibold mb-4">Sign up</h1>
+
+
+  <!-- UserCreationForm provides username/password1/password2 -->
+  <form method="post">
+    {% csrf_token %}
+   <div>
+     <label class="block text-sm font-medium text-gray-700">Username</label>
+     {{ form.username }}
+     {% if form.username.errors %}
+       <p class="text-red-600 text-sm">{{ form.username.errors }}</p>
+     {% endif %}
+   </div>
+
+   <div>
+        <label class="block text-sm font-medium text-gray-700">Password</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+        <p class="text-red-600 text-sm">{{ form.password1.errors }}</p>
+        {% endif %}
+   </div>
+
+   <div>
+          <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+          {{ form.password2 }}
+          {% if form.password2.errors %}
+          <p class="text-red-600 text-sm">{{ form.password2.errors }}</p>
+          {% endif %}
+
+        
+
+    <button class="mt-2 px-4 py-2 bg-indigo-600 text-white rounded">Create account</button>
+  </form>
+
+    <p class="mt-4 text-sm">Already have an account?
+        <a class="text-indigo-600" href="{% url 'login' %}">Log in</a>
+</div>
+
+{% endblock %}

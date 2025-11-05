@@ -1,0 +1,43 @@
+<!-- Base layout used by all pages -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Calibration</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+ 
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+  <!-- Simple top nav -->
+  <nav class="bg-white border-b">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between">
+      <a href="/" class="font-semibold">Calibration</a>
+      <div class="space-x-4">
+        <a href="/">Dashboard</a>
+        <a href="/">Skill Builder</a>
+        <a href="/">Progress Tracker</a>
+        <a href="/app/skills/">Skills</a>
+        <a href="/app/habits/">Habits</a>
+        <a href="/app/journals/">Journal</a>
+        <a href="/app/tasks/">Task</a>
+        <a href="/app/rewards/">Rewards</a>
+        <a href="/app/quests/">Profile</a>
+        <a href="/">Coaching</a>
+        <a href="/">Messages</a>
+        <a href="/">Community</a>
+        {% if user.is_authenticated %}
+          <a href="/accounts/logout/">Logout</a>
+        {% else %}
+          <a href="/accounts/login/">Login</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page content renders here -->
+  <main class="max-w-5xl mx-auto px-4 py-6">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

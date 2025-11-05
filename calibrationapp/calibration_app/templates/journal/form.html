@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">
+  {% if view.object %}Edit Journal{% else %}New Journal{% endif %}
+</h1>
+
+<!-- The form comes from JournalForm -->
+<form method="post" class="bg-white p-4 rounded shadow max-w-lg">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="mt-2 px-4 py-2 bg-indigo-600 text-white rounded">Save</button>
+</form>
+{% endblock %}
