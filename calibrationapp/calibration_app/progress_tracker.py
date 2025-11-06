@@ -109,3 +109,6 @@ def task_completion_badge(task: Task):
 
 
 #def quest_completion_proc(account_user):
+
+
+

@@ -18,45 +18,45 @@
       --ring: rgba(14,165,233,.35);
       --radius: 12px;
       --shadow: 0 8px 24px rgba(2, 132, 199, .08), 0 2px 6px rgba(0,0,0,.06);
+      --header-h: 100px;
+      --sidebar-w: 250px;
+
     }
     /* The side navigation menu */
 .sidebar {
   height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 250px; /* Set the width of the sidebar */
+  width: var(--sidebar-w); /* Set the width of the sidebar */
   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
+  z-index: 500; /* Stay on top */
   top: 0; /* Stay at the top */
   left: 0;
-  background-color: var(--blue);   /* Black */
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 20px;
+  background-color: var(--blue);   
+  overflow-y: auto; 
+  padding-top: 16px 0;
   border-radius: 5px;
+  backdrop-filter: blur(8px);
 
 }
 
 header {
-  position: sticky;
+  position: fixed;
   top: 0;
-  background: #f8fafc;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  backdrop-filter: blur(8px);
+  left: var(--sidebar-w);
+  right:0;
+  height: var(--header-h);
+  display: flex;
+  background:rgba(255,255,255,0.6);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 0 20px;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  align-items: center;
+  z-index: 1000
   
 }
 
 
-.sidebar_right {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 250px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
-  right: 0;
-  background-color: var(--blue); /* Black */
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 20px;
-  border-radius: 5px;
 
-}
 /* Sidebar links */
 .sidebar a {
    padding: 6px 8px 6px 16px;
@@ -80,9 +80,10 @@ header {
 }
 
 .main {
-  margin-left: 250px;
-  margin-right: 250px; /* Same as the width of the sidebar */
-  padding: 0px 10px;
+  margin-left: var(--sidebar-w);
+
+  /* Same as the width of the sidebar */
+  padding: calc(var(--header-h) + 20px) 20px 20px;
 
 }
 
@@ -95,7 +96,7 @@ header {
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 20px;
-      border: 1px solid #e5e7eb;
+      border: 1px solid  #e7eefb;
 
 
 }
@@ -108,7 +109,7 @@ header {
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 20px;
-      border: 1px solid #e5e7eb;
+      border: 1px solid #e7eefb;
     }
 /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
 
@@ -121,7 +122,7 @@ header {
     }
     .card{
       background: var(--card); border:1px solid color-mix(in oklab, var(--text) 12%, transparent);
-      border-radius:5; padding: 18px;
+      border-radius:5px; padding: 18px;
     }
     .icon{
       width:40px; height:40px; border-radius:12px; display:grid; place-items:center; margin-bottom:10px;
@@ -144,7 +145,7 @@ header {
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 24px;
-      border: 1px solid #e5e7eb;
+      border: 1px solid #e7eefb;;
 
 }
 
@@ -154,11 +155,78 @@ header {
   padding: 20px;
 }
 
+
+.third_box{
+      width: 250px;
+      height: 250px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      border: 1px solid  #e7eefb;
+      /* Fixed Sidebar (stay in place on scroll) */
+      
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; 
+  gap: 20px;
+}
+.long-rectangle {
+  grid-column: 3 / 4;
+  grid-row: 1 / 4;
+}
+
+.skill_item { 
+  background:#f3f7fb; 
+  border:1px solid #b9d7ea;
+  border-radius:10px; 
+  padding:10px; 
+  margin-bottom:12px;
+ }
+.skill_head { 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  margin-bottom:8px; 
+}
+.skill_progress_bar { 
+  height:12px; 
+  background:#e6f2fb; 
+  border:1px solid #003544; 
+  border-radius:999px; overflow:hidden; 
+}
+.skill_progress_fill { 
+  width: 0;
+  height:100%;
+   background:#28e90e; 
+   transition:width .35s ease; 
+  }
+.skill_xp { 
+  text-align:right;
+   font-size:.85rem; 
+   color:#64748b; 
+   margin-top:4px; 
+  }
+
+
+
+
 </style>
 </head>
 
-<img src="url" alt="alternatetext">
-
+<body>
+  <section>
+ <header>
+    <h2>Calibration</h2>
+    <div>
+      <a class="btn btn-ghost" href="/accounts/logout/">Log out</a>
+      
+    </div>
+  </header>
+</section>
+   
 <nav class="sidebar">
  <div><img src="{% static 'calibrationapp/Picture1.png' %}" alt="Logo"></div>
  <a class="active" href="{% url 'dashboard' %}" >Dashboard</a>
@@ -170,35 +238,25 @@ header {
  <a href="#community">Community</a>
 </nav>
 
-
-
-
-
-<body>
   <div class="main">
-<section>
- <header class="container">
-    <h2>Calibration</h2>
-    <div>
-      <a class="btn btn-ghost" href="/accounts/logout/">Log in</a>
-      
-    </div>
-  </header>
-</section>
+
 <!--sidebar-->
 
 <h1 class="text-2xl font-semibold mb-4">Dashboard</h1>
 
 <section id="banner" class="section">
   
-<h3>Activity</h3>
-<div class="grid cols-2">
+
+<div class="dashboard-grid">
   <article class="banner_box">
-    <h3>Welcome Back User</h3>
+    <h3>Welcome back </h3>
 </article>
   <article class="Ant_box">
     <h3>Welcome Back User</h3>
-</article>
+  </article>
+  <article class="third_box long-rectangle">
+    <h3>Welcome Back User</h3>
+  </article>
 
 
 </div>
@@ -206,22 +264,39 @@ header {
 </section>
 <section id="features" class="section">
 
+<h3> Recent Activity</h3>
 <div class="grid cols-3">
         <article class="card">
           <div class="icon" aria-hidden="true">📈</div>
-          <h3>Track What Matters</h3>
-          <p>Log habits & skill reps in seconds. See streaks, trends, and weekly summaries at a glance.</p>
+          <h3>Skills</h3>
+          {% for x in latest_skills %}
+          <div class="skill_item">
+          <div class="skill_head">
+          <span class="skill_name">{{ x.name }}</span>
+          <span class="skill_level">Level {{ x.level }}</span>
+          </div>
+
+          <div class="skill_progress_bar">
+          <div class="skill_progress_fill" style="width: {{ x.skill_progress_tracked }}%;"></div>
+         </div>
+
+         <small>{{ x.xp }} / {{ x.to_level_up}} XP ({{ x.left_over }} to next)</small><br>
+         <small>Last journal entry: {{ x.latest_entry|date:"M d, Y h:i A" }}</small>
+         </div>
+         {% empty %}
+         <p>No recent journal activity yet.</p>
+          {% endfor %}
         </article>
 
         <article class="card">
           <div class="icon" aria-hidden="true">🎯</div>
-          <h3>Skill Builder</h3>
+          <h3>Habits</h3>
           <p>Break skills into levels and milestones. Build discipline with small, steady wins.</p>
         </article>
 
         <article class="card">
           <div class="icon" aria-hidden="true">🧩</div>
-          <h3>Focus Tools</h3>
+          <h3>Rewards</h3>
           <p>Reminders, streak protection, and gentle nudges help you keep the chain unbroken.</p>
         </article>
 
@@ -247,25 +322,7 @@ header {
       
     </div>
  
-<!---
- <div class="skill">
-    <h2 class="font-semibold mb-2">Skills</h2>
-    
-  </div>
 
-
-
-<div class="grid md:grid-cols-3 gap-6">
- 
-  <div class="bg-white p-4 rounded shadow">
-    <h2 class="font-semibold mb-2">Habits</h2>
-    
-  </div>
-
-  <div class="bg-white p-4 rounded shadow ">
-    <h2 class="font-semibold mb-2">Rewards</h2>
-  </div>
--->
 </div>
 </div>
 </body>

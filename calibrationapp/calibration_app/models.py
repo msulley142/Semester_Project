@@ -31,7 +31,14 @@ class Skill(models.Model):
            self.level += 1
 
        self.save(update_fields=["xp", "level"])
-
+       
+    def skill_progress_data(self):
+        to_level_up = self.level * 100
+        d = to_level_up or 1
+        skill_progress_tracked = int(round((self.xp /d) * 100))
+        left_over = max(0, (to_level_up - skill_progress_tracked))
+        
+        return { "to_level_up": to_level_up , "skill_progress_tracked": skill_progress_tracked, "left_over": left_over }
     
     
     

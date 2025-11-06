@@ -1,3 +1,4 @@
+from django.db.models import Max
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
@@ -41,10 +42,20 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['recent_skills'] = Skill.objects.filter(account_user=self.request.user).order_by('-created_at')[:5]
+        latest_skills_t = (Skill.objects.filter(account_user=self.request.user, journal__account_user=self.request.user).annotate(latest_entry=Max('journal__date')).exclude(latest_entry=None).order_by('-latest_entry')[:2]  )
+        temp = []
+        for skill in latest_skills_t:
+            data = skill.skill_progress_data()
+            skill.skill_progress_tracked = data["skill_progress_tracked"]
+            skill.to_level_up = data["to_level_up"]
+            skill.left_over = data["left_over"]
+            temp.append(skill)
+
+       
+        context['latest_skills'] = temp
         context['recent_habits'] = Habit.objects.filter(account_user=self.request.user).order_by('-created_at')[:5]
         context['recent_badges'] = User_Badge.objects.filter(account_user=self.request.user).order_by('-awarded_at')[:5]
-        context['recent_journal'] = Journal.objects.filter(account_user=self.request.user).order_by('-date', 'id')[:5]
+        #context['recent_journal'] = Journal.objects.filter(account_user=self.request.user).order_by('-date', 'id')[:5]
         return context
 
 #----Skill Views----#
