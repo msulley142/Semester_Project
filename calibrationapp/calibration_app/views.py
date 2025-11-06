@@ -13,8 +13,9 @@ from calibration_app.progress_tracker import task_completion_badge, award_badge,
 
 
 # Create your views here.
+#----Landing View---#
 
-#----Login View----#
+
 
 class LoginView(FormView):
     template_name = 'auth/login.html'
@@ -220,6 +221,7 @@ class TaskCreate(LoginRequiredMixin, CreateView):
         obj = form.save(commit=False)
         obj.account_user = self.request.user
         obj.save()
+        task_completion_badge(obj)
         return redirect(self.success_url)
     
 class TaskUpdate(LoginRequiredMixin, UpdateView):
@@ -227,6 +229,15 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
     form_class = TaskForm
     template_name = 'tasks/form.html'
     success_url = reverse_lazy('task_list')
+
+#----- added to award badge and points for task completion mile stones
+    def form_valid(self, form):
+        prev_status = Task.objects.get(pk = self.object.pk).status
+        current_status = form.save()
+        if prev_status != Task.COMPLETED:
+            task_completion_badge(current_status)
+        return redirect(self.success_url)
+    
 
 class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task

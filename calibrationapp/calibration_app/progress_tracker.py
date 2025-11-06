@@ -52,7 +52,7 @@ def streak_notify(account_user):
    
    
     while True:
-        practice_skill = Journal.objects.filter(account_user=account_user, date=days_ago, entry_type=Journal.PRACTICE).exit()
+        practice_skill = Journal.objects.filter(account_user=account_user, date=days_ago, entry_type=Journal.PRACTICE).exists()
         if not practice_skill:
             break
         streak += 1
@@ -71,7 +71,7 @@ def abst_badge(account_user, habit):
    
    
     while True:
-        laspe_logged = Journal.objects.filter(account_user=account_user, habit=habit, date=days_ago, entry_type=Journal.LAPSE).exit()
+        laspe_logged = Journal.objects.filter(account_user=account_user, habit=habit, date=days_ago, entry_type=Journal.LAPSE).exists()
         if laspe_logged or habit.start_date:
             break
         streak += 1
@@ -91,10 +91,13 @@ def abst_badge(account_user, habit):
 def task_completion_badge(task: Task):
     account_user = task.account_user
 
+    if task.status != Task.COMPLETED:
+        return
+    
     if task.skill:
         task.skill.add_xp(task.points)
     
-    task_completed = Task.objects.filter(account_user=account_user, status=Task.COMPLETED)
+    task_completed = Task.objects.filter(account_user=account_user, status=Task.COMPLETED).count()
     if task_completed == 1:
         award_badge(account_user, 'FIRST_TASK', 'Fist Task Done')
     elif task_completed == 5:

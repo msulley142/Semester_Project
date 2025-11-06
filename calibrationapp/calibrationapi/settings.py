@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_tailwind',
     'rest_framework',
+    'widget_tweaks',
     'calibration_app.apps.CalibrationAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',

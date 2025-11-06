@@ -1,13 +1,330 @@
+<!doctype html>
+<html lang="en">
 <html>
     <head>
-        <title>
-            Calibration
-        </title>
         <meta charset="utf-8" />
-        <meta name="viewport" contemt="width=device-width, initial-scale=1, user-scalable=no" />
-    
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title> Calibration </title>
+        <meta name = "description" content="Habit and Skill progress Tracker"/>
     </head>
     
+    <style>
+        /*----Theme-----*/
+        :root{
+            ---bg: #0b0f14;
+      --bg-elev: #0f1720;
+      --card: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --brand: #0ea5e9;    /* sky-500 */
+      --brand-600:#0284c7; /* sky-600 */
+      --accent:#22d3ee;    /* cyan-400 */
+      --success:#34d399;   /* emerald-400 */
+      --danger:#f87171;
+      --ring: rgba(14,165,233,.45);
+      --shadow: 0 10px 25px rgba(2,132,199,.25);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --maxw: 1100px;
+        }
+
+        @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f8fafc;
+        --bg-elev:#ffffff;
+        --card:#ffffff;
+        --text:#0f172a;
+        --muted:#475569;
+        --ring: rgba(2,132,199,.35);
+      }
+    }
+
+     *{ box-sizing:border-box }
+    html,body{ margin:0; padding:0; background:var(--bg); color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji"; line-height:1.5 }
+    img{ max-width:100%; height:auto; display:block }
+    a{ color:inherit; text-decoration:none }
+    .container{ width:100%; max-width:var(--maxw); margin-inline:auto; padding: clamp(16px, 3vw, 32px) }
+    /*-----Header-----*/
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: saturate(1.2) blur(8px);
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:10px;
+      display:grid; place-items:center;
+      background: radial-gradient(120% 120% at 0% 0%, var(--brand) 0%, var(--accent) 45%, #8b5cf6 100%);
+      box-shadow: var(--shadow);
+    }
+    .logo svg{ width:20px; height:20px; color:white }
+    .nav-actions{ display:flex; gap:10px; align-items:center }
+    .btn{
+      --pad-y: 12px; --pad-x: 18px; --fw: 700;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding: var(--pad-y) var(--pad-x); border-radius: 999px; border:1px solid transparent;
+      font-weight: var(--fw); cursor:pointer; transition: .18s ease-in-out; will-change: transform;
+      text-wrap: balance;
+    }
+    .btn-primary{ background: var(--brand); color:#001018; box-shadow: var(--shadow) }
+    .btn-primary:hover{ background: var(--brand-600); transform: translateY(-1px) }
+    .btn-ghost{ background: transparent; color: var(--text); border-color: color-mix(in oklab, var(--text) 18%, transparent) }
+    .btn-ghost:hover{ border-color: var(--brand); color: var(--brand) }
+
+    /* --------- Hero --------- */
+    .hero{
+      padding: clamp(36px, 5vw, 64px) 0 clamp(24px, 4vw, 48px);
+    }
+    .hero-grid{
+      display:grid; gap:28px; align-items:center;
+      grid-template-columns: 1fr; 
+    }
+    @media (min-width: 900px){
+      .hero-grid{ grid-template-columns: 1.1fr .9fr }
+    }
+    .eyebrow{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:6px 10px; border-radius:999px; font-size:.85rem; color:var(--muted);
+      border:1px dashed color-mix(in oklab, var(--text) 15%, transparent);
+    }
+    .hero h1{
+      font-size: clamp(2.1rem, 4.5vw, 3.4rem);
+      line-height:1.1; margin: 14px 0 10px; letter-spacing: .2px;
+    }
+    .lead{ color: var(--muted); font-size: clamp(1rem, 2.1vw, 1.2rem); max-width: 55ch }
+    .cta-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top: 18px }
+    .meta{ display:flex; gap:16px; align-items:center; color: var(--muted); font-size:.95rem; margin-top:10px }
+
+    .panel{
+      background: var(--card); border:1px solid color-mix(in oklab, var(--text) 12%, transparent);
+      border-radius: var(--radius); padding: clamp(16px, 3vw, 22px);
+      box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 30px 60px rgba(0,0,0,.25);
+    }
+    .mock{
+      aspect-ratio: 16/10; border-radius: 10px; overflow:hidden;
+      background: linear-gradient(145deg, color-mix(in oklab, var(--brand) 35%, #000), color-mix(in oklab, var(--accent) 25%, #000));
+      display:grid; place-items:center; position:relative; isolation:isolate;
+    }
+    .mock::after{
+      content:"Calibration – Progress Dashboard"; color:white; opacity:.9; font-weight:700;
+      letter-spacing:.2px; background: rgba(0,0,0,.28); padding:10px 14px; border-radius:10px; 
+    }
+
+    /* --------- Features --------- */
+    .section{ padding: clamp(32px, 6vw, 80px) 0 }
+    .section h2{ font-size: clamp(1.6rem, 3vw, 2.2rem); margin:0 0 10px }
+    .kicker{ color: var(--muted); margin:0 0 22px }
+    .grid{
+      display:grid; gap:18px;
+      grid-template-columns: 1fr;
+    }
+    .card{
+      background: var(--card); border:1px solid color-mix(in oklab, var(--text) 12%, transparent);
+      border-radius: var(--radius-sm); padding: 18px;
+    }
+    .icon{
+      width:40px; height:40px; border-radius:12px; display:grid; place-items:center; margin-bottom:10px;
+      background: color-mix(in oklab, var(--brand) 30%, transparent);
+      color: white;
+    }
+    .card h3{ margin:0 0 6px; font-size:1.1rem }
+    .card p{ margin:0; color: var(--muted) }
+
+    @media (min-width: 720px){
+      .grid.cols-3{ grid-template-columns: repeat(3, 1fr) }
+      .grid.cols-2{ grid-template-columns: repeat(2, 1fr) }
+    }
+
+    /* --------- Testimonial --------- */
+    .quote{
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      color: color-mix(in oklab, var(--text) 85%, white);
+    }
+    .avatar{ width:44px; height:44px; border-radius:50%; background: #94a3b8 }
+
+    /* --------- Email capture --------- */
+    .signup{
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+      margin-top:12px;
+    }
+    .input{
+      flex:1 1 260px; min-width: 240px;
+      border:1px solid color-mix(in oklab, var(--text) 18%, transparent);
+      background: var(--bg-elev); color: var(--text);
+      padding: 12px 14px; border-radius: 999px; outline:none;
+    }
+    .input:focus{ border-color: var(--brand); box-shadow: 0 0 0 6px var(--ring) }
+
+    /* --------- Footer --------- */
+    footer{
+      border-top:1px solid color-mix(in oklab, var(--text) 12%, transparent);
+      color: var(--muted);
+    }
+    .footer-grid{
+      display:grid; gap:16px; grid-template-columns: 1fr;
+    }
+    @media (min-width: 720px){
+      .footer-grid{ grid-template-columns: 2fr 1fr 1fr }
+    }
+    .small{ font-size:.9rem }
+
+    /* Utility */
+    .center{ text-align:center }
+    .pill{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid color-mix(in oklab, var(--text) 14%, transparent); color:var(--muted) }
+    .sep{ height:1px; background: color-mix(in oklab, var(--text) 12%, transparent); margin: 28px 0 }
+    .hidden{ display:none !important }
+  </style>
+</head>
+<body>
+  <!-- ===== Header ===== -->
+  <header>
+    <div class="container nav" role="navigation" aria-label="Top Navigation">
+      <div class="brand" aria-label="Calibration home">
+        <div class="logo" aria-hidden="true">
+          <!-- target icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"></circle>
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 3v3M21 12h-3M12 21v-3M6 12H3"></path>
+          </svg>
+        </div>
+        <span>Calibration</span>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="/accounts/login/">Log in</a>
+        <a class="btn btn-primary" href="/accounts/signup/">Sign up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">Build discipline with community support</span>
+        <h1>Recalibrate Your Life. One Habit, One Skill at a Time.</h1>
+        <p class="lead">Calibration helps people who struggle with focus and consistency track habits, grow skills, and stay motivated through a friendly accountability community.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/accounts/signup/" aria-label="signup">Sign Up</a>
+          <a class="btn btn-ghost" href="#how-it-works">How it works</a>
+        </div>
+       
+      </div>
+
+      <div class="panel" aria-label="App preview">
+        <div class="mock" role="img" aria-label="Calibration dashboard mockup"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Features ===== -->
+  <section id="features" class="section">
+    <div class="container">
+      <h2>Everything you need to stay consistent</h2>
+      <p class="kicker">Tools for habits, skills, reflection, and accountability — without the overwhelm.</p>
+
+      <div class="grid cols-3">
+        <article class="card">
+          <div class="icon" aria-hidden="true">📈</div>
+          <h3>Track What Matters</h3>
+          <p>Log habits & skill reps in seconds. See streaks, trends, and weekly summaries at a glance.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon" aria-hidden="true">🎯</div>
+          <h3>Skill Builder</h3>
+          <p>Break skills into levels and milestones. Build discipline with small, steady wins.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon" aria-hidden="true">🧩</div>
+          <h3>Focus Tools</h3>
+          <p>Reminders, streak protection, and gentle nudges help you keep the chain unbroken.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon" aria-hidden="true">🤝</div>
+          <h3>Community</h3>
+          <p>Join challenges, share updates, and get encouragement from people on the same path.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon" aria-hidden="true">🏅</div>
+          <h3>Badges & Rewards</h3>
+          <p>Earn badges for streaks, first skill, first journal entry, and consistency milestones.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon" aria-hidden="true">🔒</div>
+          <h3>Privacy First</h3>
+          <p>Your data stays yours. Export anytime. We never sell your information.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== How It Works ===== -->
+  <section id="how-it-works" class="section">
+    <div class="container grid cols-1">
+      <div class="panel">
+        <h2>How Calibration Works</h2>
+        <ol class="small">
+          <li><strong>Create habits & skills</strong> — choose what to track and set gentle reminders.</li>
+          <li><strong>Log progress daily</strong> — tiny actions, big momentum.</li>
+          <li><strong>Join a challenge</strong> — show up with others who get it.</li>
+          <li><strong>Review weekly</strong> — see growth, earn badges, adjust goals.</li>
+        </ol>
+        <div class="sep"></div>
+        <p class="kicker">Discipline isn’t about perfection — it’s about progress you can see.</p>
+      </div>
+
+   
+    </div>
+  </section>
+
+  <!-- ===== Community CTA ===== -->
+  <section id="community" class="section">
+    <div class="container panel center">
+      <h2>Build discipline together</h2>
+      <p class="kicker">Join focused sprints and gentle accountability groups. Your future self will thank you.</p>
+      <a class="btn btn-primary" href="#signup">Join the Community</a>
+    </div>
+  </section>
+
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:10px">
+          <div class="logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9"></circle>
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 3v3M21 12h-3M12 21v-3M6 12H3"></path>
+            </svg>
+          </div>
+          <span>Calibration</span>
+        </div>
+        <p class="small">© <span id="year"></span> Calibration. All rights reserved.</p>
+      </div>
+ 
+    </div>
+  </footer>
+
+  
+</body>
+</html>
+
+
+    </style>
 
     </body>
 </html>
