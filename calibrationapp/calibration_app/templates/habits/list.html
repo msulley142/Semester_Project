@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% block content %}
+
+
 <div class="flex justify-between items-center mb-4">
   <h1 class="text-2xl font-semibold">Habits</h1>
   <a href="{% url 'habit_create' %}" class="px-3 py-2 bg-indigo-600 text-white rounded">New Habit</a>
@@ -20,4 +20,3 @@
     {% endfor %}
   </ul>
 </div>
-{% endblock %}

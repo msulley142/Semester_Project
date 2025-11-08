@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title> Calibration </title>
+        <meta name = "description" content="Habit and Skill progress Tracker"/>
+    </head>
+    
+    <style>
+      
+        :root{
+         --sidebar-w: 250px;
+         --sidebar-br: 1px;
+         --header-h: 90px;
+         --card: #ffffff;
+          --radius: 12px;
+           --shadow: 0 8px 24px rgba(2, 132, 199, .08), 0 2px 6px rgba(0,0,0,.06);
+        }
+
+ 
+
+     *{ box-sizing:border-box }
+
+   html, body{
+  margin: 0;
+  padding: 0;
+  background: #f8fafc; 
+  color: #0f172a;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+}
+   
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.container {
+  
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: clamp(16px, 3vw, 32px);
+}
+
+
+
+
+
+/* ---header--- */
+.site-header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-h);
+  display: flex;
+  background: #0b1723;
+  color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 20px 0 24px;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  align-items: center;
+  z-index: 1000;
+  gap: 12px;
+}
+
+
+
+
+.brand{
+    display:flex; 
+    align-items:center; 
+    gap:10px; 
+    font-weight:700; 
+    margin: 6px 8px 14px;
+  }
+
+.nav{
+    display:flex; 
+    flex-direction:column; 
+    gap:6px; 
+    margin-top: 8px;
+}
+.nav a {
+  padding:10px 12px; 
+  border-radius:10px; 
+  color:#cbd5e1;
+  text-decoration: none;
+  font-size: 15px;
+ 
+}
+
+
+.nav a.active {
+    background: #0ea5e9; 
+    color:#001018 
+  
+}
+
+.nav a:hover{ background: rgba(255,255,255,.08); 
+  color:white }
+
+.main{
+    margin-left:  var(--sidebar-w);
+    padding: calc(var(--header-h) + 20px) 20px 20px;
+    min-height: 100dvh;  
+}
+
+
+
+.btn{
+    text-decoration: none; 
+    display:inline-flex; 
+    align-items:center; 
+    gap:8px;
+    padding:10px 14px; 
+    border-radius:999px; 
+    border:1px solid #e5e7eb;
+    background:#fff; 
+    cursor:pointer;
+  }
+.btn-primary{ 
+   text-decoration: none; 
+    border-radius: 999px;    
+    background: #0ea5e9; 
+    color:#ffffff; 
+    border-color:transparent }
+.btn-primary:hover{ 
+    background: #0369a1 }
+
+
+.section-title{
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 12px 0 8px;
+}
+
+
+.skills-card-grid{
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 320px));
+  justify-content: start;
+  
+
+
+}
+.skill-card {
+  
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;  
+  display: grid;
+  min-width: 200px;    
+  max-width: 400px;  
+  gap: 20px;
+  justify-content: start;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.skill-card:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.skill-item { 
+  background:#f3f7fb; 
+  border:1px solid #b9d7ea;
+  border-radius:10px; 
+  padding:10px; 
+  margin-bottom:12px;
+ }
+
+
+
+
+  </style>
+</head>
+<body>
+ <header class="site-header">
+  <span>Calibration</span>
+  <div>
+    <a class="btn btn-primary" href="/accounts/login/"> Log in</a>
+    <a class="btn btn-primary" href="/accounts/signup/">Sign up</a>
+  </div>
+</header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">Build discipline with community support</span>
+        <h1>Recalibrate Your Life. One Habit, One Skill at a Time.</h1>
+        <p class="lead">Calibration helps people who struggle with focus and consistency track habits, grow skills, and stay motivated through a friendly accountability community.</p>
+        <div class="cta-row">
+        </div>
+       
+      </div>
+
+  <section class="section">
+    <div class="container">
+      <h2>Everything you need to stay consistent</h2>
+      <p class="kicker">Tools for habits, skills, reflection, and accountability — without the overwhelm.</p>
+
+      <div class="skills-card-grid">
+
+        <article class="card">
+          <h3>Skill Builder</h3>
+          <p>Break skills into levels and milestones. Build discipline with small, steady wins.</p>
+        </article>
+
+        <article class="card">
+          <h3>Focus Tools</h3>
+          <p>Reminders, streak protection, and gentle nudges help you keep the chain unbroken.</p>
+        </article>
+
+        <article class="card">
+          <h3>Community</h3>
+          <p>Join challenges, share updates, and get encouragement from people on the same path.</p>
+        </article>
+
+        <article class="card">
+          <h3>Badges & Rewards</h3>
+          <p>Earn badges for streaks, first skill, first journal entry, and consistency milestones.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section  class="section">
+    <div class="container grid cols-1">
+      <div class="panel">
+        <h2>How Calibration Works</h2>
+        <ol class="small">
+          <li><strong>Create habits & skills</strong> — choose what to track and set gentle reminders.</li>
+          <li><strong>Log progress daily</strong> — tiny actions, big momentum.</li>
+          <li><strong>Join a challenge</strong> — show up with others who get it.</li>
+          <li><strong>Review weekly</strong> — see growth, earn badges, adjust goals.</li>
+        </ol>
+       
+
+   
+    </div>
+  </section>
+
+
+
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:10px">
+          <span>Calibration</span>
+        </div>
+       
+ 
+    </div>
+  </footer>
+
+  
+</body>
+</html>
+
+
+    </style>
+
+    </body>
+</html>
+

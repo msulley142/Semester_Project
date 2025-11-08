@@ -1,5 +1,6 @@
 from django import forms
-from .models import Skill, Habit, Journal, Reward, Task
+from django.contrib.auth import get_user_model
+from .models import Skill, Habit, Journal, Reward, Task, Profile, User
 
 
 
@@ -15,7 +16,7 @@ class HabitForm(forms.ModelForm):
 
     class Meta:
         model = Habit
-        fields = ['name',  'description', 'habit_type', 'frequency']
+        fields = ['name', 'habit_type', 'goal_start', 'goal_end', 'description']
 
       
 
@@ -41,3 +42,17 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ["title", "points" ,"skill", "habit", "status", "description", "date"]
+
+class UserForm(forms.ModelForm):
+        class Meta:
+            model = User
+            fields = ["first_name", "last_name", "email"]
+
+
+
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ['phone_number', 'address', 'profile_picture']
+

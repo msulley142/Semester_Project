@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Discipline Builder</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+:root{
+  --sidebar-w: 250px;
+  --sidebar-br: 1px;
+  --header-h: 80px;
+  --card: #ffffff;
+  --radius: 12px;
+  --shadow: 0 8px 24px rgba(2, 132, 199, .08), 0 2px 6px rgba(0,0,0,.06);
+  
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  padding: 0;
+  background: #f8fafc; 
+  color: #0f172a;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.container {
+  
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: clamp(16px, 3vw, 32px);
+}
+
+
+
+
+
+/* ---header--- */
+.site-header{
+  position: fixed;
+  top: 0;
+  left: calc(var(--sidebar-w) + var(--sidebar-br));
+  right: 0;
+  height: var(--header-h);
+  display: flex;
+  background: rgba(255,255,255,0.6);
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 20px 0 24px;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  align-items: center;
+  z-index: 1000;
+  gap: 12px;
+}
+
+
+.sidebar {
+    position: fixed; 
+    inset: 0 auto 0 0;
+    width: var(--sidebar-w);
+    background: #0b1723;
+    color: #e5eef7;
+    border-right: var(--sidebar-br) solid rgba(255,255,255,.08);
+    padding: 16px 12px;
+    overflow-y: auto;
+    z-index: 1200;
+
+}
+
+.brand{
+    display:flex; 
+    align-items:center; 
+    gap:10px; 
+    font-weight:700; 
+    margin: 6px 8px 14px;
+  }
+
+.nav{
+    display:flex; 
+    flex-direction:column; 
+    gap:6px; 
+    margin-top: 8px;
+}
+.nav a {
+  padding:10px 12px; 
+  border-radius:10px; 
+  color:#cbd5e1;
+  text-decoration: none;
+  font-size: 15px;
+ 
+}
+
+
+.nav a.active {
+    background: #0ea5e9; 
+    color:#001018 
+  
+}
+
+.nav a:hover{ background: rgba(255,255,255,.08); 
+  color:white }
+
+.main{
+    margin-left:  var(--sidebar-w);
+    padding: calc(var(--header-h) + 20px) 20px 20px;
+    min-height: 100dvh;  
+}
+
+
+
+.btn{
+    text-decoration: none; 
+    display:inline-flex; 
+    align-items:center; 
+    gap:8px;
+    padding:10px 14px; 
+    border-radius:999px; 
+    border:1px solid #e5e7eb;
+    background:#fff; 
+    cursor:pointer;
+  }
+.btn-primary{ 
+   text-decoration: none; 
+    border-radius: 999px;    
+    background: #0ea5e9; 
+    color:#001018; 
+    border-color:transparent }
+.btn-primary:hover{ 
+    background: #0369a1 }
+
+
+.section-title{
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 12px 0 8px;
+}
+
+
+.skills-card-grid{
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 320px));
+  justify-content: start;
+  
+
+
+}
+.skill-card {
+  
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;  
+  display: grid;
+  min-width: 200px;    
+  max-width: 400px;  
+  gap: 20px;
+  justify-content: start;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.skill-card:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+.skill-item { 
+  background:#f3f7fb; 
+  border:1px solid #b9d7ea;
+  border-radius:10px; 
+  padding:10px; 
+  margin-bottom:12px;
+ }
+.skill-head { 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #0f172a;
+}
+.skill-muted{
+  color: #64748b;
+  font-size: 0.85rem;
+}
+.skill-progress-bar { 
+  height:10px; 
+  background:#e2e8f0; 
+  border-radius:999px; 
+  overflow:hidden; 
+  margin: 8px 0;
+  width: 100%;
+ 
+}
+.skill-progress-fill { 
+  width: 0;
+  height:100%;
+  background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+  transition:width 0.4s ease; 
+  max-width: 100%;
+  display:block;
+  }
+.skill-xp { 
+   text-align:right;
+   font-size:.85rem; 
+   color:#64748b; 
+   margin-top:4px; 
+  }
+
+.habit-item { 
+  background:#f3f7fb; 
+  border:1px solid #b9d7ea;
+  border-radius:10px; 
+  padding:10px; 
+  margin-bottom:12px;
+ }
+.habit-head { 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #0f172a;
+}
+.habit-progress-bar { 
+  height:10px; 
+  background:#e2e8f0; 
+  border-radius:999px; 
+  overflow:hidden; 
+  margin: 8px 0 
+}
+.habit-progress-fill { 
+  width: 0;
+  height:100%;
+  background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+  transition:width 0.4s ease; ; 
+  }
+
+.left-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  gap: 12px;
+  margin: 12px 0 8px;             
+  flex-wrap: wrap;                 
+}
+
+.small-btn{
+  padding: 10px 14px;
+  font-size: 14px;
+  border-radius: 999px;
+}
+
+
+
+
+
+.page-grid{
+  display:grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: start;
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto
+
+
+}
+
+.journal-panel{
+position: sticky;
+top: calc(var(--header-h) + 16px);
+background: var(--card);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+padding: 16px 20px;
+height: fit-content;
+}
+
+
+.journal-title{ 
+margin: 0 0 8px;
+}
+
+.journal-input {
+ width: 100%;
+ box-sizing: border-box;
+ border: 1px solid #e2e8f0;
+ border-radius: 10px;
+ padding: 10px 12px;
+ margin: 8px 0 12px;
+ font: inherit;
+ background: #f8fafc;
+
+}
+
+.journal-input {
+  width: 100%;
+  display: block;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  resize: vertical; 
+  min-height: 100px;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+
+.journal-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 6px var(--ring);
+}
+
+.journal-card{
+ background:#fff;
+ border:1px solid #e5e7eb;
+ border-radius:12px;
+ padding:16px;
+ box-shadow:0 8px 24px 
+ rgba(2,132,199,.08),0 2px 6px
+ rgba(0,0,0,.06);} 
+  
+.task-wrap, .journal-wrap{
+ grid-column: 2;
+ 
+ }
+  
+.task-wrap{
+ margin-top: 16px;
+ grid-row: auto;   
+ }
+
+ .btn-wrap{
+ margin-left: 7cm;
+ 
+ }
+
+ .btn-wrap2{
+ margin-left: 6cm;
+ 
+ }
+
+.right-col {
+  grid-column: 2;
+  display: grid;
+  gap: 16px;         /* space between Journal and Tasks */
+  align-self: start; /* align to the top of the column */
+}
+
+.task-panel{
+position: sticky;
+top: calc(var(--header-h) + 16px);
+background: var(--card);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+padding: 16px 20px;
+height: fit-content;
+}
+
+
+.item-delete-btn{
+ width: 0.5mm;
+ height: 0.5mm;
+ text-decoration: none; 
+ background: red; 
+ color:#ffffff; 
+ border-color:transparent; 
+ padding: 10px 14px;
+ font-size: 3mm;
+ border-radius: 999px;
+
+
+}
+
+
+.item-update-btn{
+width: 0.5mm;
+height: 0.5mm;
+text-decoration: none; 
+  
+background: #44ee22 ; 
+color:#ffffff; 
+border-color:transparent;
+padding: 10px 14px;
+font-size: 3mm;
+border-radius: 999px;
+
+
+
+}
+</style>
+
+</head>
+
+
+<body>
+
+ <nav class="sidebar" role="navigation" aria-label="Sidebar">
+ <div class="brand">
+ <strong>Calibration</strong>
+ </div>
+
+ <div class="nav">
+ <a href="{% url 'dashboard' %}" >Dashboard</a>
+ <a class="active" href="{% url 'disciplinebuilder' %}">Discipline Builder</a>
+ <a href="{% url 'progresstracker' %}">Progress Tracker </a>
+ <a href="{% url 'rewards' %}">Rewards</a>
+ <a href="{% url 'coaching' %}">Coaching</a>
+ <a href="{% url 'messages' %}">Messages</a>
+ <a href="{% url 'community' %}">Community</a>
+ </div>
+</nav>
+
+<header class="site-header">
+  <strong>Discipline Builder</strong>
+  <div>
+    <a class="btn" href="#">Settings</a>
+    <a class="btn btn-primary" href="/accounts/logout/"> Log out</a>
+  </div>
+</header>
+
+<main class="main">
+
+<div class="container">
+<div class="page-grid">
+
+<section class="left-panel">
+<div class="left-header">
+<h2 class="section-title">Skills</h2>
+<a href="{% url 'skill_create'%}" class="btn btn-primary btn-sm">+ New Skill</a>
+</div>
+<div class="skills-card-grid">
+  {% for s in load_skills %} 
+
+    <article class="skill-card">
+      <header class="skill-head">
+        <strong> {{s.name}} </strong>
+        <span class="skill-muted">Lv {{s.level}} </span>
+      </header>
+      
+      <div class="skill-progress-bar">
+      <div class="skill-progress-fill" style="width: {{ s.skill_progress_tracked|default:0 }}%;"></div>
+      </div>
+      <small class="skill-muted">{{s.xp}} XP</small>
+    
+    </article>
+   
+    {% empty %}
+    <article class="skill-card"><p>No skills yet. Add your first one!</p></article>
+    {% endfor %}
+    
+    
+</div>
+
+
+<div class="left-header">
+<h2 class="section-title">Habits</h2>
+<a href="{% url 'habit_create'%}" class="btn btn-primary btn-sm">+ New Habit</a>
+</div>
+<div class="skills-card-grid">
+  {% for h in load_habits %} 
+
+    <article class="skill-card">
+      <header class="habit-head">
+        <strong> {{h.name}} </strong>
+        <span class="habit_percent"> {{h.goal_percentage}} % </span>
+      </header>
+      
+      <div class="skill-progress-bar">
+      <div class="skill-progress-fill" style="width: {{ h.goal_percentage|default:0 }}%;"></div>
+      </div>
+      <small>{{ h.days_left}} days left</small>
+
+    </article>
+   
+    {% empty %}
+    <article class="skill-card"><p>No recent Habit activity yet.</p></article>
+    {% endfor %}  
+    
+</div>
+
+
+
+
+
+
+
+</section>
+
+
+<div class="right-col">
+<div class="journal-wrap">
+<div class="journal-card">
+<aside class="journal-panel" aria-label="Journal">
+ <h3 class="journal-title">Journal</h3>
+ <form method="post" action="{% url 'journal_create' %}">
+  {% csrf_token %}
+
+ <div class="field">
+  <label class="label" for="user_entry_type">Entry type</label>
+  <select id="user_entry_type" name="entry_type" class="control" required>
+    <option value="PRACTICE">Practice</option>
+    <option value="REFLECTION">Reflection</option>
+    <option value="URGE">Urge</option>
+    <option value="LAPSE">Lapse</option>
+    <option value="SUCCESS">Success</option>
+  </select>
+ </div>
+
+ <div class="field">
+  <label class="label" for="user_skill">Skill</label>
+  <select id="user_skill" name="skill" class="control">
+  <option value=""> None </option>
+  {% for s in load_skills %}
+  <option value="{{s.id}}">{{s.name}}</option>
+  {% endfor %}
+  </select>
+ </div>
+
+ <div class="field">
+  <label class="label" for="user_habit">Habit</label>
+  <select id="user_habit" name="habit" class="control">
+  <option value=""> None </option>
+  {% for h in load_habits %}
+  <option value="{{h.id}}">{{h.name}}</option>
+  {% endfor %}
+  </select>
+ </div>
+
+ <div class="field">
+  <label class="label" for="user_date">Date</label>
+  <input id="user_date" name="date" type="datetime-local" class="control">
+ </div>
+
+<div class="field">
+  <label class="label" for="user_tigger">Trigger</label>
+  <input id="user_trigger" name="trigger" type="text" class="control" placeholder="Enter Trigger".>
+ </div>
+
+ <div class="field">
+  <label class="label" for="user_note">Note</label>
+ <textarea id="user_note" name="note" class="journal-input" rows="5" placeholder= "Log Your Experience"></textarea>
+ </div>
+ <button class="btn btn-primary" type="submit">Save</button>
+</form>
+</aside>
+
+
+</div>
+</div>
+
+
+ <div class="task-wrap">
+    <div class="journal-card">
+      <aside class="journal-panel" aria-label="Tasks">
+      <div>
+        <h2 class="section-title">Tasks</h2>
+        <form method="post" action="{% url 'task_create' %}">
+         {% csrf_token %}
+
+       
+          <div class="field">
+          <label class="label" for="user_title">Title</label>
+          <input id="user_title" name="title" type="text" class="control" placeholder="title">
+          </div>
+
+          <div class="field">
+          <label class="label" for="user_points">Points</label>
+          <input id="user_points" name="points" type="text" class="control" value= 10>
+          </div>
+
+          <div class="field">
+          <label class="label" for="user_skill">Skill</label>
+          <select id="user_skill" name="skill" class="control">
+          <option value=""> None </option>
+               {% for n in load_skills %}
+          <option value="{{s.id}}">{{n.name}}</option>
+                {% endfor %}
+          </select>
+          </div>
+
+          <div class="field">
+          <label class="label" for="user_habit">Habit</label>
+          <select id="user_habit" name="habit" class="control">
+          <option value=""> None </option>
+          {% for j in load_habits %}
+          <option value="{{h.id}}">{{j.name}}</option>
+          {% endfor %}
+          </select>
+          </div>
+
+          <div class="field">
+         <label class="label" for="user_status">Status</label>
+         <select id="user_status" name="status" class="control" required>
+         <option value="NOTSTARTED">Not Started</option>
+         <option value="INPROGRESS">In Progress</option>
+         <option value="COMPLETED">Completed</option>
+         </select>
+         </div>
+        
+
+
+        <div class="field">
+        <label class="label" for="user_date">Date</label>
+        <input id="user_date" name="date" type="datetime-local" class="control">
+        </div>
+
+
+         <div class="field">
+         <label class="label" for="user_descritpion">Description</label>
+         <input id="user_descritpion" name="description" type="journal-input" rows="5" class="control" placeholder="Expand on task".>
+         </div>
+        
+
+        <button class="btn btn-primary" type="submit">Save</button>
+
+
+         </div>
+
+        </form>
+  
+      </div>
+    
+    </aside>
+    </div>
+   
+  </div>
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+</main>
+
+
+</body>
+</html>

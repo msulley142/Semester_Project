@@ -17,13 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.views.generic import TemplateView
-from calibration_app.views import DashboardView
+from calibration_app.views import DashboardView, DisciplineBuilderView, ProgressTrackerView, RewardsTrackerView, CoachingView, MessageView,CommunityView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("calibration_app.auth_urls")),
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('disciplinebuilder/', DisciplineBuilderView.as_view(), name='disciplinebuilder'),
+    path('progresstracker/', ProgressTrackerView.as_view(), name='progresstracker'),
+    path('rewards/', RewardsTrackerView.as_view(), name='rewards'),
+    path('coaching/', CoachingView.as_view(), name='coaching'),
+    path('community/', CommunityView.as_view(), name='community'),
+    path('messages/', MessageView.as_view(), name='messages'),
     path('', TemplateView.as_view(template_name="index.html"), name='home'),
     path('app/', include('calibration_app.urls')),
 

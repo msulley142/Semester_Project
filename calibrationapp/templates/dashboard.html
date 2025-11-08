@@ -1,0 +1,490 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  :root{
+     
+  --sidebar-w: 250px;
+  --sidebar-br: 1px;
+  --header-h: 80px;
+  --card: #ffffff;
+  --radius: 12px;
+  --shadow: 0 8px 24px rgba(2, 132, 199, .08), 0 2px 6px rgba(0,0,0,.06);
+
+    }
+
+ *, *::before, *::after { box-sizing: border-box; }
+
+
+html, body{
+  margin: 0;
+  padding: 0;
+  background: #f8fafc; 
+  color: #0f172a;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+}
+
+
+
+header{
+  position: fixed;
+  top: 0;
+  left: calc(var(--sidebar-w) + var(--sidebar-br));
+  right:0;
+  height: var(--header-h);
+  display: flex;
+  background:rgba(255,255,255,0.6);
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 20px 0 24px;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  align-items: center;
+  z-index: 1000;
+  gap: 12px;
+  
+
+}
+.sidebar {
+    position: fixed; 
+    inset: 0 auto 0 0;
+    width: var(--sidebar-w);
+    background: #0b1723;
+    color: #e5eef7;
+    border-right: var(--sidebar-br) solid rgba(255,255,255,.08);
+    padding: 16px 12px;
+    overflow-y: auto;
+    z-index: 1200;
+
+}
+
+.brand{
+    display:flex; 
+    align-items:center; 
+    gap:10px; 
+    font-weight:700; 
+    margin: 6px 8px 14px;
+  }
+
+.nav{
+    display:flex; 
+    flex-direction:column; 
+    gap:6px; 
+    margin-top: 8px;
+}
+.nav a {
+  padding:10px 12px; 
+  border-radius:10px; 
+  color:#cbd5e1;
+  text-decoration: none;
+  font-size: 15px;
+ 
+}
+
+
+.nav a.active {
+    background: #0ea5e9; 
+    color:#001018 
+  
+}
+
+.nav a:hover{ background: rgba(255,255,255,.08); 
+  color:white }
+
+
+.main {
+  margin-left:  var(--sidebar-w);
+  padding: calc(var(--header-h) + 20px) 20px 20px;
+  min-height: 100dvh;  
+
+}
+
+
+.btn{
+    text-decoration: none; 
+    display:inline-flex; 
+    align-items:center; 
+    gap:8px;
+    padding:10px 14px; 
+    border-radius:999px; 
+    border:1px solid #e5e7eb;
+    background:#fff; 
+    cursor:pointer;
+  }
+.btn-primary{ 
+   text-decoration: none; 
+    border-radius: 999px;    
+    background: #0ea5e9; 
+    color:#001018; 
+    border-color:transparent }
+.btn-primary:hover{ 
+    background: #0369a1 }
+
+
+
+.Ant_box {
+      width: 250px;
+      height:250px;
+      max-width: 600px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      border: 1px solid  #e7eefb;
+
+
+}
+
+ .card{
+      width: 300px;
+      height:300px;
+      max-width: 520px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      border: 1px solid #e7eefb;
+    }
+
+    
+.skills-card-grid{
+  display: flex;
+  flex-wrap: wrap;           
+  gap: 20px;                  
+  justify-content: flex-start;
+  align-items: flex-start;
+
+
+}
+
+.skill-card {
+  
+
+  flex: 1 1 260px;           
+  max-width: 320px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  border: 1px solid #e7eefb; 
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size:22px; 
+  opacity:.9;
+  margin-bottom:8px;
+  
+}
+
+.skill-card:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.banner_box{
+      width: 600px;
+      height:250px;
+      max-width: 600px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      border: 1px solid #e7eefb;;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+
+}
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.flex-container{
+display:flex;
+flex-wrap: wrap;
+flex-direction: row;
+gap: 20px;
+
+}
+
+.dashboard-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.skill_item { 
+  background:#f3f7fb; 
+  border:1px solid #b9d7ea;
+  border-radius:10px; 
+  padding:10px; 
+  margin-bottom:12px;
+ 
+ }
+.skill_head { 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  margin-bottom:8px; 
+}
+.skill_progress_bar { 
+  height:12px; 
+  background:#e6f2fb; 
+  border:1px solid #003544; 
+  border-radius:999px; overflow:hidden; 
+}
+.skill_progress_fill { 
+  width: 0;
+  height:100%;
+   background:#28e90e; 
+   transition:width .35s ease; 
+  }
+.skill_xp { 
+  text-align:right;
+   font-size:.85rem; 
+   color:#64748b; 
+   margin-top:4px; 
+  }
+
+.task_item { 
+  background:#f3f7fb; 
+  border:1px solid #b9d7ea;
+  border-radius:10px; 
+  padding:10px; 
+  margin-bottom:12px;
+ }
+.task_head { 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  margin-bottom:8px; 
+}
+
+.reward_item { 
+  background:#f3f7fb; 
+  border:1px solid #b9d7ea;
+  border-radius:10px; 
+  padding:10px; 
+  margin-bottom:12px;
+ }
+.reward_head { 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  margin-bottom:8px; 
+}
+
+.habit_item { 
+  background:#f3f7fb; 
+  border:1px solid #b9d7ea;
+  border-radius:10px; 
+  padding:10px; 
+  margin-bottom:12px;
+ }
+.habit_head { 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  margin-bottom:8px; 
+}
+.habit_progress_bar { 
+  height:12px; 
+  background:#e6f2fb; 
+  border:1px solid #003544; 
+  border-radius:999px; overflow:hidden; 
+}
+.habit_progress_fill { 
+  width: 0;
+  height:100%;
+  background:#28e90e; 
+  transition:width .35s ease; 
+  }
+
+
+
+
+
+</style>
+</head>
+
+
+
+<body>
+  
+   
+ <nav class="sidebar" role="navigation" aria-label="Sidebar">
+ <div class="brand">
+ <strong>Calibration</strong>
+ </div>
+
+ <div class="nav">
+ <a class="active" href="{% url 'dashboard' %}" >Dashboard</a>
+ <a href="{% url 'disciplinebuilder' %}">Discipline Builder</a>
+ <a href="{% url 'progresstracker' %}">Progress Tracker </a>
+ <a href="{% url 'rewards' %}">Rewards</a>
+ <a href="{% url 'coaching' %}">Coaching</a>
+ <a href="{% url 'messages' %}">Messages</a>
+ <a href="{% url 'community' %}">Community</a>
+ </div>
+</nav>
+ 
+<header>
+    <h2>Dashboard</h2>
+    <div>
+      <a class="btn-primary btn" href="/accounts/logout/">Log out</a>
+      
+    </div>
+</header>
+
+
+
+<div class="main">
+
+
+
+
+
+<section id="banner" class="section">
+  
+
+<div class="flex-container">
+  <article class="banner_box">
+    <h3>Hi {{user.username}}! Start buidling discipline. Click "New Skill" or "New Habbit" to begin.</h3>
+    <a class="btn-primary btn" href="{% url 'skill_create'%}"> New Skill</a>
+    <a class="btn-primary btn" href="{% url 'habit_create'%}"> New Habit</a>
+
+</article>
+  <article class="Ant_box">
+    <h3>Wallet</h3>
+    <h2>Tokens: 0</h2>
+    <p class="muted" stye="margin:6px 0 0;"> Earn tokens by completing habits </p>
+    <h3 style="color:grey" >Not availible yet</h3>
+  </article>
+  <article class="Ant_box">
+    <h3>Welcome Back User</h3>
+    <div class="calendar"></div>
+  </article>
+
+
+</div>
+
+</section>
+
+
+<section id="features" class="section">
+
+<h3> Recent Activity</h3>
+
+<div class= "flex-container">
+        <article class="skill-card">
+          <div class="icon" aria-hidden="true">📈</div>
+          <h3>Skills</h3>
+          {% for x in latest_skills %}
+          <div class="skill_item">
+          <div class="skill_head">
+          <span class="skill_name">{{ x.name }}</span>
+          <span class="skill_level">Level {{ x.level }}</span>
+
+          </div>
+
+          <div class="skill_progress_bar">
+          <div class="skill_progress_fill" style="width: {{ x.skill_progress_tracked }}%;"></div>
+         </div>
+
+         <small>{{ x.xp }} / {{ x.to_level_up}} XP ({{ x.left_over }} to next)</small><br>
+         
+         </div>
+         {% empty %}
+         <p>No journal activity yet.</p>
+          {% endfor %}
+        </article>
+
+        <article class="skill-card">
+          <div class="icon" aria-hidden="true">🎯</div>
+          <h3>Habits</h3>
+          {% for m in recent_habits %}
+          <div class="habit_item">
+          <div class="habit_head">
+          <span class="habit_name">{{ m.name }}</span>
+          <span class="habit_percent">{{ m.goal_percentage}}%</span>
+          
+
+          </div>
+    
+          <div class="habit_progress_bar">
+          <div class="habit_progress_fill" style="width: {{ m.goal_percentage }}%;"></div>
+         </div>
+
+         
+         <small>{{ m.days_left}} days left</small><br>
+         </div>
+         {% empty %}
+         <p>No Habit activity yet.</p>
+          {% endfor %}
+        </article>
+
+        <article class="skill-card">
+          <div class="icon" aria-hidden="true">🧩</div>
+          <h3>Rewards</h3>
+          {% for r in recent_badges %}
+          <div class="reward_item">
+          <div class="reward_head">
+          <span class="reward_name">{{ r.badge.title }}</span>
+          </div>
+
+         </div>
+         {% empty %}
+         <p>No badges earned yet.</p>
+          {% endfor %}
+          
+        </article>
+
+        
+        </div>
+        </section>
+        <section id="banner" class="section">
+  
+        <h3>Tasks</h3>
+        <div class="flex-container">
+        <article class="banner_box">
+        <h3>Recent Task</h3>
+        {%for t in current_task %}
+        <div class="task_item">
+          <div class="task_head">
+          <span class="task_name">{{ t.title }} {{t.status}}</span>
+             
+          </div>
+
+         
+         
+         </div>
+         {% empty %}
+         <p>No task assigned yet.</p>
+          {% endfor %}
+          
+        </article>
+
+        <article class="Ant_box">
+         <h3>Coaching Tip </h3>
+         <h3> AI Feature Planning to implement later</h3>
+        </article>
+        
+
+        </div>
+
+        </section>
+      
+    </div>
+ 
+
+</div>
+</div>
+</body>
+</html>

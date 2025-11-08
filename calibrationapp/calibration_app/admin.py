@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from .models import Skill,  Habit, Journal, Reward, Badge, User_Badge, Quest, Skill_Progress, Task
+from .models import Skill,  Habit, Journal, Reward, Badge, User_Badge, Quest, Task
 
 
 class SkillAdmin(admin.ModelAdmin):
@@ -14,9 +14,9 @@ class HabitAdmin(admin.ModelAdmin):
     list_filter = ("habit_type",)
 
 class JournalAdmin(admin.ModelAdmin):
-    list_display = ("habit", "date", "value", "completed")
-    list_display = ("skill", "date", "value", "completed")
-    search_fields = ("habit__name", "skill__name")
+    list_display = ("habit", "skill", "date", "value", "completed")
+    
+    search_fields = ("habit__name", "skill__name", 'completed')
     list_filter = ("completed",)
 
 class RewardAdmin(admin.ModelAdmin):
@@ -34,11 +34,8 @@ class UserBadgeAdmin(admin.ModelAdmin):
 class QuestAdmin(admin.ModelAdmin):
     list_display = ("user", "title", "description", "is_completed", "created_at")
     search_fields = ("user__username", "title")
-    list_filter = ("is_completed",)
+    list_filter = ("is_completed")
 
-class SkillProgressAdmin(admin.ModelAdmin):
-    list_display = ("skill", "quality_ema", "difficulty_ema", "minutes_28d", "consistency_7d", "outcome_score_28d", "mastery_index", "updated_at")
-    search_fields = ("skill__name",)
 
 class TaskAdmin(admin.ModelAdmin):
     list_display = ("user", 'title', 'points' 'skill', 'habit', 'status', 'descritpion', 'date' )
@@ -53,5 +50,5 @@ admin.site.register(Reward)
 admin.site.register(Badge)
 admin.site.register(User_Badge)
 admin.site.register(Quest)
-admin.site.register(Skill_Progress)
+
 admin.site.register(Task)

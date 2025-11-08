@@ -1,6 +1,7 @@
 from django.utils import timezone 
 from datetime import timedelta
-from .models import Reward, Badge, User_Badge,Journal, Task, Quest
+from datetime import date
+from .models import Reward, Badge, User_Badge,Journal, Task, Habit 
 
 
 # Awards badges when certain conditons are met. 
@@ -17,9 +18,6 @@ def journal_entry_create(journal: Journal):
     account_user = journal.account_user
 
 
-
-
-
 #----XP increase for skill practicing----#
     if journal.entry_type == Journal.PRACTICE and journal.skill:
         xp = 5 
@@ -27,7 +25,7 @@ def journal_entry_create(journal: Journal):
     elif journal.entry_type == Journal.REFLECTION and journal.skill:
         xp = 1
     
-  
+    
 
 
 #----Badges for journal entries----#
@@ -99,13 +97,48 @@ def task_completion_badge(task: Task):
     
     task_completed = Task.objects.filter(account_user=account_user, status=Task.COMPLETED).count()
     if task_completed == 1:
-        award_badge(account_user, 'FIRST_TASK', 'Fist Task Done')
+        award_badge(account_user, 'FIRST_TASK', 'First Task Done')
     elif task_completed == 5:
         award_badge(account_user, '5TH_TASK', 'Five Task Done')
     elif task_completed == 20:
         award_badge(account_user, '20TH_TASK', 'Twenty Task Done')
 
      
+def goal_date_tracker(habit: Habit):
+        today = timezone.localdate()
+
+#set duration of the goal
+        if habit.goal_end:
+            goal_duration = max(1,(habit.goal_end - habit.goal_start).days + 1)
+        else:
+            goal_duration = 30
+
+#calculates how many days its been since goal started
+        if today < habit.goal_start:
+            days_since_start = 0
+        else:
+            days_since_start = min((today - habit.goal_start).days + 1, goal_duration)
+
+        
+        if days_since_start >= goal_duration:
+            goal_complete = True
+        else:
+            goal_complete = False
+
+
+        days_left = max(0,goal_duration - days_since_start)
+        goal_percentage = max(0,min(100, int(round((days_since_start / goal_duration) * 100))))
+
+
+        return {
+            "goal_duration": goal_duration,
+            "days_since_start": days_since_start,
+            "days_left": days_left,
+            "goal_percentage": goal_percentage,
+            "goal_complete": goal_complete
+        }
+
+
 
 
 #def quest_completion_proc(account_user):

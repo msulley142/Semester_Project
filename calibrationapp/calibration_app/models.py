@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone 
+from datetime import date
 from django.conf import settings
 from django.contrib.auth.models import User
 
@@ -56,11 +57,18 @@ class Habit(models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField(blank=True, null=True)
     habit_type = models.CharField(max_length=5, choices=HABIT_TYPE_CHOICES, default=Build)
-    frequency = models.CharField(max_length=50)  # e.g., daily, weekly
+    #frequency = models.CharField(max_length=50)  # e.g., daily, weekly
+    goal_start = models.DateField(default=date.today)
+    goal_end = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
+
 
     def __str__(self):
         return f"{self.name} [{self.habit_type}]"
+    
+    
+
+    
 
     
 
@@ -84,20 +92,7 @@ class Journal(models.Model):
         unique_together = ('skill', 'date')
 
     def __str__(self):
-        return f"{self.habit.name} - {self.date} - {'Completed' if self.completed else 'Not Completed'}"
-
-#-------Skill Progress Model-------#
-
-class Skill_Progress(models.Model):
-    skill = models.OneToOneField(Skill, on_delete=models.CASCADE, related_name="progress")
-    quality_ema = models.FloatField(default=0.0)
-    difficulty_ema = models.FloatField(default=0.0)
-    minutes_28d = models.PositiveIntegerField(default=0)
-    consistency_7d = models.FloatField(default=0.0)        # 0..1
-    outcome_score_28d = models.FloatField(default=0.0)     # 0..1
-    mastery_index = models.FloatField(default=0.0)         # 0..100
-    updated_at = models.DateTimeField(auto_now=True)
-
+        return f"{self.note} - {self.date} "
 
 
 #-------Rewards Model-------#
@@ -143,12 +138,15 @@ class Quest(models.Model):
     reward_tokens = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"{self.title} - {'Completed' if self.completed else 'In Progress'}"
+        return f"{self.title} - {'Completed' if self.completed else 'In Progress'}" 
+    
+
+    
     
 
 #-----Task Model-----#
 class Task(models.Model):
-    NOTSTARTED, INPROGRSS, COMPLETED = ('Not Started', 'In Progress', 'Completed')
+    NOTSTARTED, INPROGRSS, COMPLETED = ('NOTSTARTED', 'INPROGRESS', 'COMPLETED')
     status_OP = [(NOTSTARTED, 'Not Started'), (INPROGRSS, 'In Progress'), (COMPLETED, 'Completed')]
    
     account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -162,8 +160,16 @@ class Task(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+    
 
 
+#------User_Profile------#
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=20, blank=True)
+    address = models.TextField(blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pic/', blank=True, null=True)
 
-
-
+    def __str__(self):
+        return f"{self.user.username}"
+    

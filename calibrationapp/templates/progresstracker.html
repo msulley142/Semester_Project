@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Progress Tracker</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+:root{
+  --sidebar-w: 250px;
+  --sidebar-br: 1px;
+  --header-h: 80px;
+}
+
+html, body{
+  margin: 0;
+  padding: 0;
+  background: #f8fafc; 
+  color: #0f172a;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: clamp(16px, 3vw, 32px);
+}
+
+/* ---header--- */
+header{
+  position: fixed;
+  top: 0;
+  left: calc(var(--sidebar-w) + var(--sidebar-br));
+  right:0;
+  height: var(--header-h);
+  display: flex;
+  background:rgba(255,255,255,0.6);
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 20px 0 24px;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  align-items: center;
+  z-index: 1000;
+  gap: 12px;
+  
+
+}
+
+.sidebar {
+    position: fixed; 
+    inset: 0 auto 0 0;
+    width: var(--sidebar-w);
+    background: #0b1723;
+    color: #e5eef7;
+    border-right: var(--sidebar-br) solid rgba(255,255,255,.08);
+    padding: 16px 12px;
+    overflow-y: auto;
+    z-index: 1200;
+
+}
+
+.brand{
+    display:flex; 
+    align-items:center; 
+    gap:10px; 
+    font-weight:700; 
+    margin: 6px 8px 14px;
+  }
+
+.nav{
+    display:flex; 
+    flex-direction:column; 
+    gap:6px; 
+    margin-top: 8px;
+}
+.nav a {
+  padding:10px 12px; 
+  border-radius:10px; 
+  color:#cbd5e1;
+  text-decoration: none;
+  font-size: 15px;
+ 
+}
+
+/* Active/current link */
+.nav a.active {
+    background: #0ea5e9; 
+    color:#001018 
+  
+}
+
+.nav a:hover{ background: rgba(255,255,255,.08); 
+  color:white }
+
+.main{
+    margin-left:  var(--sidebar-w);
+    padding: calc(var(--header-h) + 20px) 20px 20px;
+    min-height: 100dvh;  
+}
+
+.card{
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+.btn{
+    display:inline-flex; 
+    align-items:center; 
+    gap:8px;
+    padding:10px 14px; 
+    border-radius:999px; 
+    border:1px solid #e5e7eb;
+    background:#fff; 
+    cursor:pointer;
+  }
+  .btn-primary{ 
+    background: #0ea5e9; 
+    color:#001018; 
+    border-color:transparent }
+  .btn-primary:hover{ 
+    background: #0369a1 }
+
+</style>
+
+</head>
+
+
+<body>
+
+ <nav class="sidebar" role="navigation" aria-label="Sidebar">
+ <div class="brand">
+ <strong>Calibration</strong>
+ </div>
+
+ <div class="nav">
+ <a href="{% url 'dashboard' %}" >Dashboard</a>
+ <a href="{% url 'disciplinebuilder' %}">Discipline Builder</a>
+ <a class="active" href="{% url 'progresstracker' %}">Progress Tracker </a>
+ <a href="{% url 'rewards' %}">Rewards</a>
+ <a href="{% url 'coaching' %}">Coaching</a>
+ <a href="{% url 'messages' %}">Messages</a>
+ <a href="{% url 'community' %}">Community</a>
+ </div>
+</nav>
+
+<header>
+  <strong>Discipline Builder</strong>
+  <div>
+    <a class="btn" href="#">Settings</a>
+    <a class="btn btn-primary" href="/accounts/logout/"> Log out</a>
+  </div>
+</header>
+
+<main class="main">
+<div class="card">
+
+</div>
+
+</main>
+
+
+</body>
+
+</html>
