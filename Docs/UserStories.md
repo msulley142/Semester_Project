@@ -18,7 +18,7 @@ As a **user**, I want to **track bad habbits** so that I **can make note of rela
 As a **user**, I want to **write journal entries** so that I can **reflect on expirences**.
 **Acceptance Criteria**
 1. The user clicks the feather symbol on the dashboard or the Journal Entry button on the Discipline Builder webpage.
-2. The user write a reflection  and clicks submit.
+2. The user writes a reflection  and clicks submit.
 3. The user recieves a confimation message that they entry was saved successfully. 
 4. The Journal entry becomes viewable inside of the skill or habit when it is selected. It is also avalible in the Journal Page. 
 5. Journal Entries are stored and sorted by date.
@@ -38,7 +38,7 @@ As a **user**, I want to **chat with other users** so that we can **dicuss our  
 4. After submitting the post, a success messasge will confirm that the post was uploaded.
 5. The post will display in the selected forum category.
 
-As a **user**, I want to **join and or form a group of users who skills and habits are similar** to **increase community, raise morale**. 
+As a **user**, I want to **join group of users who skills and habits are similar** so that we can **increase community and raise morale**. 
 1. The user can search for public groups based on a prefered skill or habit.
 2. The user can request to join a group or create a group with a name and description.
 3. Members can view groups progress, post updates, react to others acheivement. 
@@ -91,4 +91,4 @@ As a **Malicious User**, I want to send repeated API request, so that i can incr
 ### C4 models 
 ![alt text](<Screenshot 2025-11-01 143749.png>)
 ![alt text](<Screenshot 2025-11-01 143803.png>)
-![alt text](<Screenshot 2025-11-01 143813.png>)
+![alt text](<Screenshot 2025-11-07 220615.png>)
