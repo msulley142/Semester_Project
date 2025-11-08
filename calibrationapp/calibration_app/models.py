@@ -5,10 +5,10 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 
-#The following functions were edited  by and completed using GitHub Copilot assistant on October 29th, 2025
 
 
-# Create your models here.
+
+#----skill----#
 
 class Skill(models.Model):
     account_user = models.ForeignKey(User, on_delete=models.CASCADE , null=True, blank=True)
@@ -23,8 +23,10 @@ class Skill(models.Model):
     def __str__(self):
         return self.name
     
+   #levels users up after conditions are met. 
+   #I asked for chatGPT's assitance due to logic errors causing the progress bar not to move.  
     def add_xp(self, x: int ):
-       # x = max(0, int(amount))
+
        self.xp += x
        
        while self.xp >= self.level * 100:
@@ -32,16 +34,17 @@ class Skill(models.Model):
            self.level += 1
 
        self.save(update_fields=["xp", "level"])
-       
+    #used to calculate percenatge for progress bar and left over xp for users. 
     def skill_progress_data(self):
         to_level_up = self.level * 100
-        d = to_level_up or 1
-        skill_progress_tracked = int(round((self.xp /d) * 100))
-        left_over = max(0, (to_level_up - skill_progress_tracked))
+        d = to_level_up or 1 #suggested by chatgpt to prevent errors from diving by zero 
+        skill_progress_tracked = int(round((self.xp /d) * 100)) 
+        left_over = max(0, (to_level_up - skill_progress_tracked)) # Chatgpt fixed mistake and told me to use round and  max(0, n) so that numbers stay postives and are handled well in the database. prompt:my progress bars are off. 
         
         return { "to_level_up": to_level_up , "skill_progress_tracked": skill_progress_tracked, "left_over": left_over }
     
     
+
     
 #-------Habit Model-------#
 class Habit(models.Model):
@@ -70,14 +73,13 @@ class Habit(models.Model):
 
     
 
-    
 
 class Journal(models.Model):
     PRACTICE, REFLECTION, URGE, LAPSE, SUCCESS = ("PRACTICE","REFLECTION","URGE","LAPSE","SUCCESS")
     ENTRY_TYPES = [(PRACTICE,"Practice"),(REFLECTION,"Reflection"),(URGE,"Urge"),(LAPSE,"Lapse"),(SUCCESS,"Success")]
   #  OP_Skill, OP_Habit = ("SKILL","HABIT")
    # Journal_TYPES = [(OP_Skill,"Skill"),(OP_Habit,"Habit")]
-
+    
     account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     skill = models.ForeignKey(Skill, null=True, blank=True, on_delete=models.SET_NULL)
     habit = models.ForeignKey(Habit, null=True, blank=True, on_delete=models.SET_NULL)
@@ -86,10 +88,12 @@ class Journal(models.Model):
     note = models.TextField(blank=True)
     date = models.DateTimeField(default=timezone.now)
 
-
+    
     class Meta:
-        unique_together = ('habit', 'date')
-        unique_together = ('skill', 'date')
+        unique_together = ('habit', 'date') # suggested by github's copilot assitant to avoid duplicate entries.
+  
+    
+       
 
     def __str__(self):
         return f"{self.note} - {self.date} "
@@ -99,12 +103,12 @@ class Journal(models.Model):
 class Reward(models.Model):
     account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     tokens = models.PositiveIntegerField(default=0)
-
+     #This function was edited by AI
     def add_token(self, n: int):
         self.tokens = models.F("tokens")+ max(0, n)
-        self.save(update_feilds=["tokens"])
-        #---check on this---#
-        self.refresh_from_db()
+        self.save(update_fields=["tokens"])
+     
+        self.refresh_from_db() # This and the use of .f was suggested by chatgpt to stop race conditons
 
 class Badge(models.Model):
     code = models.CharField(max_length=50, unique=True)
@@ -126,7 +130,7 @@ class User_Badge(models.Model):
         return f"{self.account_user.username} - {self.badge.title}"
 
 
-
+#NOT IN USE YET# Suggested by chatgpt. Prompt: I asked for ways to make the app more ineresting. 
 #-------Quest Model-------#
 class Quest(models.Model):
     account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -141,13 +145,13 @@ class Quest(models.Model):
         return f"{self.title} - {'Completed' if self.completed else 'In Progress'}" 
     
 
-    
+
     
 
 #-----Task Model-----#
 class Task(models.Model):
-    NOTSTARTED, INPROGRSS, COMPLETED = ('NOTSTARTED', 'INPROGRESS', 'COMPLETED')
-    status_OP = [(NOTSTARTED, 'Not Started'), (INPROGRSS, 'In Progress'), (COMPLETED, 'Completed')]
+    NOTSTARTED, INPROGRESS, COMPLETED = ('NOTSTARTED', 'INPROGRESS', 'COMPLETED')
+    status_OP = [(NOTSTARTED, 'Not Started'), (INPROGRESS, 'In Progress'), (COMPLETED, 'Completed')]
    
     account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=200)

@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth import get_user_model
 from .models import Skill, Habit, Journal, Reward, Task, Profile, User
 
 
@@ -9,7 +8,7 @@ class SkillForm(forms.ModelForm):
 
     class Meta:
         model = Skill
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'created_at']
 
 
 class HabitForm(forms.ModelForm):

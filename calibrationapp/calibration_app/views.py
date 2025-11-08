@@ -52,7 +52,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        latest_skills_t = (Skill.objects.filter(account_user=self.request.user, journal__account_user=self.request.user).annotate(latest_entry=Max('journal__date')).exclude(latest_entry=None).order_by('-latest_entry')[:2]  )
+        #used to find to find the last two skills the user has recently worked on and to display on the dashboard.
+        
+        latest_skills_t = (Skill.objects.filter(account_user=self.request.user, journal__account_user=self.request.user).annotate(latest_entry=Max('journal__date')).exclude(latest_entry=None).order_by('-latest_entry')[:2]  ) #edted and corrected by chatgpt. 
         temp = []
         for skill in latest_skills_t:
             data = skill.skill_progress_data()
@@ -62,7 +64,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             temp.append(skill)
 
         context['latest_skills'] = temp
-
+        
+        # finds the lastest habits logged by the user.
         recent_habits_t = Habit.objects.filter(account_user=self.request.user).order_by('-created_at')[:2]
         temp2 = []
         for habit in recent_habits_t:
@@ -74,6 +77,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             habit.goal_complete = data2["goal_complete"]
             temp2.append(habit)
 
+
+        #used to send to template for display on webpage. 
         context['recent_habits'] = temp2
         context['recent_badges'] = User_Badge.objects.filter(account_user=self.request.user).order_by('-awarded_at')[:3]
         context['current_task'] =  Task.objects.filter(account_user=self.request.user).order_by('-date', '-id')[:2]
@@ -117,7 +122,8 @@ class DisciplineBuilderView(LoginRequiredMixin, TemplateView):
 
     
         return context
-     
+     #allows user to log skill and habit updates on thw webpage.
+     #This function is mostly AI generated. The same method was use for the function below this one.
      def post_to_journal(self, request):
          
          entry_type = request.POST.get("entry_type")
@@ -136,11 +142,12 @@ class DisciplineBuilderView(LoginRequiredMixin, TemplateView):
 
          user_entry = Journal(account_user=request.user, entry_type=entry_type, trigger=trigger, note=note)
          
+         #needed because I haven't seperated the skill and habit feilds for user input yet.  
          if skill_user:
-             try: user_entry.skill = Skill.objects.get(id=skill_user, acount_user=request.user)
+             try: user_entry.skill = Skill.objects.get(id=skill_user, account_user=request.user)
              except Skill.DoesNotExist: pass
          if habit_user:
-             try: user_entry.habit = Habit.objects.get(id=habit_user, acount_user=request.user)
+             try: user_entry.habit = Habit.objects.get(id=habit_user, account_user=request.user)
              except Habit.DoesNotExist: pass
 
          if skill_user and habit_user:
@@ -150,8 +157,10 @@ class DisciplineBuilderView(LoginRequiredMixin, TemplateView):
          user_entry.save()
          messages.success(request, "Journal entry saved")
          return redirect('disciplinebuilder')
-        
-     
+
+       
+     #allows users to log tasks through the on the progress tracker/ discipline builder webpage.
+
      def post_to_task(self, request):
          
          title = request.POST.get("title")
@@ -172,10 +181,10 @@ class DisciplineBuilderView(LoginRequiredMixin, TemplateView):
          user_task = Task(account_user=request.user, title=title, points=points, status=status, description=description)
          
          if user_skill:
-             try: user_task.skill = Skill.objects.get(id=user_skill, acount_user=request.user)
+             try: user_task.skill = Skill.objects.get(id=user_skill, account_user=request.user)
              except Skill.DoesNotExist: pass
          if habit_user1:
-             try: user_skill.habit = Habit.objects.get(id=habit_user1, acount_user=request.user)
+             try: user_skill.habit = Habit.objects.get(id=habit_user1, account_user=request.user)
              except Habit.DoesNotExist: pass
 
          if user_skill and habit_user1:
@@ -330,8 +339,7 @@ class RewardList(LoginRequiredMixin, ListView):
     model = Reward
     template_name = 'rewards/reward_list.html'
 
-    def get_queryset(self):
-        return Reward.objects.filter(account_user=self.request.user).order_by('-awarded_at')
+   
 
 class RewardCreate(LoginRequiredMixin, CreateView):
     model = Reward

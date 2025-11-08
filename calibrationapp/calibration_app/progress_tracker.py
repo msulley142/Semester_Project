@@ -4,15 +4,17 @@ from datetime import date
 from .models import Reward, Badge, User_Badge,Journal, Task, Habit 
 
 
-# Awards badges when certain conditons are met. 
+#awards badges when certain conditons are met. 
 def award_badge(account_user, code, title, description=''):
-    badge,_ = Badge.objects.get_or_create(code= code, defaults={"title": title, "description": description},)
+    badge,_ = Badge.objects.get_or_create(code= code, defaults={"title": title, "description": description},) 
     User_Badge.objects.get_or_create(account_user=account_user, badge=badge)
 
 
+#ensure user has a wallet 
 def token_wallet(account_user):
     wallet,_ = Reward.objects.get_or_create(account_user=account_user)
     return wallet
+
 
 def journal_entry_create(journal: Journal):
     account_user = journal.account_user
@@ -38,11 +40,11 @@ def journal_entry_create(journal: Journal):
         award_badge(account_user, "10th_Journal", "Tenth Journal", "Logged your Tenth journal entry!!!")
 
     streak_notify(account_user)
-    if journal.habit and getattr(journal.habit, "habit_type", ) == 'Break':
+    if journal.habit and journal.habit.habit_type == 'Break':
         abst_badge(account_user, journal.habit)
 
 
-
+#----Badges for obtaining streaks----#
 def streak_notify(account_user):
     tod = timezone.localdate()
     streak = 0
@@ -54,7 +56,7 @@ def streak_notify(account_user):
         if not practice_skill:
             break
         streak += 1
-        days_ago -= timedelta(days=1)
+        days_ago -= timedelta(days=1) #chatgpt suggested the use of timedelta. Good to use when needing to calculate past and future time.
 
     if streak >= 3:
         award_badge(account_user, "3_Practice_Streak", "3-day Practice Streak" )
@@ -70,7 +72,7 @@ def abst_badge(account_user, habit):
    
     while True:
         laspe_logged = Journal.objects.filter(account_user=account_user, habit=habit, date=days_ago, entry_type=Journal.LAPSE).exists()
-        if laspe_logged or habit.start_date:
+        if laspe_logged or habit.goal_start:
             break
         streak += 1
         days_ago -= timedelta(days=1)
@@ -84,8 +86,7 @@ def abst_badge(account_user, habit):
 
 
 
-
-
+#----Badges for completing taskss----#
 def task_completion_badge(task: Task):
     account_user = task.account_user
 
@@ -103,7 +104,8 @@ def task_completion_badge(task: Task):
     elif task_completed == 20:
         award_badge(account_user, '20TH_TASK', 'Twenty Task Done')
 
-     
+ #Use to track how well user are adhering to thier goals.
+ #Chatgpt suggested the use of min and max while fixing my math.
 def goal_date_tracker(habit: Habit):
         today = timezone.localdate()
 

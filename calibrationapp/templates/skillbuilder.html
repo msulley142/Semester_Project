@@ -1,3 +1,4 @@
+<!--The html template was created using AI Generated Code as a starting point-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -135,7 +136,8 @@ img {
     color:#001018; 
     border-color:transparent }
 .btn-primary:hover{ 
-    background: #0369a1 }
+    background: #0369a1 
+  }
 
 
 .section-title{
@@ -150,12 +152,15 @@ img {
   gap: 20px;
   grid-template-columns: repeat(auto-fill, minmax(260px, 320px));
   justify-content: start;
+  position:relative;
+  padding-bottom: 56px
   
 
 
 }
 .skill-card {
-  
+  position: relative;
+  padding-bottom: 48px;
   background: var(--card);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -173,6 +178,8 @@ img {
 .skill-card:hover{
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  position: relative;
+  padding-bottom: 48px;
 }
 .skill-item { 
   background:#f3f7fb; 
@@ -216,6 +223,17 @@ img {
    color:#64748b; 
    margin-top:4px; 
   }
+.skill-actions{
+  position:absolute;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  gap: 8px;
+
+
+
+
+}
 
 .habit-item { 
   background:#f3f7fb; 
@@ -372,35 +390,36 @@ height: fit-content;
 
 
 .item-delete-btn{
- width: 0.5mm;
- height: 0.5mm;
- text-decoration: none; 
+text-decoration: none;  
+ border: 0;
  background: red; 
  color:#ffffff; 
  border-color:transparent; 
- padding: 10px 14px;
- font-size: 3mm;
+ padding: 6px 10px;
+ font-size: 12px;
  border-radius: 999px;
 
 
 }
 
-
-.item-update-btn{
-width: 0.5mm;
-height: 0.5mm;
-text-decoration: none; 
-  
-background: #44ee22 ; 
-color:#ffffff; 
-border-color:transparent;
-padding: 10px 14px;
-font-size: 3mm;
-border-radius: 999px;
+.item-update-btn { 
+  text-decoration: none; 
+  background: #22c55e; 
+  color: #fff; 
+  border: 0; 
+  padding: 6px 10px; 
+  font-size: 12px; 
+  border-radius: 999px; }
 
 
+  .item-delete-btn { text-decoration: none; 
+    background: #e11d48; 
+    color: #fff; 
+    border: 0; 
+    padding: 6px 10px; 
+    font-size: 12px; 
+    border-radius: 999px; }
 
-}
 </style>
 
 </head>
@@ -455,7 +474,10 @@ border-radius: 999px;
       <div class="skill-progress-fill" style="width: {{ s.skill_progress_tracked|default:0 }}%;"></div>
       </div>
       <small class="skill-muted">{{s.xp}} XP</small>
-    
+        <div class="skill-actions"> 
+          <a href="{% url 'skill_update' s.id %}" class="item-update-btn" aria-label="Edit {{ s.name }}">✎</a> 
+          <a href="{% url 'skill_delete' s.id %}" class="item-delete-btn" aria-label="Delete {{ s.name }}">🗑</a> 
+        </div>
     </article>
    
     {% empty %}
@@ -483,7 +505,10 @@ border-radius: 999px;
       <div class="skill-progress-fill" style="width: {{ h.goal_percentage|default:0 }}%;"></div>
       </div>
       <small>{{ h.days_left}} days left</small>
-
+      <div class="skill-actions"> 
+          <a href="{% url 'habit_update' h.id %}" class="item-update-btn" aria-label="Edit {{ h.name }}">✎</a> 
+          <a href="{% url 'habit_delete' h.id %}" class="item-delete-btn" aria-label="Delete {{ h.name }}">🗑</a> 
+        </div>
     </article>
    
     {% empty %}
