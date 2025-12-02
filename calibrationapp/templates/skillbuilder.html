@@ -1,678 +1,2044 @@
+{% load static %}
 <!--The html template was created using AI Generated Code as a starting point-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Discipline Builder</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-:root{
-  --sidebar-w: 250px;
-  --sidebar-br: 1px;
-  --header-h: 80px;
-  --card: #ffffff;
-  --radius: 12px;
-  --shadow: 0 8px 24px rgba(2, 132, 199, .08), 0 2px 6px rgba(0,0,0,.06);
-  
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-
-html, body{
-  margin: 0;
-  padding: 0;
-  background: #f8fafc; 
-  color: #0f172a;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-
-}
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-.container {
-  
-  width: 100%;
-  max-width: 1100px;
-  margin-inline: auto;
-  padding: clamp(16px, 3vw, 32px);
-}
-
-
-
-
-
-/* ---header--- */
-.site-header{
-  position: fixed;
-  top: 0;
-  left: calc(var(--sidebar-w) + var(--sidebar-br));
-  right: 0;
-  height: var(--header-h);
-  display: flex;
-  background: rgba(255,255,255,0.6);
-  border-bottom: 1px solid #e5e7eb;
-  padding: 0 20px 0 24px;
-  justify-content: space-between;
-  backdrop-filter: blur(10px);
-  align-items: center;
-  z-index: 1000;
-  gap: 12px;
-}
-
-
-.sidebar {
-    position: fixed; 
-    inset: 0 auto 0 0;
-    width: var(--sidebar-w);
-    background: #0b1723;
-    color: #e5eef7;
-    border-right: var(--sidebar-br) solid rgba(255,255,255,.08);
-    padding: 16px 12px;
-    overflow-y: auto;
-    z-index: 1200;
-
-}
-
-.brand{
-    display:flex; 
-    align-items:center; 
-    gap:10px; 
-    font-weight:700; 
-    margin: 6px 8px 14px;
-  }
-
-.nav{
-    display:flex; 
-    flex-direction:column; 
-    gap:6px; 
-    margin-top: 8px;
-}
-.nav a {
-  padding:10px 12px; 
-  border-radius:10px; 
-  color:#cbd5e1;
-  text-decoration: none;
-  font-size: 15px;
- 
-}
-
-
-.nav a.active {
-    background: #0ea5e9; 
-    color:#001018 
-  
-}
-
-.nav a:hover{ background: rgba(255,255,255,.08); 
-  color:white }
-
-.main{
-    margin-left:  var(--sidebar-w);
-    padding: calc(var(--header-h) + 20px) 20px 20px;
-    min-height: 100dvh;  
-}
-
-
-
-.btn{
-    text-decoration: none; 
-    display:inline-flex; 
-    align-items:center; 
-    gap:8px;
-    padding:10px 14px; 
-    border-radius:999px; 
-    border:1px solid #e5e7eb;
-    background:#fff; 
-    cursor:pointer;
-  }
-.btn-primary{ 
-   text-decoration: none; 
-    border-radius: 999px;    
-    background: #0ea5e9; 
-    color:#001018; 
-    border-color:transparent }
-.btn-primary:hover{ 
-    background: #0369a1 
-  }
-
-
-.section-title{
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 12px 0 8px;
-}
-
-
-.skills-card-grid{
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 320px));
-  justify-content: start;
-  position:relative;
-  padding-bottom: 56px
-  
-
-
-}
-.skill-card {
-  position: relative;
-  padding-bottom: 48px;
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  border: 1px solid #e2e8f0;
-  padding: 16px 20px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;  
-  display: grid;
-  min-width: 200px;    
-  max-width: 400px;  
-  gap: 20px;
-  justify-content: start;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-}
-
-.skill-card:hover{
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  position: relative;
-  padding-bottom: 48px;
-}
-.skill-item { 
-  background:#f3f7fb; 
-  border:1px solid #b9d7ea;
-  border-radius:10px; 
-  padding:10px; 
-  margin-bottom:12px;
- }
-.skill-head { 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 1rem;
-  color: #0f172a;
-}
-.skill-muted{
-  color: #64748b;
-  font-size: 0.85rem;
-}
-.skill-progress-bar { 
-  height:10px; 
-  background:#e2e8f0; 
-  border-radius:999px; 
-  overflow:hidden; 
-  margin: 8px 0;
-  width: 100%;
- 
-}
-.skill-progress-fill { 
-  width: 0;
-  height:100%;
-  background: linear-gradient(90deg, #0ea5e9, #22d3ee);
-  transition:width 0.4s ease; 
-  max-width: 100%;
-  display:block;
-  }
-.skill-xp { 
-   text-align:right;
-   font-size:.85rem; 
-   color:#64748b; 
-   margin-top:4px; 
-  }
-.skill-actions{
-  position:absolute;
-  right: 12px;
-  bottom: 12px;
-  display: inline-flex;
-  gap: 8px;
-
-
-
-
-}
-
-.habit-item { 
-  background:#f3f7fb; 
-  border:1px solid #b9d7ea;
-  border-radius:10px; 
-  padding:10px; 
-  margin-bottom:12px;
- }
-.habit-head { 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 1rem;
-  color: #0f172a;
-}
-.habit-progress-bar { 
-  height:10px; 
-  background:#e2e8f0; 
-  border-radius:999px; 
-  overflow:hidden; 
-  margin: 8px 0 
-}
-.habit-progress-fill { 
-  width: 0;
-  height:100%;
-  background: linear-gradient(90deg, #0ea5e9, #22d3ee);
-  transition:width 0.4s ease; ; 
-  }
-
-.left-header{
-  display: flex;
-  align-items: center;
-  justify-content: space-between; 
-  gap: 12px;
-  margin: 12px 0 8px;             
-  flex-wrap: wrap;                 
-}
-
-.small-btn{
-  padding: 10px 14px;
-  font-size: 14px;
-  border-radius: 999px;
-}
-
-
-
-
-
-.page-grid{
-  display:grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-  align-items: start;
-  width: 100%;
-  max-width: 1200px;
-  margin-inline: auto
-
-
-}
-
-.journal-panel{
-position: sticky;
-top: calc(var(--header-h) + 16px);
-background: var(--card);
-border-radius: var(--radius);
-box-shadow: var(--shadow);
-padding: 16px 20px;
-height: fit-content;
-}
-
-
-.journal-title{ 
-margin: 0 0 8px;
-}
-
-.journal-input {
- width: 100%;
- box-sizing: border-box;
- border: 1px solid #e2e8f0;
- border-radius: 10px;
- padding: 10px 12px;
- margin: 8px 0 12px;
- font: inherit;
- background: #f8fafc;
-
-}
-
-.journal-input {
-  width: 100%;
-  display: block;
-  padding: 10px 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  background: #fff;
-  color: var(--text);
-  outline: none;
-  resize: vertical; 
-  min-height: 100px;
-  transition: border-color .15s, box-shadow .15s;
-}
-
-
-.journal-input:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 6px var(--ring);
-}
-
-.journal-card{
- background:#fff;
- border:1px solid #e5e7eb;
- border-radius:12px;
- padding:16px;
- box-shadow:0 8px 24px 
- rgba(2,132,199,.08),0 2px 6px
- rgba(0,0,0,.06);} 
-  
-.task-wrap, .journal-wrap{
- grid-column: 2;
- 
- }
-  
-.task-wrap{
- margin-top: 16px;
- grid-row: auto;   
- }
-
- .btn-wrap{
- margin-left: 7cm;
- 
- }
-
- .btn-wrap2{
- margin-left: 6cm;
- 
- }
-
-.right-col {
-  grid-column: 2;
-  display: grid;
-  gap: 16px;         /* space between Journal and Tasks */
-  align-self: start; /* align to the top of the column */
-}
-
-.task-panel{
-position: sticky;
-top: calc(var(--header-h) + 16px);
-background: var(--card);
-border-radius: var(--radius);
-box-shadow: var(--shadow);
-padding: 16px 20px;
-height: fit-content;
-}
-
-
-.item-delete-btn{
-text-decoration: none;  
- border: 0;
- background: red; 
- color:#ffffff; 
- border-color:transparent; 
- padding: 6px 10px;
- font-size: 12px;
- border-radius: 999px;
-
-
-}
-
-.item-update-btn { 
-  text-decoration: none; 
-  background: #22c55e; 
-  color: #fff; 
-  border: 0; 
-  padding: 6px 10px; 
-  font-size: 12px; 
-  border-radius: 999px; }
-
-
-  .item-delete-btn { text-decoration: none; 
-    background: #e11d48; 
-    color: #fff; 
-    border: 0; 
-    padding: 6px 10px; 
-    font-size: 12px; 
-    border-radius: 999px; }
-
-</style>
-
+  <title>Discipline Builder · Calibration</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --card-soft: #f9fafb;
+      --accent: #0ea5e9;
+      --accent-soft: rgba(14, 165, 233, 0.08);
+      --accent-strong: #0ea5e9;
+      --danger: #e11d48;
+      --success: #22c55e;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --border-subtle: #e5e7eb;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --sidebar-w: 260px;
+      --header-h: 72px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* APP LAYOUT */
+    .app-shell {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    @media (max-width: 900px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: #0b1723;
+      color: #e5eef7;
+      border-right: 1px solid rgba(148, 163, 184, 0.3);
+      padding: 20px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-self: stretch;
+      height: 100%;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, #0ea5e9 40%, #a855f7 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1120;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.08);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: flex-end;
+      }
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      font-size: 0.86rem;
+      color: #cbd5f5;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-link span {
+      flex: 1;
+    }
+
+    .nav-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    .nav-link:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.5);
+      color: #f9fafb;
+    }
+
+    .nav-link.active {
+      background: #0ea5e9;
+      color: #001018;
+      font-weight: 600;
+      border-color: transparent;
+    }
+
+    .nav-link.active .nav-indicator {
+      background: #001018;
+    }
+
+    /* MAIN AREA */
+    .site-main {
+      padding: 16px 20px 24px;
+    }
+
+    @media (max-width: 640px) {
+      .site-main {
+        padding: 12px 12px 20px;
+      }
+    }
+
+    /* HEADER – MATCH DASHBOARD STYLE */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(248, 250, 252, 0.94);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      margin: -16px -20px 16px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .site-header {
+        margin: -12px -12px 14px;
+        padding: 10px 12px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+    }
+
+    .site-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .site-header-app {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .site-header-app-pill {
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #475569;
+      background: #e5f2ff;
+    }
+
+    .site-header-app-section {
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #0f172a;
+      white-space: nowrap;
+    }
+
+    .site-header-subtitle {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      max-width: 520px;
+    }
+
+    .site-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .header-quick {
+      display: inline-flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      color: #0f172a;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.1s ease, transform 0.1s ease;
+    }
+
+    .btn:hover {
+      background: #f9fafb;
+      border-color: #cbd5e1;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      background: #0ea5e9;
+      color: #0b1120;
+      box-shadow: 0 10px 25px rgba(14, 165, 233, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: #0284c7;
+      box-shadow: 0 12px 30px rgba(14, 165, 233, 0.45);
+    }
+
+    .btn-ghost {
+      background: #ffffff;
+      color: var(--text-muted);
+    }
+
+    .btn-ghost:hover {
+      color: #0f172a;
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+    }
+
+    /* PROFILE BUTTON */
+    .header-profile {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      padding: 4px 8px 4px 4px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, border-color 0.15s ease;
+    }
+
+    .profile-button:hover {
+      background: #f9fafb;
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
+    }
+
+    .avatar-wrap {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      background: #e5e7eb;
+      flex-shrink: 0;
+    }
+
+    .avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gear-icon {
+      font-size: 1rem;
+    }
+
+    /* HERO / SUMMARY */
+    .hero-card {
+      margin-bottom: 18px;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left, #0ea5e9 0, #1d2b64 45%, #111827 100%);
+      color: #e5f3ff;
+      border: 1px solid rgba(15, 23, 42, 0.15);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 640px) {
+      .hero-card {
+        padding: 12px 12px 10px;
+      }
+    }
+
+    .hero-main {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-width: 480px;
+    }
+
+    .hero-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .hero-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #e5e7eb;
+    }
+
+    .hero-subtitle {
+      font-size: 0.82rem;
+      color: #bfdbfe;
+      max-width: 460px;
+    }
+
+    .hero-subtitle strong {
+      color: #ffffff;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+      min-width: 180px;
+    }
+
+    @media (max-width: 640px) {
+      .hero-actions {
+        align-items: flex-start;
+      }
+    }
+
+    .hero-metrics {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.7rem;
+    }
+
+    .hero-chip {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(191, 219, 254, 0.9);
+      background: rgba(15, 23, 42, 0.7);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #e5f3ff;
+    }
+
+    .hero-chip strong {
+      color: #ffffff;
+    }
+
+    /* PAGE GRID */
+    .page-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 1024px) {
+      .page-grid {
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr);
+      }
+    }
+
+    @media (max-width: 860px) {
+      .page-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* SECTION HEADER */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 10px 0 6px;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-title-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.18);
+    }
+
+    .section-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* CARD GRID */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .card-empty {
+      padding: 14px 12px;
+      border-radius: var(--radius-md);
+      border: 1px dashed #cbd5e1;
+      background: var(--card-soft);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .item-card {
+      position: relative;
+      padding: 16px 16px 40px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      background: var(--card);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      transition: transform 0.14s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+      min-height: 135px;
+    }
+
+    .item-card:hover {
+      transform: translateY(-3px);
+      border-color: #cbd5e1;
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.12);
+    }
+
+    .item-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .item-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #0f172a;
+    }
+
+    .item-meta {
+      font-size: 0.75rem;
+      color: #0f172a;
+      opacity: 0.85;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .item-meta-pill {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #0f172a;
+      background: #e5f2ff;
+    }
+
+    .item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .progress-bar {
+      position: relative;
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #0ea5e9, #22c55e);
+      transition: width 0.4s ease-out;
+    }
+
+    .item-actions {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .item-btn {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      text-decoration: none;
+    }
+
+    .item-btn.edit {
+      background: #ecfdf3;
+      color: #166534;
+      border: 1px solid #4ade80;
+    }
+
+    .item-btn.delete {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #f97373;
+    }
+
+    .item-btn:hover {
+      filter: brightness(1.05);
+    }
+
+    /* RIGHT COLUMN */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .panel {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      background: var(--card);
+      box-shadow: var(--shadow-soft);
+      padding: 12px 12px 14px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .panel-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .panel-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #0f172a;
+    }
+
+    .panel-subtitle {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* JOURNAL FILTERS & LIST */
+    .journal-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .journal-filter-pill {
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      padding: 3px 8px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      color: #0f172a;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .journal-filter-pill:hover {
+      background: #e0f2fe;
+      border-color: #0ea5e9;
+    }
+
+    .journal-filter-pill.is-active {
+      background: #0ea5e9;
+      color: #0b1120;
+      border-color: transparent;
+      box-shadow: 0 0 14px rgba(14, 165, 233, 0.45);
+    }
+
+    .journal-entries {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 320px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .journal-entry {
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 8px 9px;
+      font-size: 0.78rem;
+      transition: border-color 0.14s ease, box-shadow 0.16s ease, transform 0.12s ease;
+    }
+
+    .journal-entry:hover {
+      border-color: #bfdbfe;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .journal-entry-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .journal-entry-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+    }
+
+    .tag-practice {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #22c55e;
+    }
+
+    .tag-reflection {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border: 1px solid #60a5fa;
+    }
+
+    .tag-urge {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fbbf24;
+    }
+
+    .tag-lapse {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #f97373;
+    }
+
+    .tag-success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #22c55e;
+    }
+
+    .journal-entry-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      justify-content: flex-end;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .journal-pill {
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .journal-date {
+      color: #6b7280;
+    }
+
+    .journal-trigger {
+      margin: 4px 0 2px;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .journal-note-wrapper {
+      margin-top: 2px;
+    }
+
+    .journal-note {
+      margin: 0;
+      font-size: 0.78rem;
+      color: #111827;
+      max-height: 2.9em;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .journal-entry-footer {
+      margin-top: 4px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .journal-toggle-btn {
+      border: none;
+      background: transparent;
+      color: #2563eb;
+      font-size: 0.72rem;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .journal-toggle-btn:hover {
+      text-decoration: underline;
+    }
+
+    .journal-empty-state {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* TASK DETAILS */
+    .task-details { display: none; margin-top: 4px; }
+    .task-entry.is-expanded .task-details { display: block; }
+
+    /* FORM CONTROLS */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.75rem;
+    }
+
+    .label {
+      color: var(--text-muted);
+    }
+
+    .control,
+    .journal-input {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      padding: 6px 8px;
+      font-size: 0.78rem;
+      color: #0f172a;
+      outline: none;
+      transition: border-color 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
+    }
+
+    .control::placeholder,
+    .journal-input::placeholder {
+      color: #9ca3af;
+      font-size: 0.74rem;
+    }
+
+    .control:focus,
+    .journal-input:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+      background: #ffffff;
+    }
+
+    .journal-input {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* MODALS */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-overlay.is-open {
+      display: flex;
+    }
+
+    .modal {
+      background: #ffffff;
+      border-radius: 18px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
+      width: 100%;
+      max-width: 420px;
+      padding: 14px 14px 12px;
+      color: #0f172a;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 0.98rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .modal-close {
+      border: none;
+      background: transparent;
+      font-size: 1.3rem;
+      line-height: 1;
+      cursor: pointer;
+      color: #9ca3af;
+    }
+
+    .modal-close:hover {
+      color: #111827;
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 10px;
+      font-size: 0.78rem;
+    }
+
+    .modal-body label {
+      color: var(--text-muted);
+      font-size: 0.76rem;
+    }
+
+    .modal-body input,
+    .modal-body textarea,
+    .modal-body select {
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      padding: 6px 8px;
+      font-size: 0.78rem;
+      color: #0f172a;
+      outline: none;
+    }
+
+    .modal-body input:focus,
+    .modal-body textarea:focus,
+    .modal-body select:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.45);
+      background: #ffffff;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    /* PROFILE MODAL CONTENT */
+    .profile-modal-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .profile-modal-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .profile-card {
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 10px 12px 12px;
+    }
+
+    .profile-card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .profile-greeting {
+      margin: 0;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b7280;
+    }
+
+    .profile-display-name {
+      margin: 0;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .profile-tagline {
+      margin: 0;
+      font-size: 0.78rem;
+      color: #6b7280;
+    }
+
+    .profile-avatar-shell {
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 2px solid #0ea5e9;
+      margin-top: 6px;
+    }
+
+    .profile-avatar-shell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-card-main {
+      margin-top: 10px;
+    }
+
+    .profile-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .p-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+    }
+
+    .p-btn:hover {
+      background: #f9fafb;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .p-btn-primary {
+      border-color: transparent;
+      background: #0ea5e9;
+      color: #0b1120;
+      box-shadow: 0 10px 25px rgba(14, 165, 233, 0.35);
+    }
+
+    .p-btn-primary:hover {
+      background: #0284c7;
+    }
+
+    .p-btn-ghost {
+      color: #4b5563;
+    }
+
+    .p-btn-logout {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #b91c1c;
+    }
+
+    .profile-quick-links {
+      border-radius: 14px;
+      border: 1px dashed #cbd5e1;
+      padding: 8px 10px;
+      font-size: 0.78rem;
+      background: #f9fafb;
+    }
+
+    .profile-quick-links h4 {
+      margin: 0 0 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .profile-quick-links ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #6b7280;
+    }
+
+    .profile-quick-links li {
+      margin-bottom: 2px;
+    }
+  </style>
 </head>
-
 
 <body>
 
- <nav class="sidebar" role="navigation" aria-label="Sidebar">
- <div class="brand">
- <strong>Calibration</strong>
- </div>
-
- <div class="nav">
- <a href="{% url 'dashboard' %}" >Dashboard</a>
- <a class="active" href="{% url 'disciplinebuilder' %}">Discipline Builder</a>
- <a href="{% url 'progresstracker' %}">Progress Tracker </a>
- <a href="{% url 'rewards' %}">Rewards</a>
- <a href="{% url 'coaching' %}">Coaching</a>
- <a href="{% url 'messages' %}">Messages</a>
- <a href="{% url 'community' %}">Community</a>
- </div>
-</nav>
-
-<header class="site-header">
-  <strong>Discipline Builder</strong>
-  <div>
-    <a class="btn" href="#">Settings</a>
-    <a class="btn btn-primary" href="/accounts/logout/"> Log out</a>
-  </div>
-</header>
-
-<main class="main">
-
-<div class="container">
-<div class="page-grid">
-
-<section class="left-panel">
-<div class="left-header">
-<h2 class="section-title">Skills</h2>
-<a href="{% url 'skill_create'%}" class="btn btn-primary btn-sm">+ New Skill</a>
-</div>
-<div class="skills-card-grid">
-  {% for s in load_skills %} 
-
-    <article class="skill-card">
-      <header class="skill-head">
-        <strong> {{s.name}} </strong>
-        <span class="skill-muted">Lv {{s.level}} </span>
-      </header>
-      
-      <div class="skill-progress-bar">
-      <div class="skill-progress-fill" style="width: {{ s.skill_progress_tracked|default:0 }}%;"></div>
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" role="navigation" aria-label="Sidebar">
+    <div class="brand">
+      <div class="brand-mark">CB</div>
+      <div class="brand-text">
+        <div class="brand-title">Calibration</div>
+        <div class="brand-subtitle">Discipline • Habits • Skills</div>
       </div>
-      <small class="skill-muted">{{s.xp}} XP</small>
-        <div class="skill-actions"> 
-          <a href="{% url 'skill_update' s.id %}" class="item-update-btn" aria-label="Edit {{ s.name }}">✎</a> 
-          <a href="{% url 'skill_delete' s.id %}" class="item-delete-btn" aria-label="Delete {{ s.name }}">🗑</a> 
-        </div>
-    </article>
-   
-    {% empty %}
-    <article class="skill-card"><p>No skills yet. Add your first one!</p></article>
-    {% endfor %}
-    
-    
-</div>
-
-
-<div class="left-header">
-<h2 class="section-title">Habits</h2>
-<a href="{% url 'habit_create'%}" class="btn btn-primary btn-sm">+ New Habit</a>
-</div>
-<div class="skills-card-grid">
-  {% for h in load_habits %} 
-
-    <article class="skill-card">
-      <header class="habit-head">
-        <strong> {{h.name}} </strong>
-        <span class="habit_percent"> {{h.goal_percentage}} % </span>
-      </header>
-      
-      <div class="skill-progress-bar">
-      <div class="skill-progress-fill" style="width: {{ h.goal_percentage|default:0 }}%;"></div>
-      </div>
-      <small>{{ h.days_left}} days left</small>
-      <div class="skill-actions"> 
-          <a href="{% url 'habit_update' h.id %}" class="item-update-btn" aria-label="Edit {{ h.name }}">✎</a> 
-          <a href="{% url 'habit_delete' h.id %}" class="item-delete-btn" aria-label="Delete {{ h.name }}">🗑</a> 
-        </div>
-    </article>
-   
-    {% empty %}
-    <article class="skill-card"><p>No recent Habit activity yet.</p></article>
-    {% endfor %}  
-    
-</div>
-
-
-
-
-
-
-
-</section>
-
-
-<div class="right-col">
-<div class="journal-wrap">
-<div class="journal-card">
-<aside class="journal-panel" aria-label="Journal">
- <h3 class="journal-title">Journal</h3>
- <form method="post" action="{% url 'journal_create' %}">
-  {% csrf_token %}
-
- <div class="field">
-  <label class="label" for="user_entry_type">Entry type</label>
-  <select id="user_entry_type" name="entry_type" class="control" required>
-    <option value="PRACTICE">Practice</option>
-    <option value="REFLECTION">Reflection</option>
-    <option value="URGE">Urge</option>
-    <option value="LAPSE">Lapse</option>
-    <option value="SUCCESS">Success</option>
-  </select>
- </div>
-
- <div class="field">
-  <label class="label" for="user_skill">Skill</label>
-  <select id="user_skill" name="skill" class="control">
-  <option value=""> None </option>
-  {% for s in load_skills %}
-  <option value="{{s.id}}">{{s.name}}</option>
-  {% endfor %}
-  </select>
- </div>
-
- <div class="field">
-  <label class="label" for="user_habit">Habit</label>
-  <select id="user_habit" name="habit" class="control">
-  <option value=""> None </option>
-  {% for h in load_habits %}
-  <option value="{{h.id}}">{{h.name}}</option>
-  {% endfor %}
-  </select>
- </div>
-
- <div class="field">
-  <label class="label" for="user_date">Date</label>
-  <input id="user_date" name="date" type="datetime-local" class="control">
- </div>
-
-<div class="field">
-  <label class="label" for="user_tigger">Trigger</label>
-  <input id="user_trigger" name="trigger" type="text" class="control" placeholder="Enter Trigger".>
- </div>
-
- <div class="field">
-  <label class="label" for="user_note">Note</label>
- <textarea id="user_note" name="note" class="journal-input" rows="5" placeholder= "Log Your Experience"></textarea>
- </div>
- <button class="btn btn-primary" type="submit">Save</button>
-</form>
-</aside>
-
-
-</div>
-</div>
-
-
- <div class="task-wrap">
-    <div class="journal-card">
-      <aside class="journal-panel" aria-label="Tasks">
-      <div>
-        <h2 class="section-title">Tasks</h2>
-        <form method="post" action="{% url 'task_create' %}">
-         {% csrf_token %}
-
-       
-          <div class="field">
-          <label class="label" for="user_title">Title</label>
-          <input id="user_title" name="title" type="text" class="control" placeholder="title">
-          </div>
-
-          <div class="field">
-          <label class="label" for="user_points">Points</label>
-          <input id="user_points" name="points" type="text" class="control" value= 10>
-          </div>
-
-          <div class="field">
-          <label class="label" for="user_skill">Skill</label>
-          <select id="user_skill" name="skill" class="control">
-          <option value=""> None </option>
-               {% for n in load_skills %}
-          <option value="{{s.id}}">{{n.name}}</option>
-                {% endfor %}
-          </select>
-          </div>
-
-          <div class="field">
-          <label class="label" for="user_habit">Habit</label>
-          <select id="user_habit" name="habit" class="control">
-          <option value=""> None </option>
-          {% for j in load_habits %}
-          <option value="{{h.id}}">{{j.name}}</option>
-          {% endfor %}
-          </select>
-          </div>
-
-          <div class="field">
-         <label class="label" for="user_status">Status</label>
-         <select id="user_status" name="status" class="control" required>
-         <option value="NOTSTARTED">Not Started</option>
-         <option value="INPROGRESS">In Progress</option>
-         <option value="COMPLETED">Completed</option>
-         </select>
-         </div>
-        
-
-
-        <div class="field">
-        <label class="label" for="user_date">Date</label>
-        <input id="user_date" name="date" type="datetime-local" class="control">
-        </div>
-
-
-         <div class="field">
-         <label class="label" for="user_descritpion">Description</label>
-         <input id="user_descritpion" name="description" type="journal-input" rows="5" class="control" placeholder="Expand on task".>
-         </div>
-        
-
-        <button class="btn btn-primary" type="submit">Save</button>
-
-
-         </div>
-
-        </form>
-  
-      </div>
-    
-    </aside>
     </div>
-   
-  </div>
+
+    <div class="nav">
+      <a href="{% url 'dashboard' %}" class="nav-link">
+        <span>Dashboard</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'disciplinebuilder' %}" class="nav-link active">
+        <span>Discipline Builder</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'progresstracker' %}" class="nav-link">
+        <span>Progress Tracker</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'rewards' %}" class="nav-link">
+        <span>Rewards</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'coaching' %}" class="nav-link">
+        <span>Coaching</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'messages' %}" class="nav-link">
+        <span>Messages</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'community' %}" class="nav-link">
+        <span>Community</span>
+        <span class="nav-indicator"></span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="site-main">
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="site-header-left">
+        <div class="site-header-app">
+          <span class="site-header-app-pill">Calibration</span>
+          <span class="site-header-app-section">Discipline & Skill Builder</span>
+        </div>
+        <p class="site-header-subtitle">
+          Keep the whole system cohesive: skills, habits, goals, tasks, and journal all in one place.
+        </p>
+      </div>
+
+      <div class="site-header-right">
+        <div class="header-quick">
+          <button class="btn btn-ghost btn-sm" id="open-skill-modal-header">+ Skill</button>
+          <button class="btn btn-ghost btn-sm" id="open-habit-modal-header">+ Habit</button>
+          <button class="btn btn-primary btn-sm" id="open-journal-modal-header">+ Journal</button>
+        </div>
+        <div class="header-profile">
+          <button class="profile-button" id="profile-button" type="button">
+            <span class="avatar-wrap">
+              <img src="https://via.placeholder.com/40x40.png" alt="User avatar">
+            </span>
+            <span class="gear-icon">⚙️</span>
+          </button>
+          <a class="btn btn-ghost btn-sm" href="/accounts/logout/">Log out</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- PROFILE MODAL -->
+    <div class="modal-overlay" id="profile-modal" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Profile</h3>
+          <button type="button" class="modal-close" data-close-modal="profile-modal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="profile-modal-layout">
+
+            <!-- PROFILE CARD -->
+            <article class="profile-card">
+              <div class="profile-card-header">
+                <p class="profile-greeting">Welcome back</p>
+                <h4 class="profile-display-name">{{ user.username }}</h4>
+                <p class="profile-tagline">
+                  Adjust your account and settings here.
+                </p>
+
+                <div class="profile-avatar-shell">
+                  <img src="https://via.placeholder.com/80"
+                       alt="Avatar for {{ user.username }}">
+                </div>
+              </div>
+
+              <div class="profile-card-main">
+                <div class="profile-actions-row">
+                  <a href="{% url 'user_profile' %}" class="p-btn p-btn-primary">
+                    View profile
+                  </a>
+                  <a href="{% url 'user_settings' %}" class="p-btn p-btn-ghost">
+                    Account settings
+                  </a>
+                  <a href="/accounts/logout/" class="p-btn p-btn-logout">
+                    Log out
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- QUICK LINKS -->
+            <div class="profile-quick-links">
+              <h4>Quick tips</h4>
+              <ul>
+                <li>Use Discipline Builder to connect skills, habits, and goals.</li>
+                <li>Start with one small habit to build momentum.</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO / SUMMARY -->
+    <section class="hero-card">
+      <div class="hero-main">
+        <div class="hero-title">
+          Discipline Dashboard
+          <span class="hero-pill">Today’s Focus</span>
+        </div>
+        <p class="hero-subtitle">
+          Capture <strong>one small win</strong> today. Add a skill, set a habit,
+          or log a journal entry to keep your streak alive.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <div class="hero-metrics">
+          <span class="hero-chip">
+            <span>Skills</span>
+            <strong>{{ load_skills|length }}</strong>
+          </span>
+          <span class="hero-chip">
+            <span>Habits</span>
+            <strong>{{ load_habits|length }}</strong>
+          </span>
+          <span class="hero-chip">
+            <span>Goals</span>
+            <strong>{{ load_goals|length }}</strong>
+          </span>
+        </div>
+        <div>
+          <button class="btn btn-primary btn-sm" id="open-journal-modal">
+            + Quick Journal
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN GRID -->
+    <div class="page-grid">
+      <!-- LEFT COLUMN -->
+      <section>
+        <!-- Skills -->
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-dot"></span>
+              Skills
+            </div>
+            <div class="section-sub">Track progress on the abilities you’re building.</div>
+          </div>
+          <button class="btn btn-primary btn-sm" id="open-skill-modal">+ New Skill</button>
+        </div>
+
+        <div class="card-grid">
+          {% for s in load_skills %}
+            <article class="item-card">
+              <header class="item-header">
+                <div class="item-title">{{ s.name }}</div>
+                <div class="item-meta">
+                  <span class="item-meta-pill">Lv {{ s.level }}</span>
+                </div>
+              </header>
+
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ s.skill_progress_tracked|default:0 }}%;"></div>
+              </div>
+
+              <div class="item-footer">
+                <span>{{ s.xp }} XP</span>
+              </div>
+
+              <div class="item-actions">
+                <a href="{% url 'skill_update' s.id %}" class="item-btn edit" aria-label="Edit {{ s.name }}">✎ Edit</a>
+                <a href="{% url 'skill_delete' s.id %}" class="item-btn delete" aria-label="Delete {{ s.name }}">🗑 Delete</a>
+              </div>
+            </article>
+          {% empty %}
+            <div class="card-empty">
+              No skills yet. Add your first one to start tracking deliberate practice.
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Habits -->
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-dot"></span>
+              Habits
+            </div>
+            <div class="section-sub">Daily/weekly behaviors you want to build or break.</div>
+          </div>
+          <button class="btn btn-primary btn-sm" id="open-habit-modal">+ New Habit</button>
+        </div>
+
+        <div class="card-grid">
+          {% for h in load_habits %}
+            <article class="item-card">
+              <header class="item-header">
+                <div class="item-title">{{ h.name }}</div>
+                <div class="item-meta">
+                  <span>{{ h.goal_percentage }}%</span>
+                </div>
+              </header>
+
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ h.goal_percentage|default:0 }}%;"></div>
+              </div>
+
+              <div class="item-footer">
+                <span>{{ h.days_left }} days left</span>
+              </div>
+
+              <div class="item-actions">
+                <a href="{% url 'habit_update' h.id %}" class="item-btn edit" aria-label="Edit {{ h.name }}">✎ Edit</a>
+                <a href="{% url 'habit_delete' h.id %}" class="item-btn delete" aria-label="Delete {{ h.name }}">🗑 Delete</a>
+              </div>
+            </article>
+          {% empty %}
+            <div class="card-empty">
+              No recent habit activity yet. Create a habit to start your streak.
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Goals -->
+        <div class="section-header">
+          <div>
+            <div class="section-title">
+              <span class="section-title-dot"></span>
+              Goals
+            </div>
+            <div class="section-sub">Anchor your skills and habits to clear outcomes.</div>
+          </div>
+          <button class="btn btn-primary btn-sm" id="open-goal-modal">+ New Goal</button>
+        </div>
+
+        <div class="card-grid">
+          {% for g in load_goals %}
+            <article class="item-card">
+              <header class="item-header">
+                <div class="item-title">{{ g.title }}</div>
+                <div class="item-meta">
+                  <span class="item-meta-pill">{{ g.status }}</span>
+                </div>
+              </header>
+
+              <div class="item-footer">
+                <span>Priority: {{ g.priority }}</span>
+              </div>
+
+              <div class="item-actions">
+                <a href="{% url 'goal_update' g.id %}" class="item-btn edit" aria-label="Edit {{ g.title }}">✎ Edit</a>
+                <a href="{% url 'goal_delete' g.id %}" class="item-btn delete" aria-label="Delete {{ g.title }}">🗑 Delete</a>
+              </div>
+            </article>
+          {% empty %}
+            <div class="card-empty">
+              No goals yet. Create a short-term, long-term, or lifestyle goal to focus your effort.
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- RIGHT COLUMN -->
+      <section class="right-col">
+        <!-- Journal Panel -->
+        <div class="panel" aria-label="Journal">
+          <div class="panel-header">
+            <div class="panel-title-block">
+              <div class="panel-title">Journal</div>
+              <div class="panel-subtitle">Log practice, reflections, urges, lapses, and wins.</div>
+            </div>
+            <div class="journal-filters" id="journal-filters">
+              <button class="journal-filter-pill is-active" data-filter="ALL">All</button>
+              <button class="journal-filter-pill" data-filter="PRACTICE">Practice</button>
+              <button class="journal-filter-pill" data-filter="REFLECTION">Reflection</button>
+              <button class="journal-filter-pill" data-filter="URGE">Urge</button>
+              <button class="journal-filter-pill" data-filter="LAPSE">Lapse</button>
+              <button class="journal-filter-pill" data-filter="SUCCESS">Success</button>
+            </div>
+          </div>
+
+          <div class="journal-entries" id="journal-entries">
+            {% for j in load_journals %}
+              <div class="journal-entry" data-type="{{ j.entry_type }}">
+                <div class="journal-entry-header">
+                  <span class="journal-entry-tag tag-{{ j.entry_type|lower }}">
+                    {{ j.get_entry_type_display }}
+                  </span>
+                  <span class="journal-entry-meta">
+                    {% if j.skill %}
+                      <span class="journal-pill">Skill: {{ j.skill.name }}</span>
+                    {% endif %}
+                    {% if j.habit %}
+                      <span class="journal-pill">Habit: {{ j.habit.name }}</span>
+                    {% endif %}
+                    <span class="journal-date">{{ j.date|date:"M d, Y H:i" }}</span>
+                  </span>
+                </div>
+
+                {% if j.trigger %}
+                  <p class="journal-trigger">
+                    <strong>Trigger:</strong> {{ j.trigger }}
+                  </p>
+                {% endif %}
+
+                <div class="journal-note-wrapper">
+                  <p class="journal-note">
+                    {{ j.note|default:"No notes added yet." }}
+                  </p>
+                </div>
+
+                <div class="journal-entry-footer">
+                  <button type="button" class="journal-toggle-btn">View details</button>
+                </div>
+              </div>
+            {% empty %}
+              <p class="journal-empty-state">
+                No journal entries yet. Log your first practice or reflection to see it here.
+              </p>
+            {% endfor %}
+          </div>
+
+          <div style="margin-top: 8px; text-align: right;">
+            <button class="btn btn-primary btn-sm" id="open-journal-modal-secondary">
+              + New Journal
+            </button>
+          </div>
+        </div>
+
+        <!-- Tasks Panel -->
+        <div class="panel" aria-label="Tasks">
+          <div class="panel-header">
+            <div class="panel-title-block">
+              <div class="panel-title">Tasks</div>
+              <div class="panel-subtitle">Break your goals down into concrete actions.</div>
+            </div>
+            <div></div>
+          </div>
+
+          <div class="journal-entries" id="task-entries">
+            {% for t in load_tasks %}
+              <div class="journal-entry task-entry" data-status="{{ t.status }}">
+                <div class="journal-entry-header">
+                  <span class="journal-entry-tag">{{ t.get_status_display|default:t.status }}</span>
+                  <span class="journal-entry-meta">
+                    {% if t.skill %}<span class="journal-pill">Skill: {{ t.skill.name }}</span>{% endif %}
+                    {% if t.habit %}<span class="journal-pill">Habit: {{ t.habit.name }}</span>{% endif %}
+                    <span class="journal-date">{{ t.date|date:"M d, Y H:i" }}</span>
+                  </span>
+                </div>
+                <p class="journal-trigger"><strong>Title:</strong> {{ t.title }}</p>
+                <div class="journal-note-wrapper">
+                  <p class="journal-note">{{ t.description|default:"No description provided." }}</p>
+                </div>
+                <div class="journal-entry-footer">
+                  <button type="button" class="journal-toggle-btn">View details</button>
+                </div>
+                <div class="task-details">
+                  <p class="journal-note"><strong>Points:</strong> {{ t.points|default:0 }}</p>
+                  <p class="journal-note"><strong>Status:</strong> {{ t.get_status_display|default:t.status }}</p>
+                </div>
+              </div>
+            {% empty %}
+              <p class="journal-empty-state">No tasks yet. Add one to track your actions.</p>
+            {% endfor %}
+          </div>
+          <div style="margin-top:8px; text-align:right;">
+            <button class="btn btn-primary btn-sm" id="open-task-modal" type="button">+ New Task</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Entry Detail Modal -->
+    <div id="entry-detail-modal" class="modal-overlay" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="detail-title">Details</h3>
+          <button type="button" class="modal-close" data-close-modal="entry-detail-modal" id="detail-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="detail-meta" class="muted"></p>
+          <p id="detail-body"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost btn-sm" id="detail-close-footer" data-close-modal="entry-detail-modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal-overlay" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Task Entry</h3>
+          <button type="button" class="modal-close" data-close-modal="task-modal">&times;</button>
+        </div>
+
+        <form method="post" action="{% url 'task_create' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <label class="label" for="task_title">Title</label>
+            <input id="task_title" name="title" type="text" class="control" placeholder="Title" required>
+
+            <label class="label" for="task_points">Points</label>
+            <input id="task_points" name="points" type="number" class="control" value="10">
+
+            <label class="label" for="task_skill">Skill</label>
+            <select id="task_skill" name="skill" class="control">
+              <option value="">None</option>
+              {% for n in load_skills %}
+                <option value="{{ n.id }}">{{ n.name }}</option>
+              {% endfor %}
+            </select>
+
+            <label class="label" for="task_habit">Habit</label>
+            <select id="task_habit" name="habit" class="control">
+              <option value="">None</option>
+              {% for j in load_habits %}
+                <option value="{{ j.id }}">{{ j.name }}</option>
+              {% endfor %}
+            </select>
+
+            <label class="label" for="task_status">Status</label>
+            <select id="task_status" name="status" class="control" required>
+              <option value="NOTSTARTED">Not Started</option>
+              <option value="INPROGRESS">In Progress</option>
+              <option value="COMPLETED">Completed</option>
+            </select>
+
+            <label class="label" for="task_date">Date</label>
+            <input id="task_date" name="date" type="datetime-local" class="control">
+
+            <label class="label" for="task_description">Description</label>
+            <textarea id="task_description" name="description" class="journal-input" rows="3" placeholder="Expand on the task"></textarea>
+
+            <fieldset style="margin-top: 8px; padding: 8px; border-radius: 10px; border: 1px solid #e5e7eb;">
+              <legend style="font-size: 0.78rem; font-weight: 600; color:#6b7280;">Mood when logging this task (optional)</legend>
+              <div class="form-grid" style="margin-top: 4px;">
+                <div class="field">
+                  <label class="label" for="task_mood_score">Mood (1-10)</label>
+                  <input id="task_mood_score" name="mood_score" type="number" min="1" max="10" class="control">
+                </div>
+                <div class="field">
+                  <label class="label" for="task_mood_type">Mood type</label>
+                  <select id="task_mood_type" name="mood_type" class="control">
+                    <option value="">—</option>
+                    <option value="happy">Happy</option>
+                    <option value="sad">Sad</option>
+                    <option value="angry">Angry</option>
+                    <option value="anxious">Anxious</option>
+                    <option value="tired">Tired</option>
+                    <option value="motivated">Motivated</option>
+                    <option value="neutral">Neutral</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="label" for="task_energy_level">Energy (1-10)</label>
+                  <input id="task_energy_level" name="energy_level" type="number" min="1" max="10" class="control">
+                </div>
+                <div class="field">
+                  <label class="label" for="task_sleep_hours">Sleep (hours)</label>
+                  <input id="task_sleep_hours" name="sleep_hours" type="number" step="0.5" class="control">
+                </div>
+                <div class="field">
+                  <label class="label" for="task_stress_level">Stress (1-10)</label>
+                  <input id="task_stress_level" name="stress_level" type="number" min="1" max="10" class="control">
+                </div>
+                <div class="field">
+                  <label class="label" for="task_social_interaction">Social (1-5)</label>
+                  <input id="task_social_interaction" name="social_interaction" type="number" min="1" max="5" class="control">
+                </div>
+              </div>
+              <p style="font-size: 0.7rem; color:#9ca3af; margin-top: 4px;">
+                Use this to see how completing tasks affects your mood and energy over time.
+              </p>
+            </fieldset>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ghost btn-sm" data-close-modal="task-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Skill Modal -->
+    <div id="skill-modal" class="modal-overlay" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Create New Skill</h3>
+          <button type="button" class="modal-close" data-close-modal="skill-modal">&times;</button>
+        </div>
+
+        <form method="post" action="{% url 'skill_create' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <label for="skill_name">Skill name</label>
+            <input type="text" name="name" id="skill_name" required>
+
+            <label for="skill_description">Description</label>
+            <textarea name="description" id="skill_description" rows="3"></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ghost btn-sm" data-close-modal="skill-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Habit Modal -->
+    <div id="habit-modal" class="modal-overlay" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Create New Habit</h3>
+          <button type="button" class="modal-close" data-close-modal="habit-modal">&times;</button>
+        </div>
+
+        <form method="post" action="{% url 'habit_create' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <label for="habit_name">Habit name</label>
+            <input type="text" name="name" id="habit_name" required>
+
+            <label for="id_habit_type">Build or Break</label>
+            <select name="habit_type" id="id_habit_type" required>
+              <option value="">-- Choose one --</option>
+              <option value="Build">Build</option>
+              <option value="Break">Break</option>
+            </select>
+
+            <label for="id_goal_start">Goal Start</label>
+            <input type="date" name="goal_start" id="id_goal_start" required>
+
+            <label for="id_goal_end">Goal End</label>
+            <input type="date" name="goal_end" id="id_goal_end" required>
+
+            <label for="habit_description">Description</label>
+            <textarea name="description" id="habit_description" rows="3"></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ghost btn-sm" data-close-modal="habit-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Goal Modal -->
+    <div id="goal-modal" class="modal-overlay" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Create New Goal</h3>
+          <button type="button" class="modal-close" data-close-modal="goal-modal">&times;</button>
+        </div>
+
+        <form method="post" action="{% url 'goal_create' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <label for="id_title">Goal</label>
+            <input type="text" name="title" id="id_title" required>
+
+            <label for="id_goal_type">Goal Type</label>
+            <select name="goal_type" id="id_goal_type" required>
+              <option value="">-- Choose one --</option>
+              <option value="Short Term">Short_Term</option>
+              <option value="Long Term">Long_Term</option>
+              <option value="Lifestyle">LifeStyle</option>
+            </select>
+
+            <label for="goal_skill">Skill (optional)</label>
+            <select id="goal_skill" name="skill">
+              <option value="">None</option>
+              {% for sk in load_skills %}
+                <option value="{{ sk.id }}">{{ sk.name }}</option>
+              {% endfor %}
+            </select>
+
+            <label for="goal_habit">Habit (optional)</label>
+            <select id="goal_habit" name="habit">
+              <option value="">None</option>
+              {% for hb in load_habits %}
+                <option value="{{ hb.id }}">{{ hb.name }}</option>
+              {% endfor %}
+            </select>
+
+            <label for="id_goal_start">Goal Start</label>
+            <input type="date" name="start_date" id="id_goal_start" required>
+
+            <label for="id_goal_end">Goal End</label>
+            <input type="date" name="due_date" id="id_goal_end" required>
+
+            <label for="id_status">Status</label>
+            <select name="status" id="id_status" required>
+              <option value="not_started">Not Started</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="abandoned">Abandoned</option>
+            </select>
+
+            <label for="id_priority">Priority</label>
+            <input type="number" name="priority" id="id_priority" required>
+
+            <label for="id_reason">Reason</label>
+            <textarea name="reason" id="id_reason" rows="1"></textarea>
+
+            <label for="id_target_value">Target</label>
+            <textarea name="target_value" id="id_target_value" rows="1"></textarea>
+
+            <label for="goal_description">Description</label>
+            <textarea name="description" id="goal_description" rows="3"></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ghost btn-sm" data-close-modal="goal-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Journal Modal -->
+    <div id="journal-modal" class="modal-overlay" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Journal Entry</h3>
+          <button type="button" class="modal-close" data-close-modal="journal-modal">&times;</button>
+        </div>
+
+        <form method="post" action="{% url 'journal_create' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <label class="label" for="user_entry_type">Entry type</label>
+            <select id="user_entry_type" name="entry_type" required>
+              <option value="PRACTICE">Practice</option>
+              <option value="REFLECTION">Reflection</option>
+              <option value="URGE">Urge</option>
+              <option value="LAPSE">Lapse</option>
+              <option value="SUCCESS">Success</option>
+            </select>
+
+            <label class="label" for="user_skill_journal">Skill</label>
+            <select id="user_skill_journal" name="skill">
+              <option value="">None</option>
+              {% for s in load_skills %}
+                <option value="{{ s.id }}">{{ s.name }}</option>
+              {% endfor %}
+            </select>
+
+            <label class="label" for="user_habit_journal">Habit</label>
+            <select id="user_habit_journal" name="habit">
+              <option value="">None</option>
+              {% for h in load_habits %}
+                <option value="{{ h.id }}">{{ h.name }}</option>
+              {% endfor %}
+            </select>
+
+            <label class="label" for="user_date_journal">Date</label>
+            <input id="user_date_journal" name="date" type="datetime-local">
+
+            <label class="label" for="user_trigger">Trigger</label>
+            <input id="user_trigger" name="trigger" type="text" placeholder="What prompted this entry?">
+
+            <label class="label" for="user_note">Note</label>
+            <textarea id="user_note" name="note" class="journal-input" rows="5" placeholder="Log your experience"></textarea>
+
+            <fieldset style="margin-top: 8px; padding: 8px; border-radius: 10px; border: 1px solid #e5e7eb;">
+              <legend style="font-size: 0.78rem; font-weight: 600; color:#6b7280;">Mood check-in (optional)</legend>
+              <div class="form-grid" style="margin-top: 4px;">
+                <div class="field">
+                  <label class="label" for="journal_mood_score">Mood (1–10)</label>
+                  <input id="journal_mood_score" name="mood_score" type="number" min="1" max="10" class="control">
+                </div>
+
+                <div class="field">
+                  <label class="label" for="journal_mood_type">Mood type</label>
+                  <select id="journal_mood_type" name="mood_type" class="control">
+                    <option value="">—</option>
+                    <option value="happy">Happy</option>
+                    <option value="sad">Sad</option>
+                    <option value="anxious">Anxious</option>
+                    <option value="tired">Tired</option>
+                    <option value="angry">Angry</option>
+                    <option value="motivated">Motivated</option>
+                    <option value="neutral">Neutral</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label class="label" for="journal_energy_level">Energy (1–10)</label>
+                  <input id="journal_energy_level" name="energy_level" type="number" min="1" max="10" class="control">
+                </div>
+
+                <div class="field">
+                  <label class="label" for="journal_sleep_hours">Sleep (hours)</label>
+                  <input id="journal_sleep_hours" name="sleep_hours" type="number" step="0.5" class="control">
+                </div>
+
+                <div class="field">
+                  <label class="label" for="journal_stress_level">Stress (1–10)</label>
+                  <input id="journal_stress_level" name="stress_level" type="number" min="1" max="10" class="control">
+                </div>
+
+                <div class="field">
+                  <label class="label" for="journal_social_interaction">Social (1–5)</label>
+                  <input id="journal_social_interaction" name="social_interaction" type="number" min="1" max="5" class="control">
+                </div>
+              </div>
+
+              <p style="font-size: 0.7rem; color:#9ca3af; margin-top: 4px;">
+                This links your mood to this entry so analytics can show how your actions affect how you feel.
+              </p>
+            </fieldset>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ghost btn-sm" data-close-modal="journal-modal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
 </div>
-</div>
 
+<!-- UNIFIED JS -->
+<script>
+(function() {
+  function setupModal(triggerIds, modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
 
+    const openers = triggerIds
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
 
+    function open() {
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
 
-</div>
-</div>
-</main>
+    function close() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
 
+    openers.forEach(btn => btn.addEventListener('click', open));
+
+    const closeBtns = modal.querySelectorAll('[data-close-modal="' + modalId + '"], .modal-close');
+    closeBtns.forEach(btn => btn.addEventListener('click', close));
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) close();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+        close();
+      }
+    });
+  }
+
+  // Detail modal helpers
+  const detailModal = document.getElementById('entry-detail-modal');
+  const detailTitle = document.getElementById('detail-title');
+  const detailBody  = document.getElementById('detail-body');
+  const detailMeta  = document.getElementById('detail-meta');
+
+  function showDetail(title, body, meta) {
+    if (!detailModal) return;
+    detailTitle.textContent = title || 'Details';
+    detailBody.textContent  = body || '';
+    detailMeta.textContent  = meta || '';
+    detailModal.classList.add('is-open');
+    detailModal.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeDetail() {
+    if (!detailModal) return;
+    detailModal.classList.remove('is-open');
+    detailModal.setAttribute('aria-hidden', 'true');
+  }
+
+  if (detailModal) {
+    detailModal.addEventListener('click', function(e) {
+      if (e.target === detailModal) closeDetail();
+    });
+    const dc1 = document.getElementById('detail-close');
+    const dc2 = document.getElementById('detail-close-footer');
+    dc1 && dc1.addEventListener('click', closeDetail);
+    dc2 && dc2.addEventListener('click', closeDetail);
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && detailModal.classList.contains('is-open')) {
+        closeDetail();
+      }
+    });
+  }
+
+  // Attach modals
+  setupModal(['open-skill-modal', 'open-skill-modal-header'], 'skill-modal');
+  setupModal(['open-habit-modal', 'open-habit-modal-header'], 'habit-modal');
+  setupModal(['open-goal-modal'], 'goal-modal');
+  setupModal(['open-journal-modal', 'open-journal-modal-secondary', 'open-journal-modal-header'], 'journal-modal');
+  setupModal(['open-task-modal'], 'task-modal');
+  setupModal(['profile-button'], 'profile-modal');
+
+  // Journal filters
+  const filtersContainer = document.getElementById('journal-filters');
+  const entriesContainer = document.getElementById('journal-entries');
+
+  if (filtersContainer && entriesContainer) {
+    const filterButtons = Array.from(filtersContainer.querySelectorAll('.journal-filter-pill'));
+    const entries = Array.from(entriesContainer.querySelectorAll('.journal-entry'));
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filterValue = btn.getAttribute('data-filter');
+        filterButtons.forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+
+        entries.forEach(entry => {
+          const type = entry.getAttribute('data-type');
+          entry.style.display = (filterValue === 'ALL' || type === filterValue) ? '' : 'none';
+        });
+      });
+    });
+  }
+
+  // Attach "View details" behavior for journal + tasks
+  function attachEntryDetail(containerSelector, defaultTag) {
+    const container = document.querySelector(containerSelector);
+    if (!container) return;
+    container.querySelectorAll('.journal-entry').forEach(entry => {
+      const btn  = entry.querySelector('.journal-toggle-btn');
+      if (!btn) return;
+      const note = entry.querySelector('.journal-note');
+      const meta = (entry.querySelector('.journal-entry-meta') || {}).textContent || '';
+      const tag  = (entry.querySelector('.journal-entry-tag') || {}).textContent || defaultTag;
+      btn.addEventListener('click', () => {
+        const body = note ? note.textContent.trim() : '';
+        showDetail(tag.trim(), body, meta.trim());
+      });
+    });
+  }
+
+  attachEntryDetail('#journal-entries', 'Details');
+  attachEntryDetail('#task-entries', 'Task');
+})();
+</script>
 
 </body>
 </html>

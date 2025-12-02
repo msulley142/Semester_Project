@@ -1,0 +1,9 @@
+<h1>Create New Discussion</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Create</button>
+</form>
+
+<a href="{% url 'community' %}">← Back</a>

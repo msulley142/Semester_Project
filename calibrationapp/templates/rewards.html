@@ -1,174 +1,1742 @@
-<!--The html template was created using AI Generated Code as a starting point-->
-<!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="en">
 <head>
-<title>Rewards</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>Rewards – Calibration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-:root{
-  --sidebar-w: 250px;
-  --sidebar-br: 1px;
-  --header-h: 80px;
-}
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --card-soft: #f9fafb;
+      --accent: #0ea5e9;
+      --accent-strong: #0369a1;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --border-subtle: #e5e7eb;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --sidebar-w: 260px;
+      --gold: #facc15;
+      --bronze: #b45309;
+    }
 
-html, body{
-  margin: 0;
-  padding: 0;
-  background: #f8fafc; 
-  color: #0f172a;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    *, *::before, *::after { box-sizing: border-box; }
 
-}
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
+    }
 
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin-inline: auto;
-  padding: clamp(16px, 3vw, 32px);
-}
+    a { color: inherit; text-decoration: none; }
 
-/* ---header--- */
-header{
-  position: fixed;
-  top: 0;
-  left: calc(var(--sidebar-w) + var(--sidebar-br));
-  right:0;
-  height: var(--header-h);
-  display: flex;
-  background:rgba(255,255,255,0.6);
-  border-bottom: 1px solid #e5e7eb;
-  padding: 0 20px 0 24px;
-  justify-content: space-between;
-  backdrop-filter: blur(10px);
-  align-items: center;
-  z-index: 1000;
-  gap: 12px;
-  
+    /* APP LAYOUT (same idea as dashboard) */
+    .app-shell {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      min-height: 100vh;
+    }
 
-}
+    @media (max-width: 900px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+    }
 
-.sidebar {
-    position: fixed; 
-    inset: 0 auto 0 0;
-    width: var(--sidebar-w);
-    background: #0b1723;
-    color: #e5eef7;
-    border-right: var(--sidebar-br) solid rgba(255,255,255,.08);
-    padding: 16px 12px;
-    overflow-y: auto;
-    z-index: 1200;
+    /* SIDEBAR – full height */
+    .sidebar {
+      background: #0b1723;
+      color: #e5eef7;
+      border-right: 1px solid rgba(148, 163, 184, 0.3);
+      padding: 16px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-height: 100vh;
+    }
 
-}
+    @media (max-width: 900px) {
+      .sidebar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        min-height: auto;
+      }
+    }
 
-.brand{
-    display:flex; 
-    align-items:center; 
-    gap:10px; 
-    font-weight:700; 
-    margin: 6px 8px 14px;
-  }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-.nav{
-    display:flex; 
-    flex-direction:column; 
-    gap:6px; 
-    margin-top: 8px;
-}
-.nav a {
-  padding:10px 12px; 
-  border-radius:10px; 
-  color:#cbd5e1;
-  text-decoration: none;
-  font-size: 15px;
- 
-}
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, #0ea5e9 40%, #a855f7 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1120;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.08);
+    }
 
-/* Active/current link */
-.nav a.active {
-    background: #0ea5e9; 
-    color:#001018 
-  
-}
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
 
-.nav a:hover{ background: rgba(255,255,255,.08); 
-  color:white }
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
 
-.main{
-    margin-left:  var(--sidebar-w);
-    padding: calc(var(--header-h) + 20px) 20px 20px;
-    min-height: 100dvh;  
-}
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
 
-.card{
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 16px;
-  }
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
 
-.btn{
-    display:inline-flex; 
-    align-items:center; 
-    gap:8px;
-    padding:10px 14px; 
-    border-radius:999px; 
-    border:1px solid #e5e7eb;
-    background:#fff; 
-    cursor:pointer;
-  }
-  .btn-primary{ 
-    background: #0ea5e9; 
-    color:#001018; 
-    border-color:transparent }
-  .btn-primary:hover{ 
-    background: #0369a1 }
+    @media (max-width: 900px) {
+      .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: flex-end;
+      }
+    }
 
-</style>
+    .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      font-size: 0.86rem;
+      color: #cbd5f5;
+      border: 1px solid transparent;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
 
+    .nav-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    .nav-link:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.5);
+      color: #f9fafb;
+    }
+
+    .nav-link.active {
+      background: #0ea5e9;
+      color: #001018;
+      font-weight: 600;
+      border-color: transparent;
+    }
+
+    .nav-link.active .nav-indicator {
+      background: #001018;
+    }
+
+    /* MAIN AREA */
+    .site-main {
+      padding: 0 24px 40px 0;
+    }
+
+    @media (max-width: 900px) {
+      .site-main {
+        padding: 0 18px 32px 18px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .site-main {
+        padding: 0 12px 24px 12px;
+      }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 100%;
+      margin-inline: 0;
+    }
+
+    /* HEADER – copy of dashboard style */
+    .site-header {
+      margin: 0 0 28px;
+      padding: 16px 24px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      background: rgba(248, 250, 252, 0.96);
+      backdrop-filter: blur(6px);
+    }
+
+    @media (max-width: 640px) {
+      .site-header {
+        flex-wrap: wrap;
+        padding: 14px 16px 12px;
+        margin-bottom: 24px;
+      }
+    }
+
+    .site-header-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .site-header-title h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .site-header-title span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      color: #0f172a;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease,
+                  box-shadow 0.1s ease, transform 0.1s ease;
+    }
+
+    .btn:hover {
+      background: #f9fafb;
+      border-color: #cbd5e1;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      background: #0ea5e9;
+      color: #0b1120;
+      box-shadow: 0 10px 25px rgba(14, 165, 233, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: #0284c7;
+      box-shadow: 0 12px 30px rgba(14, 165, 233, 0.45);
+    }
+
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+    }
+
+    button { border: 0; background: none; cursor: pointer; }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* profile pill */
+    .profile-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #e0f2ff;
+      box-shadow: 0 10px 25px rgba(15,23,42,0.12);
+      border: 1px solid #bfdbfe;
+    }
+
+    .avatar-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: #facc15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gear-icon {
+      font-size: 18px;
+      color: #0284c7;
+    }
+
+    /* HERO – darker banner for rewards */
+    .hero-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
+      gap: 20px;
+      margin: 24px 24px 36px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-row {
+        grid-template-columns: minmax(0, 1fr);
+        margin: 18px 16px 28px;
+      }
+    }
+
+    .hero-card {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left, #0f172a 0, #020617 40%, #000000 100%);
+      color: #e5f3ff;
+      border: 1px solid rgba(15, 23, 42, 0.6);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.65);
+      padding: 20px 22px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.28), transparent 55%);
+      pointer-events: none;
+    }
+
+    .hero-main-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-card h2 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .hero-card p {
+      margin: 4px 0 0;
+      font-size: 0.88rem;
+      color: #dbeafe;
+    }
+
+    .hero-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 12px;
+      font-size: 0.8rem;
+    }
+
+    .hero-metric {
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(15,23,42,0.88);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      min-width: 120px;
+    }
+
+    .hero-metric-label {
+      color: #cbd5f5;
+      font-size: 0.75rem;
+    }
+
+    .hero-metric-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .hero-actions {
+      position: relative;
+      z-index: 1;
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* streak orb */
+    .streak-orb {
+      position: absolute;
+      right: -30px;
+      bottom: -40px;
+      width: 180px;
+      height: 180px;
+      border-radius: 999px;
+      background: conic-gradient(from 220deg, #facc15, #fb923c, #f97316, #facc15);
+      filter: blur(0.2px);
+      opacity: 0.18;
+    }
+
+    /* Wallet card on right */
+    .wallet-card {
+      border-radius: var(--radius-lg);
+      background: var(--card);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wallet-card::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle at 20% 0, rgba(14,165,233,0.12), transparent 55%);
+      pointer-events: none;
+    }
+
+    .wallet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .wallet-header h3 {
+      margin: 0;
+      font-size: 0.98rem;
+    }
+
+    .wallet-chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #0f172a;
+      color: #e5e7eb;
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .wallet-main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .wallet-balance {
+      font-size: 1.6rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .wallet-balance span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .wallet-progress {
+      margin-top: 8px;
+    }
+
+    .wallet-progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .wallet-progress-bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .wallet-progress-fill {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #0ea5e9, #22c55e);
+      transition: width 0.6s ease-out;
+    }
+
+    /* SECTION WRAPPERS */
+    .section-block {
+      margin: 0 24px 32px;
+    }
+
+    @media (max-width: 900px) {
+      .section-block { margin: 0 16px 28px; }
+    }
+
+    @media (max-width: 640px) {
+      .section-block { margin: 0 12px 24px; }
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .section-subtitle {
+      margin: 3px 0 0;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .section-controls {
+      display: inline-flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 0.76rem;
+      cursor: pointer;
+      color: #475569;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .chip.is-active {
+      background: #0ea5e9;
+      border-color: #0ea5e9;
+      color: #0b1120;
+    }
+
+    /* LEADERBOARD */
+    .leaderboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 960px) {
+      .leaderboard-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .leaderboard-card,
+    .highlight-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 14px 12px;
+      font-size: 0.86rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .leaderboard-list {
+      margin-top: 10px;
+      max-height: 260px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    /* nicer scrollbars for scrollable boxes */
+    .leaderboard-list::-webkit-scrollbar,
+    .badge-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .leaderboard-list::-webkit-scrollbar-track,
+    .badge-grid::-webkit-scrollbar-track {
+      background: #e5e7eb;
+    }
+
+    .leaderboard-list::-webkit-scrollbar-thumb,
+    .badge-grid::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+
+    .lb-row {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1.5fr) 80px;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 6px;
+      border-radius: 12px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    .lb-row.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .lb-row:hover {
+      background: #f9fafb;
+      box-shadow: 0 10px 22px rgba(15,23,42,0.08);
+      transform: translateY(-1px);
+    }
+
+    .lb-rank {
+      font-weight: 700;
+      font-size: 0.84rem;
+      color: #94a3b8;
+    }
+
+    .lb-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .lb-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .lb-name {
+      font-weight: 600;
+      font-size: 0.86rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .lb-meta {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .lb-xp {
+      text-align: right;
+      font-weight: 600;
+      font-size: 0.86rem;
+    }
+
+    .lb-bar {
+      grid-column: 2 / -1;
+      margin-left: 40px;
+      margin-top: 4px;
+    }
+
+    .lb-bar-track {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+
+    .lb-bar-fill {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #0ea5e9);
+      transition: width 0.6s ease-out;
+    }
+
+    .highlight-card {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 8px;
+    }
+
+    .highlight-champ {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .highlight-medal {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 20%, #fef9c3, #facc15, #b45309);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 10px 24px rgba(15,23,42,0.25);
+    }
+
+    .highlight-text {
+      font-size: 0.86rem;
+    }
+
+    .highlight-text strong {
+      display: block;
+      font-size: 0.94rem;
+    }
+
+    .highlight-footer {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* BADGES GALLERY */
+    .badges-layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 1000px) {
+      .badges-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .badge-sidebar {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 14px 12px;
+      font-size: 0.85rem;
+    }
+
+    .badge-sidebar h3 {
+      margin: 0 0 4px;
+      font-size: 0.95rem;
+    }
+
+    .badge-sidebar p {
+      margin: 4px 0 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .badge-stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+    }
+
+    .badge-progress-track {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .badge-progress-fill {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #8b5cf6, #ec4899);
+      transition: width 0.6s ease-out;
+    }
+
+    .badge-filters {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .badge-search-wrap {
+      margin-top: 10px;
+    }
+
+    .badge-search-input {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    .badge-grid {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 12px 12px 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      font-size: 0.8rem;
+      max-height: 340px;
+      overflow-y: auto;
+    }
+
+    .badge-card {
+      position: relative;
+      border-radius: 18px;
+      padding: 10px 10px 9px;
+      background: radial-gradient(circle at 0 0, rgba(248,250,252,0.9), #e2e8f0);
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 6px 14px rgba(15,23,42,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      transform: translateY(4px);
+      opacity: 0;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.2s ease;
+    }
+
+    .badge-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .badge-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #facc15, #b45309);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1f2937;
+      font-size: 1.2rem;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.25);
+    }
+
+    .badge-title {
+      font-weight: 600;
+      font-size: 0.82rem;
+      margin-top: 2px;
+    }
+
+    .badge-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .badge-meta {
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .badge-status-pill {
+      padding: 3px 7px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .badge-status-pill.unlocked {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge-status-pill.locked {
+      background: #e5e7eb;
+      color: #6b7280;
+    }
+
+    .badge-card.locked {
+      filter: grayscale(0.7);
+      opacity: 0.7;
+    }
+
+    .badge-card:hover {
+      box-shadow: 0 14px 30px rgba(15,23,42,0.14);
+      transform: translateY(-3px);
+    }
+
+    .badge-card.locked:hover {
+      filter: grayscale(0.5);
+    }
+
+    .badge-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: box-shadow 0.3s ease, opacity 0.3s ease;
+    }
+
+    .badge-card.unlocked:hover .badge-glow {
+      opacity: 1;
+      box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.5), 0 0 0 8px rgba(249, 115, 22, 0.1);
+    }
+
+    /* spark flash when "Celebrate latest badge" is clicked */
+    .badge-card.spark .badge-glow {
+      opacity: 1;
+      box-shadow:
+        0 0 0 1px rgba(249, 115, 22, 0.7),
+        0 0 0 10px rgba(249, 115, 22, 0.18);
+    }
+
+    .badge-card.spark {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 36px rgba(15,23,42,0.18);
+    }
+
+    .muted {
+      color: var(--text-muted);
+    }
+
+    /* simple modal, same as dashboard (for profile) */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.15);
+      display: none;
+      z-index: 2000;
+    }
+
+    .modal-overlay.is-open { display: block; }
+
+    .modal {
+      position: fixed;
+      top: 80px;
+      right: 24px;
+      width: 340px;
+      max-width: 90vw;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      border: 1px solid #e5e7eb;
+      padding: 18px 20px;
+      animation: slideIn 0.25s ease forwards;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .modal-close {
+      font-size: 1.6rem;
+      line-height: 1;
+      background: transparent;
+      color: #6b7280;
+      border: none;
+      cursor: pointer;
+    }
+
+    .modal-body { font-size: 0.9rem; }
+
+    .profile-modal-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .profile-card {
+      background: var(--card-soft);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 24px rgba(15,23,42,0.12);
+    }
+
+    .profile-card-header {
+      background: radial-gradient(circle at 15% 0, #38bdf8, #0ea5e9 35%, #1d2b64 85%);
+      padding: 34px 20px 52px;
+      position: relative;
+      color: #e5f3ff;
+      text-align: center;
+    }
+
+    .profile-greeting {
+      margin: 0 0 4px;
+      font-size: 0.78rem;
+      opacity: 0.9;
+    }
+
+    .profile-display-name {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .profile-tagline {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .profile-avatar-shell {
+      position: absolute;
+      left: 50%;
+      bottom: -30px;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      border: 3px solid #ffffff;
+      overflow: hidden;
+      background: #fbbf24;
+      box-shadow: 0 12px 24px rgba(15,23,42,0.4);
+    }
+
+    .profile-avatar-shell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-card-main {
+      padding: 40px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .profile-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .p-btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .p-btn-primary {
+      background: #0ea5e9;
+      color: #0b1120;
+      border-color: transparent;
+      box-shadow: 0 8px 18px rgba(14,165,233,0.35);
+    }
+
+    .p-btn-ghost {
+      background: transparent;
+      color: #0f172a;
+    }
+
+    .p-btn-logout {
+      background: #fee2e2;
+      border-color: #fecaca;
+      color: #b91c1c;
+    }
+
+    .profile-quick-links {
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+    }
+
+    .profile-quick-links h4 {
+      margin: 0 0 4px;
+      font-size: 0.84rem;
+    }
+
+    .profile-quick-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .profile-quick-links li + li { margin-top: 3px; }
+  </style>
 </head>
-
-
 <body>
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" role="navigation" aria-label="Sidebar">
+    <div class="brand">
+      <div class="brand-mark">CB</div>
+      <div class="brand-text">
+        <div class="brand-title">Calibration</div>
+        <div class="brand-subtitle">Discipline • Habits • Skills</div>
+      </div>
+    </div>
 
- <nav class="sidebar" role="navigation" aria-label="Sidebar">
- <div class="brand">
- <strong>Calibration</strong>
- </div>
+    <div class="nav">
+      <a href="{% url 'dashboard' %}" class="nav-link">
+        <span>Dashboard</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'disciplinebuilder' %}" class="nav-link">
+        <span>Discipline Builder</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'progresstracker' %}" class="nav-link">
+        <span>Progress Tracker</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'rewards' %}" class="nav-link active">
+        <span>Rewards</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'coaching' %}" class="nav-link">
+        <span>Coaching</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'messages' %}" class="nav-link">
+        <span>Messages</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'community' %}" class="nav-link">
+        <span>Community</span>
+        <span class="nav-indicator"></span>
+      </a>
+    </div>
+  </nav>
 
- <div class="nav">
- <a href="{% url 'dashboard' %}" >Dashboard</a>
- <a href="{% url 'disciplinebuilder' %}">Discipline Builder</a>
- <a href="{% url 'progresstracker' %}">Progress Tracker </a>
- <a class="active" href="{% url 'rewards' %}">Rewards</a>
- <a href="{% url 'coaching' %}">Coaching</a>
- <a href="{% url 'messages' %}">Messages</a>
- <a href="{% url 'community' %}">Community</a>
- </div>
-</nav>
+  <!-- MAIN -->
+  <main class="site-main">
+    <div class="container">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="site-header-title">
+          <h1>Rewards</h1>
+          <span>Track your tokens, dominate the leaderboard, and unlock every badge.</span>
+        </div>
+        <div class="header-actions">
+          <div class="toolbar">
+            <button class="profile-button" id="profile-button">
+              <span class="avatar-wrap">
+                <img src="https://via.placeholder.com/40x40.png" alt="User avatar">
+              </span>
+              <span class="gear-icon">⚙️</span>
+            </button>
+            <a class="btn btn-primary" href="/accounts/logout/">Log out</a>
+          </div>
+        </div>
+      </header>
 
-<header>
-  <strong>Rewards</strong>
-  <div>
-    <a class="btn" href="#">Settings</a>
-    <a class="btn btn-primary" href="/accounts/logout/"> Log out</a>
-  </div>
-</header>
+      <!-- PROFILE MODAL -->
+      <div class="modal-overlay" id="profile-modal" aria-hidden="true">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Profile</h3>
+            <button type="button" class="modal-close" id="modal-close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="profile-modal-layout">
+              <article class="profile-card">
+                <div class="profile-card-header">
+                  <p class="profile-greeting">Welcome back</p>
+                  <h4 class="profile-display-name">{{ user.username }}</h4>
+                  <p class="profile-tagline">Manage your account and settings.</p>
+                  <div class="profile-avatar-shell">
+                    <img src="https://via.placeholder.com/80"
+                         alt="Avatar for {{ user.username }}">
+                  </div>
+                </div>
+                <div class="profile-card-main">
+                  <div class="profile-actions-row">
+                    <a href="{% url 'user_profile' %}" class="p-btn p-btn-primary">View profile</a>
+                    <a href="{% url 'user_settings' %}" class="p-btn p-btn-ghost">Account settings</a>
+                    <a href="/accounts/logout/" class="p-btn p-btn-logout">Log out</a>
+                  </div>
+                </div>
+              </article>
 
-<main class="main">
-<div class="card">
+              <div class="profile-quick-links">
+                <h4>Quick tips</h4>
+                <ul>
+                  <li>Earn tokens by completing tasks, habits, and skills.</li>
+                  <li>Badges unlock cosmetic perks in future updates.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!-- HERO: DARK REWARD BANNER + WALLET -->
+      <section class="hero-row">
+        <article class="hero-card">
+          <div class="hero-main-content">
+            <h2>Nice work, {{ user.username }} 🏅</h2>
+            <p>Your consistency is being converted into tokens, badges, and bragging rights.</p>
+
+            <div class="hero-metrics">
+              <div class="hero-metric">
+                <div class="hero-metric-label">Total XP</div>
+                <div class="hero-metric-value" data-count-to="{{ total_xp|default:0 }}">0</div>
+              </div>
+              <div class="hero-metric">
+                <div class="hero-metric-label">Badges Unlocked</div>
+                <div class="hero-metric-value" data-count-to="{{ unlocked_badges_count|default:0 }}">0</div>
+              </div>
+              <div class="hero-metric">
+                <div class="hero-metric-label">Current Streak</div>
+                <div class="hero-metric-value" data-count-to="{{ current_streak|default:0 }}">0</div>
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <a href="{% url 'progresstracker' %}" class="btn btn-sm">View progress</a>
+              <button type="button" class="btn btn-primary btn-sm" id="spark-badges">
+                Celebrate latest badge ✨
+              </button>
+            </div>
+          </div>
+          <div class="streak-orb"></div>
+        </article>
+
+        <article class="wallet-card">
+          <div class="wallet-header">
+            <div>
+              <h3>Your Token Wallet</h3>
+              <p style="margin:2px 0 0; font-size:0.8rem; color:var(--text-muted);">
+                Earn tokens from actions, then trade them for rewards in future releases.
+              </p>
+            </div>
+            <div class="wallet-chip">
+              <span>⚡ Live</span>
+              <span style="font-size:0.7rem;">Calibration XP → Tokens</span>
+            </div>
+          </div>
+
+          <div class="wallet-main">
+            <div class="wallet-balance">
+              <span data-count-to="{{ token_balance|default:0 }}" id="wallet-tokens">0</span>
+              <span>tokens</span>
+            </div>
+
+            <div class="wallet-progress">
+              <div class="wallet-progress-label">
+                <span>Next reward tier</span>
+                <span id="tier-label">Tier 1</span>
+              </div>
+              <div class="wallet-progress-bar">
+                <div class="wallet-progress-fill" id="wallet-progress-fill"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- LEADERBOARD -->
+      <section class="section-block">
+        <div class="section-header">
+          <div>
+            <h3 class="section-title">Friends leaderboard</h3>
+            <p class="section-subtitle">
+              See which of your friends has earned the most XP. Friendly competition is still competition.
+            </p>
+          </div>
+          <div class="section-controls">
+            <button class="chip is-active" data-period="all">All time</button>
+            <button class="chip" data-period="month">This month</button>
+            <button class="chip" data-period="week">This week</button>
+          </div>
+        </div>
+
+        <div class="leaderboard-grid">
+          <!-- main list -->
+          <article class="leaderboard-card">
+            <header style="display:flex; justify-content:space-between; align-items:center;">
+              <h4 style="margin:0;font-size:0.95rem;">XP rankings</h4>
+              <span class="muted" style="font-size:0.78rem;">Scroll to see all friends</span>
+            </header>
+
+            <div class="leaderboard-list" id="leaderboard">
+              {% for friend in leaderboard %}
+                <div class="lb-row" data-period="all">
+                  <div class="lb-rank">#{{ friend.rank }}</div>
+                  <div class="lb-user">
+                    <div class="lb-avatar">
+                      {{ friend.initials|default:friend.username|slice:":2" }}
+                    </div>
+                    <div style="overflow:hidden;">
+                      <div class="lb-name">
+                        {% if friend.is_self %}You ({{ friend.username }}){% else %}{{ friend.username }}{% endif %}
+                      </div>
+                      <div class="lb-meta">{{ friend.badges }} badges • {{ friend.streak }} day streak</div>
+                    </div>
+                  </div>
+                  <div class="lb-xp">
+                    <span data-xp="{{ friend.xp }}">{{ friend.xp }}</span> XP
+                  </div>
+                  <div class="lb-bar">
+                    <div class="lb-bar-track">
+                      <div class="lb-bar-fill"></div>
+                    </div>
+                  </div>
+                </div>
+              {% empty %}
+                <!-- demo rows if you haven't wired data yet -->
+                <div class="lb-row" data-period="all">
+                  <div class="lb-rank">#1</div>
+                  <div class="lb-user">
+                    <div class="lb-avatar">YO</div>
+                    <div>
+                      <div class="lb-name">You</div>
+                      <div class="lb-meta">6 badges • 10 day streak</div>
+                    </div>
+                  </div>
+                  <div class="lb-xp"><span data-xp="4200">4200</span> XP</div>
+                  <div class="lb-bar">
+                    <div class="lb-bar-track">
+                      <div class="lb-bar-fill"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="lb-row" data-period="all">
+                  <div class="lb-rank">#2</div>
+                  <div class="lb-user">
+                    <div class="lb-avatar">JT</div>
+                    <div>
+                      <div class="lb-name">Justin</div>
+                      <div class="lb-meta">4 badges • 7 day streak</div>
+                    </div>
+                  </div>
+                  <div class="lb-xp"><span data-xp="3200">3200</span> XP</div>
+                  <div class="lb-bar">
+                    <div class="lb-bar-track">
+                      <div class="lb-bar-fill"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="lb-row" data-period="all">
+                  <div class="lb-rank">#3</div>
+                  <div class="lb-user">
+                    <div class="lb-avatar">JN</div>
+                    <div>
+                      <div class="lb-name">Jennie</div>
+                      <div class="lb-meta">3 badges • 5 day streak</div>
+                    </div>
+                  </div>
+                  <div class="lb-xp"><span data-xp="2500">2500</span> XP</div>
+                  <div class="lb-bar">
+                    <div class="lb-bar-track">
+                      <div class="lb-bar-fill"></div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </article>
+
+          <!-- highlight / mini analytics -->
+          <article class="highlight-card">
+            <div>
+              <h4 style="margin:0;font-size:0.95rem;">Highlight of the week</h4>
+              <p class="muted" style="margin:4px 0 0;font-size:0.8rem;">
+                Who climbed the most ranks in the last 7 days.
+              </p>
+            </div>
+
+            <div>
+              <div class="highlight-champ" id="highlight-champ">
+                <div class="highlight-medal">🏆</div>
+                <div class="highlight-text">
+                  <strong id="champ-name">You</strong>
+                  <span id="champ-stat">+2 ranks • +900 XP</span>
+                </div>
+              </div>
+
+              <div class="highlight-footer" id="highlight-footer">
+                Keep logging skills and habits to stay on top of the table.
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- BADGES -->
+      <section class="section-block">
+        <div class="section-header">
+          <div>
+            <h3 class="section-title">Badges</h3>
+            <p class="section-subtitle">
+              A gallery of everything you can unlock. Hover to inspect, filter to plan your next move.
+            </p>
+          </div>
+        </div>
+
+        <div class="badges-layout">
+          <!-- left: stats + filters -->
+          <aside class="badge-sidebar">
+            <h3>Badge progress</h3>
+            <p>Collect badges by creating skills, logging habits, and finishing goals.</p>
+
+            <div class="badge-stat-row">
+              <span>Unlocked</span>
+              <span>{{ unlocked_badges_count|default:0 }}</span>
+            </div>
+            <div class="badge-stat-row">
+              <span>Locked</span>
+              <span>{{ locked_badges_count|default:0 }}</span>
+            </div>
+
+            <div class="badge-progress-track">
+              <div class="badge-progress-fill" id="badge-progress-fill"></div>
+            </div>
+
+            <div class="badge-filters" id="badge-filters">
+              <button class="chip is-active" data-filter="all">All</button>
+              <button class="chip" data-filter="skills">Skills</button>
+              <button class="chip" data-filter="habits">Habits</button>
+              <button class="chip" data-filter="goals">Goals</button>
+              <button class="chip" data-filter="streaks">Streaks</button>
+            </div>
+
+            <div class="badge-search-wrap">
+              <input type="text" class="badge-search-input" id="badge-search"
+                     placeholder="Search badges…">
+            </div>
+          </aside>
+
+          <!-- right: badge grid -->
+          <div class="badge-grid" id="badge-grid">
+            {% for b in unlocked_badges %}
+              <article class="badge-card unlocked"
+                       data-category="{{ b.category }}"
+                       data-name="{{ b.badge.title|default:'Badge'|escape }}">
+                <div class="badge-glow"></div>
+                <div class="badge-icon">⭐</div>
+                <div class="badge-title">{{ b.badge.title }}</div>
+                <div class="badge-desc">{{ b.badge.description }}</div>
+                <div class="badge-meta">
+                  <span>Unlocked {{ b.unlocked_at|date:"M j, Y" }}</span>
+                  <span class="badge-status-pill unlocked">Unlocked</span>
+                </div>
+              </article>
+            {% empty %}{% endfor %}
+
+            {% for b in locked_badges %}
+              <article class="badge-card locked"
+                       data-category="{{ b.category }}"
+                       data-name="{{ b.title|default:'Badge'|escape }}">
+                <div class="badge-glow"></div>
+                <div class="badge-icon">🔒</div>
+                <div class="badge-title">{{ b.title }}</div>
+                <div class="badge-desc">{{ b.description }}</div>
+                <div class="badge-meta">
+                  <span>Requirement hidden</span>
+                  <span class="badge-status-pill locked">Locked</span>
+                </div>
+              </article>
+            {% empty %}
+              <!-- demo badges if no data yet -->
+              <article class="badge-card unlocked"
+                       data-category="skills"
+                       data-name="First Skill">
+                <div class="badge-glow"></div>
+                <div class="badge-icon">💡</div>
+                <div class="badge-title">First Skill</div>
+                <div class="badge-desc">Create and track your first skill.</div>
+                <div class="badge-meta">
+                  <span>Unlocked just now</span>
+                  <span class="badge-status-pill unlocked">Unlocked</span>
+                </div>
+              </article>
+
+              <article class="badge-card unlocked"
+                       data-category="habits"
+                       data-name="First Habit">
+                <div class="badge-glow"></div>
+                <div class="badge-icon">🌱</div>
+                <div class="badge-title">First Habit</div>
+                <div class="badge-desc">Log your first habit streak.</div>
+                <div class="badge-meta">
+                  <span>Unlocked just now</span>
+                  <span class="badge-status-pill unlocked">Unlocked</span>
+                </div>
+              </article>
+
+              <article class="badge-card locked"
+                       data-category="goals"
+                       data-name="First Goal">
+                <div class="badge-glow"></div>
+                <div class="badge-icon">🎯</div>
+                <div class="badge-title">First Goal</div>
+                <div class="badge-desc">Complete your first long-term goal.</div>
+                <div class="badge-meta">
+                  <span>Finish one goal</span>
+                  <span class="badge-status-pill locked">Locked</span>
+                </div>
+              </article>
+
+              <article class="badge-card locked"
+                       data-category="streaks"
+                       data-name="7 Day Streak">
+                <div class="badge-glow"></div>
+                <div class="badge-icon">🔥</div>
+                <div class="badge-title">7 Day Streak</div>
+                <div class="badge-desc">Check in every day for a week.</div>
+                <div class="badge-meta">
+                  <span>Keep logging daily</span>
+                  <span class="badge-status-pill locked">Locked</span>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
 </div>
 
-</main>
+<script>
+  // number counters
+  function animateCount(el) {
+    const target = parseInt(el.getAttribute('data-count-to') || '0', 10);
+    if (isNaN(target)) return;
+    const duration = 900;
+    const start = 0;
+    const startTime = performance.now();
 
+    function tick(now) {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const value = Math.floor(start + (target - start) * progress);
+      el.textContent = value.toLocaleString();
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
 
+  document.addEventListener('DOMContentLoaded', function () {
+    // animate hero numbers
+    document.querySelectorAll('[data-count-to]').forEach(animateCount);
+
+    // wallet progress fill based on tokens (fake thresholds)
+    const walletFill = document.getElementById('wallet-progress-fill');
+    const walletTokensEl = document.getElementById('wallet-tokens');
+    const tierLabel = document.getElementById('tier-label');
+    if (walletFill && walletTokensEl) {
+      const tokens = parseInt(walletTokensEl.getAttribute('data-count-to') || '0', 10);
+      let pct = 0;
+      let tier = 'Tier 1';
+      if (tokens >= 500 && tokens < 1500) { pct = (tokens - 500) / 10; tier = 'Tier 2'; }
+      else if (tokens >= 1500) { pct = 100; tier = 'Tier 3'; }
+      else { pct = tokens / 5; }
+
+      pct = Math.max(8, Math.min(100, pct)); // always show a little
+      tierLabel.textContent = tier;
+      requestAnimationFrame(() => {
+        walletFill.style.width = pct + '%';
+      });
+    }
+
+    // leaderboard rows animation + progress bars
+    const rows = Array.from(document.querySelectorAll('.lb-row'));
+    rows.forEach((row, index) => {
+      setTimeout(() => row.classList.add('show'), 60 * index);
+
+      const xpSpan = row.querySelector('.lb-xp span');
+      const fill = row.querySelector('.lb-bar-fill');
+      if (xpSpan && fill) {
+        const xp = parseInt(xpSpan.getAttribute('data-xp') || '0', 10);
+        const pct = Math.max(
+          10,
+          Math.min(
+            100,
+            (xp / (rows[0]
+              ? parseInt(rows[0].querySelector('.lb-xp span').getAttribute('data-xp') || '1', 10)
+              : xp || 1)) * 100
+          )
+        );
+        setTimeout(() => {
+          fill.style.width = pct + '%';
+        }, 350 + 60 * index);
+      }
+    });
+
+    // fake period filter (for now just cosmetic; data-period hooks are ready)
+    document.querySelectorAll('.section-controls .chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.section-controls .chip').forEach(c => c.classList.remove('is-active'));
+        chip.classList.add('is-active');
+      });
+    });
+
+    // badge progress bar
+    const unlockedCount = parseInt('{{ unlocked_badges_count|default:"2" }}', 10);
+    const lockedCount = parseInt('{{ locked_badges_count|default:"2" }}', 10);
+    const totalBadges = unlockedCount + lockedCount || 1;
+    const unlockedPct = Math.max(8, Math.min(100, (unlockedCount / totalBadges) * 100));
+    const badgeProgress = document.getElementById('badge-progress-fill');
+    if (badgeProgress) {
+      requestAnimationFrame(() => {
+        badgeProgress.style.width = unlockedPct + '%';
+      });
+    }
+
+    // badge cards appearance + filters + search
+    const badgeCards = Array.from(document.querySelectorAll('.badge-card'));
+    badgeCards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('show'), 50 * i);
+    });
+
+    const filters = document.getElementById('badge-filters');
+    const searchInput = document.getElementById('badge-search');
+
+    function applyBadgeFilters() {
+      const activeFilter = filters.querySelector('.chip.is-active')?.getAttribute('data-filter') || 'all';
+      const search = (searchInput.value || '').toLowerCase();
+
+      badgeCards.forEach(card => {
+        const cat = (card.getAttribute('data-category') || '').toLowerCase();
+        const name = (card.getAttribute('data-name') || '').toLowerCase();
+        const matchesFilter = activeFilter === 'all' || cat === activeFilter;
+        const matchesSearch = !search || name.includes(search);
+        card.style.display = (matchesFilter && matchesSearch) ? '' : 'none';
+      });
+    }
+
+    if (filters) {
+      filters.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          filters.querySelectorAll('.chip').forEach(c => c.classList.remove('is-active'));
+          chip.classList.add('is-active');
+          applyBadgeFilters();
+        });
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', applyBadgeFilters);
+    }
+
+    // spark effect on "Celebrate latest badge" button
+    const sparkBtn = document.getElementById('spark-badges');
+    if (sparkBtn) {
+      sparkBtn.addEventListener('click', () => {
+        badgeCards.slice(0, 3).forEach(card => {
+          card.classList.add('show');
+          card.classList.add('spark');
+          setTimeout(() => card.classList.remove('spark'), 600);
+        });
+      });
+    }
+
+    // simple highlight champ: pick first row
+    const firstRow = rows[0];
+    const champNameEl = document.getElementById('champ-name');
+    const champStatEl = document.getElementById('champ-stat');
+    if (firstRow && champNameEl && champStatEl) {
+      const name = firstRow.querySelector('.lb-name')?.textContent || 'You';
+      const xp = firstRow.querySelector('.lb-xp span')?.getAttribute('data-xp') || '0';
+      champNameEl.textContent = name;
+      champStatEl.textContent = `Top of the board with ${parseInt(xp, 10).toLocaleString()} XP`;
+    }
+
+    // profile modal open/close
+    const profilePill = document.getElementById('profile-button');
+    const modal = document.getElementById('profile-modal');
+    const closeBtn = document.getElementById('modal-close');
+
+    function openModal() {
+      if (!modal) return;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    if (profilePill && modal && closeBtn) {
+      profilePill.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+    }
+  });
+</script>
 </body>
-
 </html>

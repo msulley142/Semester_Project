@@ -1,0 +1,22 @@
+
+
+<div class="flex justify-between items-center mb-4">
+  <h1 class="text-2xl font-semibold">Goal</h1>
+  <a href="{% url 'habit_create' %}" class="px-3 py-2 bg-indigo-600 text-white rounded">New Goal</a>
+</div>
+
+<div class="bg-white rounded shadow">
+  <ul class="divide-y">
+    {% for obj in object_list %}
+      <li class="p-4 flex justify-between">
+        <div>{{ obj.name }}</div>
+        <div class="space-x-2">
+          <a class="text-indigo-600" href="{% url 'goal_update' obj.pk %}">Edit</a>
+          <a class="text-rose-600" href="{% url 'goal_delete' obj.pk %}">Delete</a>
+        </div>
+      </li>
+    {% empty %}
+      <li class="p-4">No Goals yet.</li>
+    {% endfor %}
+  </ul>
+</div>

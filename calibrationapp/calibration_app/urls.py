@@ -30,8 +30,27 @@ urlpatterns = [
     path('tasks/<int:pk>/delete', views.TaskDelete.as_view(), name= 'task_delete'),
 
 #-----Reward Entry URLs----#
-
+    path('goals/', views.GoalList.as_view(), name='goal_list'),
+    path('goals/create/', views.GoalCreate.as_view(), name='goal_create'),
+    path('goals/<int:pk>/edit/', views.GoalUpdate.as_view(), name='goal_update'),
+    path('goals/<int:pk>/delete', views.GoalDelete.as_view(), name= 'goal_delete'),
    
+
+
+    path('moods/', views.MoodList.as_view(), name='mood_list'),
+    path('moods/create/', views.MoodCreate.as_view(), name='mood_create'),
+    path('moods/<int:pk>/edit/', views.MoodUpdate.as_view(), name='mood_update'),
+    path('moods/<int:pk>/delete', views.MoodDelete.as_view(), name= 'mood_delete'),
+   
+
+    path("community/", views.CommunityView.as_view(), name="community"),
+    path("community/new/", views.ForumCreateView.as_view(), name="community_new_thread"),
+    path("community/thread/<int:pk>/", views.ForumDetailView.as_view(), name="community_thread"),
+
+    path("buddies/", views.BuddiesView.as_view(), name="buddies"),
+    path("buddies/send/", views.BuddySendView.as_view(), name="buddy-send"),
+    path("buddies/respond/", views.BuddyRespondView.as_view(), name="buddy-respond"),
+    path("buddies/remove/<int:user_id>/", views.BuddyRemoveView.as_view(), name="buddy-remove"),
 
 
 ]

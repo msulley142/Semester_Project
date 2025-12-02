@@ -1,174 +1,1045 @@
-<!--The html template was created using AI Generated Code as a starting point-->
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Community</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Community · Calibration</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-:root{
-  --sidebar-w: 250px;
-  --sidebar-br: 1px;
-  --header-h: 80px;
-}
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --bg-soft: #eef2ff;
+      --card: #ffffff;
+      --card-soft: #f9fafb;
+      --accent: #4f46e5;
+      --accent-soft: #e0e7ff;
+      --accent-strong: #0ea5e9;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --border-subtle: #e5e7eb;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 16px 40px rgba(15, 23, 42, 0.08);
+    }
 
-html, body{
-  margin: 0;
-  padding: 0;
-  background: #f8fafc; 
-  color: #0f172a;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    * { box-sizing: border-box; }
 
-}
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 40%, var(--bg) 100%);
+      color: var(--text-main);
+    }
 
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin-inline: auto;
-  padding: clamp(16px, 3vw, 32px);
-}
+    a { color: inherit; text-decoration: none; }
 
-/* ---header--- */
-header{
-  position: fixed;
-  top: 0;
-  left: calc(var(--sidebar-w) + var(--sidebar-br));
-  right:0;
-  height: var(--header-h);
+    /* ========== SIDEBAR ========== */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 260px;
+      background: #0b1723;
+      color: #e5eef7;
+      border-right: 1px solid rgba(148, 163, 184, 0.3);
+      padding: 16px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      z-index: 40;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, #0ea5e9 40%, #a855f7 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1120;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.08);
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      color: #cbd5f5;
+      border: 1px solid transparent;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .nav-link:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.5);
+      color: #f9fafb;
+    }
+    .nav-link.active {
+      background: var(--accent-strong);
+      color: #001018;
+      font-weight: 600;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+      }
+      .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 0;
+      }
+    }
+
+    /* ========== MAIN SHELL ========== */
+    .community-shell {
+      margin-left: 280px;
+      padding: 24px 40px 48px;
+      width: calc(100% - 280px);
+    }
+    @media (max-width: 1024px) {
+      .community-shell {
+        margin-left: 0;
+        width: 100%;
+        padding: 16px 16px 40px;
+      }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: transform 0.1s ease, box-shadow 0.18s ease, background 0.15s ease;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+      background: #f9fafb;
+    }
+    .btn-primary {
+      background: linear-gradient(120deg, var(--accent-strong), #22c55e);
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 12px 32px rgba(14, 165, 233, 0.45);
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 18px 18px 20px;
+      border-radius: 18px;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 22px 60px rgba(15, 23, 42, 0.25);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 0, rgba(56, 189, 248, 0.27), transparent 40%),
+        radial-gradient(circle at 85% 10%, rgba(52, 211, 153, 0.2), transparent 35%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .hero-main h1 {
+      margin: 0;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 1.15rem;
+    }
+    .hero-main p {
+      margin: 6px 0 0;
+      font-size: 0.9rem;
+      max-width: 480px;
+      color: #cbd5e1;
+    }
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .hero-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(74, 222, 128, 0.7);
+      font-size: 0.78rem;
+      color: #bbf7d0;
+    }
+    .hero-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .hero-stat {
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 8px 10px;
+      font-size: 0.8rem;
+    }
+    .hero-stat strong {
+      display: block;
+      font-size: 1rem;
+      color: #e5e7eb;
+    }
+
+    /* ========== GRID (3 columns) ========== */
+    .grid {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 2.1fr) minmax(0, 1.1fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+    @media (max-width: 1100px) {
+      .grid {
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
+        grid-template-areas:
+          "center right"
+          "center right";
+      }
+      .filters-column { display: none; }
+      .filters-toggle-bar { display: flex; }
+      .posts-column { grid-area: center; }
+      .right-column { grid-area: right; }
+    }
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "center"
+          "right";
+      }
+      .right-column { order: 2; }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 14px 16px;
+    }
+
+    /* ========== FILTERS ========== */
+    .filters-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .filters-header-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0 0 4px;
+    }
+    .filters-header-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .search-input-wrap {
+      position: relative;
+      margin-top: 8px;
+    }
+    .search-input-wrap input {
+      width: 100%;
+      padding: 8px 30px 8px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid #e5e7eb;
+      font-size: 0.84rem;
+      background: #f9fafb;
+    }
+    .search-input-wrap span {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .tabs-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .tab-pill {
+      flex: 1;
+      padding: 6px 0;
+      border-radius: var(--radius-pill);
+      border: 1px solid #e5e7eb;
+      font-size: 0.78rem;
+      background: #f9fafb;
+      cursor: pointer;
+      text-align: center;
+    }
+    .tab-pill.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #f9fafb;
+      font-weight: 600;
+    }
+
+    .filters-section-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #9ca3af;
+      margin: 12px 0 4px;
+    }
+    .topics-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 6px;
+    }
+    .topic-item {
+      border-radius: var(--radius-pill);
+      padding: 7px 10px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 0.84rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topic-item.active {
+      background: var(--accent-soft);
+      border-color: var(--accent-strong);
+      color: #1e293b;
+      font-weight: 600;
+    }
+    .topic-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .topic-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #0ea5e9;
+    }
+
+    /* small-screen filters drawer */
+    .filters-toggle-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .filters-drawer {
+      display: none;
+      margin-bottom: 12px;
+    }
+    .filters-drawer.open { display: block; }
+
+    /* ========== POSTS (CENTER) ========== */
+    .posts-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .posts-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+    .posts-header h2 {
+      margin: 0;
+      font-size: 0.94rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .posts-header span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* center posts card: tall, only inner list scrolls */
+ .posts-card {
   display: flex;
-  background:rgba(255,255,255,0.6);
-  border-bottom: 1px solid #e5e7eb;
-  padding: 0 20px 0 24px;
-  justify-content: space-between;
-  backdrop-filter: blur(10px);
-  align-items: center;
-  z-index: 1000;
-  gap: 12px;
-  
-
+  flex-direction: column;
+  height: 60vh;        /* fixed-ish height */
+  max-height: 640px;   /* don't go past this on tall screens */
 }
 
-.sidebar {
-    position: fixed; 
-    inset: 0 auto 0 0;
-    width: var(--sidebar-w);
-    background: #0b1723;
-    color: #e5eef7;
-    border-right: var(--sidebar-br) solid rgba(255,255,255,.08);
-    padding: 16px 12px;
-    overflow-y: auto;
-    z-index: 1200;
+    .threads-scroll {
+      flex: 1;
+      margin-top: 6px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .threads-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .threads-scroll::-webkit-scrollbar-track {
+      background: #e5e7eb;
+      border-radius: 999px;
+    }
+    .threads-scroll::-webkit-scrollbar-thumb {
+      background: #9ca3af;
+      border-radius: 999px;
+    }
 
-}
+    .thread-card {
+      background: var(--card);
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      padding: 13px 16px 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+      transition: transform 0.12s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .thread-card:hover {
+      transform: translateY(-2px);
+      border-color: #cbd5e1;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.1);
+    }
 
-.brand{
-    display:flex; 
-    align-items:center; 
-    gap:10px; 
-    font-weight:700; 
-    margin: 6px 8px 14px;
-  }
+    .thread-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+    .meta-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #4b5563;
+    }
+    .meta-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: #cbd5e1;
+    }
+    .thread-title {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .thread-preview {
+      margin: 6px 0 4px;
+      font-size: 0.86rem;
+      color: #475569;
+      line-height: 1.5;
+    }
 
-.nav{
-    display:flex; 
-    flex-direction:column; 
-    gap:6px; 
-    margin-top: 8px;
-}
-.nav a {
-  padding:10px 12px; 
-  border-radius:10px; 
-  color:#cbd5e1;
-  text-decoration: none;
-  font-size: 15px;
- 
-}
+    .thread-footer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .vote {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .vote-up { color: #16a34a; }
+    .vote-down { color: #dc2626; }
+    .thread-footer-spacer { flex: 1; }
 
-/* Active/current link */
-.nav a.active {
-    background: #0ea5e9; 
-    color:#001018 
-  
-}
+    .empty {
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px dashed #cbd5e1;
+      background: #f9fafb;
+      color: #64748b;
+      font-size: 0.88rem;
+    }
 
-.nav a:hover{ background: rgba(255,255,255,.08); 
-  color:white }
+    /* ========== RIGHT COLUMN (stats + members + groups) ========== */
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .right-title {
+      margin: 0 0 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .right-sub {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .members-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      margin-bottom: 10px;
+      color: #475569;
+    }
+    .top-members-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 6px;
+    }
+    .top-member {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      font-size: 0.84rem;
+    }
+    .top-member-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mini-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #0369a1;
+    }
 
-.main{
-    margin-left:  var(--sidebar-w);
-    padding: calc(var(--header-h) + 20px) 20px 20px;
-    min-height: 100dvh;  
-}
+    .groups-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 6px;
+    }
+    .group-item {
+      padding: 7px 10px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 0.84rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .group-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .group-name {
+      font-weight: 600;
+      font-size: 0.86rem;
+    }
+    .group-meta {
+      font-size: 0.76rem;
+      color: #6b7280;
+    }
+    .group-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 0.75rem;
+    }
 
-.card{
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 16px;
-  }
-
-.btn{
-    display:inline-flex; 
-    align-items:center; 
-    gap:8px;
-    padding:10px 14px; 
-    border-radius:999px; 
-    border:1px solid #e5e7eb;
-    background:#fff; 
-    cursor:pointer;
-  }
-  .btn-primary{ 
-    background: #0ea5e9; 
-    color:#001018; 
-    border-color:transparent }
-  .btn-primary:hover{ 
-    background: #0369a1 }
-
-</style>
-
+    /* ========== MODAL ========== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 120;
+      backdrop-filter: blur(6px);
+    }
+    .modal-overlay.is-open { display: flex; }
+    .modal {
+      width: 100%;
+      max-width: 720px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 22px 22px 20px;
+      box-shadow: 0 24px 50px rgba(15, 23, 42, 0.35);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .modal-header h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .modal-close {
+      font-size: 1.4rem;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: #6b7280;
+    }
+    .modal-body label {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.84rem;
+    }
+    .modal-body input,
+    .modal-body select,
+    .modal-body textarea {
+      width: 100%;
+      margin-top: 4px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #f9fafb;
+      font-size: 0.9rem;
+    }
+    .modal-footer {
+      margin-top: 14px;
+      text-align: right;
+    }
+  </style>
 </head>
-
-
 <body>
 
- <nav class="sidebar" role="navigation" aria-label="Sidebar">
- <div class="brand">
- <strong>Calibration</strong>
- </div>
+<!-- SIDEBAR -->
+<nav class="sidebar" role="navigation" aria-label="Sidebar">
+  <div class="brand">
+    <div class="brand-mark">CB</div>
+    <div class="brand-text">
+      <div class="brand-title">Calibration</div>
+      <div class="brand-subtitle">Discipline · Habits · Skills</div>
+    </div>
+  </div>
 
- <div class="nav">
- <a href="{% url 'dashboard' %}" >Dashboard</a>
- <a href="{% url 'disciplinebuilder' %}">Discipline Builder</a>
- <a href="{% url 'progresstracker' %}">Progress Tracker </a>
- <a href="{% url 'rewards' %}">Rewards</a>
- <a href="{% url 'coaching' %}">Coaching</a>
- <a href="{% url 'messages' %}">Messages</a>
- <a class="active" href="{% url 'community' %}">Community</a>
- </div>
+  <div class="nav">
+    <a href="{% url 'dashboard' %}" class="nav-link"><span>Dashboard</span></a>
+    <a href="{% url 'disciplinebuilder' %}" class="nav-link"><span>Discipline Builder</span></a>
+    <a href="{% url 'progresstracker' %}" class="nav-link"><span>Progress Tracker</span></a>
+    <a href="{% url 'rewards' %}" class="nav-link"><span>Rewards</span></a>
+    <a href="{% url 'coaching' %}" class="nav-link"><span>Coaching</span></a>
+    <a href="{% url 'messages' %}" class="nav-link"><span>Messages</span></a>
+    <a href="{% url 'community' %}" class="nav-link active"><span>Community</span></a>
+  </div>
 </nav>
 
-<header>
-  <strong>Community</strong>
-  <div>
-    <a class="btn" href="#">Settings</a>
-    <a class="btn btn-primary" href="/accounts/logout/"> Log out</a>
+<div class="community-shell">
+
+  <!-- HERO / COMMUNITY HUB -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-main">
+        <h1>Community Hub</h1>
+        <p>Swap wins, roadblocks, and ideas with people chasing similar goals. Start a thread or jump into one.</p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>{{ threads|length }}</strong>
+            Active discussions
+          </div>
+          <div class="hero-stat">
+            <strong>{{ topics|length }}</strong>
+            Topics to explore
+          </div>
+          <div class="hero-stat">
+            <strong>Daily</strong>
+            New takes from the Calibration community
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <span class="hero-status">
+          <span class="hero-status-dot"></span> Online now
+        </span>
+        <button id="openThreadModalHeader" class="btn btn-primary">
+          + Start a new topic
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filters toggle (mobile) -->
+  <div class="filters-toggle-bar">
+    <span style="font-size:0.86rem; color:var(--text-muted);">Browse by topic</span>
+    <button id="filtersToggleBtn" class="btn" style="padding:6px 10px; font-size:0.8rem;">
+      Filters
+    </button>
   </div>
-</header>
 
-<main class="main">
-<div class="card">
+  <!-- GRID -->
+  <section class="grid">
 
+    <!-- LEFT: Filters -->
+    <aside class="filters-column card" id="filtersColumn">
+      <p class="filters-header-title">Browse discussions</p>
+      <p class="filters-header-sub">Search and filter threads by topic.</p>
+
+      <div class="search-input-wrap">
+        <input type="text" placeholder="Search for topics…" autocomplete="off">
+        <span>⌕</span>
+      </div>
+
+      <div class="tabs-row" id="tabsRow">
+        <button class="tab-pill active" data-tab="latest">Latest</button>
+        <button class="tab-pill" data-tab="popular">Popular</button>
+        <button class="tab-pill" data-tab="older">Older</button>
+      </div>
+
+      <div class="filters-section-label">Topics ({{ topics|length }})</div>
+
+      <ul class="topics-list">
+        <li class="topic-item {% if not selected_topic %}active{% endif %}">
+          <a href="{% url 'community' %}">
+            <span class="topic-label">
+              <span class="topic-dot"></span>All topics
+            </span>
+          </a>
+        </li>
+        {% for t in topics %}
+          <li class="topic-item {% if selected_topic|stringformat:'s' == t.id|stringformat:'s' %}active{% endif %}">
+            <a href="{% url 'community' %}?topic={{ t.id }}">
+              <span class="topic-label">
+                <span class="topic-dot"></span>{{ t.name }}
+              </span>
+            </a>
+          </li>
+        {% empty %}
+          <li class="topic-item">
+            <span class="topic-label">No topics yet</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+
+    <!-- Mobile filters drawer -->
+    <div class="filters-drawer card" id="filtersDrawer">
+      <p class="filters-header-title" style="margin-top:0;">Filters</p>
+      <div class="tabs-row" id="tabsRowDrawer">
+        <button class="tab-pill active" data-tab="latest">Latest</button>
+        <button class="tab-pill" data-tab="popular">Popular</button>
+        <button class="tab-pill" data-tab="older">Older</button>
+      </div>
+      <div class="filters-section-label">Topics</div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap;">
+        <a href="{% url 'community' %}" class="btn" style="font-size:0.75rem; padding:4px 10px;">All</a>
+        {% for t in topics %}
+          <a href="{% url 'community' %}?topic={{ t.id }}" class="btn" style="font-size:0.75rem; padding:4px 10px;">
+            {{ t.name }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- CENTER: posts (scrollable list inside tall card) -->
+    <div class="posts-column">
+      <article class="card posts-card">
+        <div class="posts-header">
+          <h2>Latest posts</h2>
+          <span>{{ threads|length }} active discussions</span>
+        </div>
+
+        <div class="threads-scroll">
+          {% for thread in threads %}
+            <a href="{% url 'community_thread' thread.id %}">
+              <article class="thread-card">
+                <div class="thread-meta-row">
+                  <div class="meta-avatar">
+                    {{ thread.author.username|slice:":2"|upper }}
+                  </div>
+                  <span style="font-weight:600; font-size:0.8rem;">{{ thread.author.username }}</span>
+                  <span class="meta-dot"></span>
+                  <span>{{ thread.created_at|timesince }} ago</span>
+                  <span class="meta-dot"></span>
+                  <span>{{ thread.topic.name }}</span>
+                  {% if thread.locked_forum %}
+                    <span class="group-pill" style="background:#fee2e2;border-color:#fecaca;color:#b91c1c;">Locked</span>
+                  {% endif %}
+                </div>
+
+                <h3 class="thread-title">{{ thread.title }}</h3>
+                <p class="thread-preview">{{ thread.body|truncatechars:220 }}</p>
+
+                <div class="thread-footer">
+                  <span class="vote vote-up">▲ 1.5K</span>
+                  <span class="vote vote-down">▼ 60</span>
+                  <div class="thread-footer-spacer"></div>
+                  <span>👁 2K</span>
+                  <span>💬 {{ thread.comment_count|default:0 }}</span>
+                </div>
+              </article>
+            </a>
+          {% empty %}
+            <div class="empty">
+              No discussions yet. Click <strong>“Start a new topic”</strong> in the banner to open the first thread.
+            </div>
+          {% endfor %}
+        </div>
+      </article>
+    </div>
+
+    <!-- RIGHT: status + members + groups -->
+    <aside class="right-column">
+      <div class="card">
+        <h3 class="right-title">Community status</h3>
+        <p class="right-sub">
+          Calibration community is live. New threads and replies land here in real time.
+        </p>
+        <div class="members-row">
+          <span>Online indicator</span>
+          <span style="font-weight:600;">● Active</span>
+        </div>
+        <button id="openThreadModal" class="btn btn-primary" style="width:100%; justify-content:center;">
+          + New Discussion
+        </button>
+      </div>
+
+      <div class="card">
+        <h3 class="right-title">Top members</h3>
+        <p class="right-sub">Frequent posters and big helpers.</p>
+        <ul class="top-members-list">
+          <li class="top-member">
+            <div class="top-member-main">
+              <div class="mini-avatar">{{ user.username|slice:":2"|upper }}</div>
+              <span>You</span>
+            </div>
+            <span style="font-size:0.78rem; color:#6b7280;">active</span>
+          </li>
+          <li class="top-member">
+            <div class="top-member-main">
+              <div class="mini-avatar">AP</div>
+              <span>Accountability Partner</span>
+            </div>
+            <span style="font-size:0.78rem; color:#6b7280;">coming soon</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3 class="right-title">Groups</h3>
+        <p class="right-sub">
+          In a future update, you’ll be able to join focused groups by skill, habit, or goal.
+        </p>
+        <ul class="groups-list">
+          {% if groups %}
+            {% for g in groups %}
+              <li class="group-item">
+                <div class="group-main">
+                  <span class="group-name">{{ g.name }}</span>
+                  <span class="group-meta">{{ g.member_count }} members · {{ g.tagline }}</span>
+                </div>
+                <span class="group-pill">View</span>
+              </li>
+            {% endfor %}
+          {% else %}
+            <li class="group-item">
+              <div class="group-main">
+                <span class="group-name">Deep Work & Focus</span>
+                <span class="group-meta">For people building a focus habit.</span>
+              </div>
+              <span class="group-pill">Coming soon</span>
+            </li>
+            <li class="group-item">
+              <div class="group-main">
+                <span class="group-name">Fitness & Discipline</span>
+                <span class="group-meta">Workouts, tracking, and accountability.</span>
+              </div>
+              <span class="group-pill">Coming soon</span>
+            </li>
+            <li class="group-item">
+              <div class="group-main">
+                <span class="group-name">Creators & Builders</span>
+                <span class="group-meta">Side projects, apps, and art.</span>
+              </div>
+              <span class="group-pill">Coming soon</span>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </aside>
+
+  </section>
 </div>
 
-</main>
+<!-- NEW DISCUSSION MODAL -->
+<div id="threadModal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>New Discussion</h3>
+      <button class="modal-close" id="closeThreadModal">&times;</button>
+    </div>
 
+    <form method="POST" action="{% url 'community' %}">
+      {% csrf_token %}
+      <div class="modal-body">
+        <label for="topic">Topic</label>
+        <select id="topic" name="topic">
+          <option value="">-- Choose an existing topic --</option>
+          {% for t in topics %}
+            <option value="{{ t.id }}">{{ t.name }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="topic_name">Or create a new topic</label>
+        <input id="topic_name" type="text" name="topic_name" maxlength="100"
+               placeholder="e.g. Focus &amp; Timeboxing">
+
+        <label for="title">Title</label>
+        <input id="title" type="text" name="title" maxlength="255" required
+               placeholder="Make it clear and specific">
+
+        <label for="body">Body</label>
+        <textarea id="body" name="body" rows="7" required
+                  placeholder="Share your context, question, or idea."></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Post thread</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Modal open/close
+  const threadModal = document.getElementById("threadModal");
+  const openButtons = [
+    document.getElementById("openThreadModal"),
+    document.getElementById("openThreadModalHeader")
+  ].filter(Boolean);
+  const closeButton = document.getElementById("closeThreadModal");
+
+  openButtons.forEach(btn =>
+    btn.addEventListener("click", () => threadModal.classList.add("is-open"))
+  );
+  if (closeButton) {
+    closeButton.addEventListener("click", () => threadModal.classList.remove("is-open"));
+  }
+  threadModal.addEventListener("click", (e) => {
+    if (e.target === threadModal) threadModal.classList.remove("is-open");
+  });
+
+  // Tabs (visual only)
+  function wireTabs(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.addEventListener("click", (e) => {
+      const btn = e.target.closest(".tab-pill");
+      if (!btn) return;
+      container.querySelectorAll(".tab-pill").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  }
+  wireTabs("tabsRow");
+  wireTabs("tabsRowDrawer");
+
+  // Filters drawer toggle
+  const filtersToggleBtn = document.getElementById("filtersToggleBtn");
+  const filtersDrawer    = document.getElementById("filtersDrawer");
+  if (filtersToggleBtn && filtersDrawer) {
+    filtersToggleBtn.addEventListener("click", () => {
+      filtersDrawer.classList.toggle("open");
+    });
+  }
+</script>
 
 </body>
-
 </html>

@@ -1,0 +1,1606 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ user.username }} – Profile · Calibration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --bg: #e5f0ff;
+      --bg-soft: #eff4ff;
+      --card: #ffffff;
+      --card-soft: #f3f6ff;
+      --accent: #0ea5e9;
+      --accent-deep: #1d4ed8;
+      --accent-soft: #dbeafe;
+      --accent-strong: #1e40af;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --border-subtle: #e5e7eb;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 16px 40px rgba(15, 23, 42, 0.12);
+      --sidebar-w: 260px;
+      --danger: #ef4444;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
+      background: radial-gradient(circle at top left, #e0f2fe 0, #eff4ff 45%, #dbeafe 100%);
+      color: var(--text-main);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* APP LAYOUT */
+    .app-shell {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    @media (max-width: 900px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* SIDEBAR (same vibe as your app) */
+    .sidebar {
+      background: #0b1723;
+      color: #e5eef7;
+      border-right: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 16px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, #0ea5e9 40%, #1d4ed8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1120;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.12);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: flex-end;
+      }
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      color: #cbd5f5;
+      border: 1px solid transparent;
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .nav-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    .nav-link:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.6);
+      color: #f9fafb;
+    }
+
+    .nav-link.active {
+      background: #0ea5e9;
+      color: #001018;
+      font-weight: 600;
+      border-color: transparent;
+    }
+
+    .nav-link.active .nav-indicator {
+      background: #001018;
+    }
+
+    /* MAIN */
+    .site-main {
+      padding: 0 0 40px 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* HEADER (keep same pattern as your app) */
+    .site-header {
+      margin: 0 0 16px;
+      padding: 16px 24px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.95);
+      background: rgba(248, 250, 252, 0.96);
+      backdrop-filter: blur(6px);
+    }
+
+    @media (max-width: 640px) {
+      .site-header {
+        flex-wrap: wrap;
+        padding: 14px 16px 12px;
+        margin-bottom: 12px;
+      }
+    }
+
+    .site-header-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .site-header-title h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .site-header-title span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      color: #0f172a;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.1s ease, transform 0.1s ease;
+    }
+
+    .btn:hover {
+      background: #f9fafb;
+      border-color: #cbd5e1;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, #0ea5e9, #1d4ed8);
+      color: #eff6ff;
+      box-shadow: 0 10px 25px rgba(30, 64, 175, 0.45);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #0284c7, #1e40af);
+      box-shadow: 0 12px 32px rgba(30, 64, 175, 0.6);
+    }
+
+    .btn-ghost {
+      background: #f9fafb;
+    }
+
+    /* PROFILE GRID LAYOUT */
+    .profile-shell {
+      padding: 0 20px;
+    }
+
+    @media (max-width: 900px) {
+      .profile-shell {
+        padding: 0 16px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .profile-shell {
+        padding: 0 10px;
+      }
+    }
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.3fr) minmax(0, 1.7fr);
+      gap: 22px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 1000px) {
+      .profile-layout {
+        grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
+      }
+    }
+
+    @media (max-width: 840px) {
+      .profile-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+    }
+
+    /* HERO PROFILE CARD */
+    .profile-hero {
+      padding: 18px 20px 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
+      gap: 16px;
+      background: radial-gradient(circle at top left, #0ea5e9 0, #2563eb 45%, #0f172a 100%);
+      color: #e5f0ff;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @media (max-width: 720px) {
+      .profile-hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .profile-hero::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(125,211,252,0.25) 0, transparent 55%),
+        radial-gradient(circle at 85% 80%, rgba(59,130,246,0.48) 0, transparent 55%);
+      opacity: 0.75;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .profile-hero-left,
+    .profile-hero-right {
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .profile-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      border: 3px solid rgba(239, 246, 255, 0.9);
+      overflow: hidden;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.55);
+      transform-style: preserve-3d;
+      transition: transform 0.25s ease;
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile-name-block h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .profile-name-block span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .profile-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid rgba(191, 219, 254, 0.85);
+      font-size: 0.76rem;
+    }
+
+    .profile-pill span {
+      margin: 0;
+    }
+
+    .profile-bio {
+      font-size: 0.86rem;
+      margin: 4px 0 0;
+      color: #dbeafe;
+      max-width: 460px;
+    }
+
+    .profile-highlight-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 0.76rem;
+    }
+
+    .profile-highlight {
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(191, 219, 254, 0.7);
+      background: rgba(15, 23, 42, 0.35);
+    }
+
+    .profile-quick-actions {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn-glass {
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      border: 1px solid rgba(191, 219, 254, 0.9);
+      background: rgba(15, 23, 42, 0.42);
+      color: #e0f2fe;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+    }
+
+    .btn-glass:hover {
+      background: rgba(15, 23, 42, 0.6);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.75);
+    }
+
+    .profile-hero-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .xp-ring {
+      width: 120px;
+      height: 120px;
+      position: relative;
+    }
+
+    .xp-ring svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .xp-ring circle {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+    }
+
+    .xp-ring-bg {
+      stroke: rgba(191, 219, 254, 0.35);
+    }
+
+    .xp-ring-progress {
+      stroke: url(#xpGradient);
+      stroke-dasharray: 314; /* approx circumference of r=50 */
+      stroke-dashoffset: 314;
+      transition: stroke-dashoffset 1s ease-out;
+    }
+
+    .xp-ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 0.78rem;
+    }
+
+    .xp-ring-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .xp-ring-label {
+      opacity: 0.85;
+    }
+
+    .xp-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      font-size: 0.74rem;
+    }
+
+    .xp-meta-pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid rgba(191, 219, 254, 0.7);
+    }
+
+    /* TABS + CONTENT AREA */
+    .profile-main-card {
+      margin-top: 18px;
+      padding: 14px 16px 16px;
+    }
+
+    .tab-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 7px 12px;
+      border-radius: 999px 999px 0 0;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .tab-btn.active {
+      color: var(--accent-strong);
+      font-weight: 600;
+    }
+
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      bottom: -7px;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #0ea5e9, #1d4ed8);
+    }
+
+    .tab-content {
+      display: none;
+      font-size: 0.86rem;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeInUp 0.28s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-title {
+      font-size: 0.96rem;
+      font-weight: 600;
+      margin: 2px 0 4px;
+    }
+
+    .section-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0 0 10px;
+    }
+
+    /* OVERVIEW GRID */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 720px) {
+      .overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      .overview-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .overview-card {
+      border-radius: 14px;
+      padding: 10px 11px;
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      border: 1px solid #bfdbfe;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .overview-label {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #1e3a8a;
+      opacity: 0.85;
+    }
+
+    .overview-value {
+      margin: 4px 0 0;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .overview-sub {
+      margin: 0;
+      font-size: 0.78rem;
+      color: #64748b;
+    }
+
+    .overview-glow {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(59,130,246,0.35), transparent 60%);
+      right: -30px;
+      top: -20px;
+    }
+
+    /* SKILLS & HABITS LIST */
+    .list-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .list-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .list-card {
+      border-radius: 14px;
+      padding: 10px 11px;
+      background: var(--card-soft);
+      border: 1px solid #e2e8f0;
+    }
+
+    .list-item {
+      padding: 7px 8px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 7px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.15s;
+    }
+
+    .list-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(148,163,184,0.4);
+      border-color: #bfdbfe;
+    }
+
+    .list-item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      margin-bottom: 4px;
+    }
+
+    .list-item-name {
+      font-weight: 600;
+    }
+
+    .list-item-meta {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: #e5efff;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #4ade80);
+      transition: width 0.9s ease-out;
+    }
+
+    .progress-fill.habit {
+      background: linear-gradient(90deg, #0ea5e9, #22c55e);
+    }
+
+    /* TIMELINE */
+    .timeline {
+      position: relative;
+      padding-left: 16px;
+      margin-top: 6px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: linear-gradient(180deg, #93c5fd, #1d4ed8);
+      opacity: 0.7;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 10px;
+      padding-left: 10px;
+      font-size: 0.82rem;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .timeline-item-dot {
+      position: absolute;
+      left: -6px;
+      top: 5px;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #0ea5e9;
+      border: 2px solid #e0f2fe;
+      box-shadow: 0 0 0 4px rgba(14,165,233,0.18);
+    }
+
+    .timeline-item-title {
+      font-weight: 600;
+    }
+
+    .timeline-item-meta {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* RIGHT COLUMN: FRIENDS + LIVE ACTIVITY */
+    .profile-side-col {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .friends-card {
+      padding: 14px 14px 12px;
+    }
+
+    .friends-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .friends-header h2 {
+      margin: 0;
+      font-size: 0.96rem;
+    }
+
+    .friends-header span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .friends-list {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .friends-list::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .friends-list::-webkit-scrollbar-thumb {
+      background: #cbd5f5;
+      border-radius: 999px;
+    }
+
+    .friend-card {
+      min-width: 110px;
+      max-width: 140px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      border: 1px solid #bfdbfe;
+      padding: 8px 8px 9px;
+      font-size: 0.78rem;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transform: translateY(0);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .friend-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(59,130,246,0.4);
+    }
+
+    .friend-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 2px solid #eff6ff;
+      background: #bfdbfe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1e3a8a;
+    }
+
+    .friend-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .friend-name {
+      font-weight: 600;
+    }
+
+    .friend-status {
+      font-size: 0.72rem;
+      color: #1e3a8a;
+    }
+
+    .friend-tag {
+      font-size: 0.72rem;
+      color: #1f2933;
+    }
+
+    .activity-card {
+      padding: 14px 14px 12px;
+    }
+
+    .activity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .activity-header h2 {
+      margin: 0;
+      font-size: 0.96rem;
+    }
+
+    .activity-stream {
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 4px;
+      font-size: 0.8rem;
+    }
+
+    .activity-stream::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .activity-stream::-webkit-scrollbar-thumb {
+      background: #cbd5f5;
+      border-radius: 999px;
+    }
+
+    .activity-item {
+      padding: 7px 8px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      margin-bottom: 6px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .activity-item-title {
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .activity-item-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+    }
+
+    .chip {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1e3a8a;
+    }
+
+    /* ANIMATION ON SCROLL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" role="navigation" aria-label="Sidebar">
+    <div class="brand">
+      <div class="brand-mark">CB</div>
+      <div class="brand-text">
+        <div class="brand-title">Calibration</div>
+        <div class="brand-subtitle">Discipline • Habits • Skills</div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <a href="{% url 'dashboard' %}" class="nav-link">
+        <span>Dashboard</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'disciplinebuilder' %}" class="nav-link">
+        <span>Discipline Builder</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'progresstracker' %}" class="nav-link">
+        <span>Progress Tracker</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'rewards' %}" class="nav-link">
+        <span>Rewards</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'coaching' %}" class="nav-link">
+        <span>Coaching</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'messages' %}" class="nav-link">
+        <span>Messages</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'community' %}" class="nav-link">
+        <span>Community</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="#" class="nav-link active">
+        <span>Profile</span>
+        <span class="nav-indicator"></span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="site-main">
+    <div class="container">
+      <!-- HEADER -->
+      <header class="site-header">
+        <div class="site-header-title">
+          <h1>Profile</h1>
+          <span>See your public profile, live stats, and friend activity.</span>
+        </div>
+        <div class="header-actions">
+          <a href="{% url 'dashboard' %}" class="btn btn-ghost">← Back to Dashboard</a>
+          <a href="/settings/" class="btn btn-primary">Account Settings</a>
+        </div>
+      </header>
+
+      <!-- PROFILE BODY -->
+      <section class="profile-shell">
+        <div class="profile-layout">
+          <!-- LEFT: HERO + TABS -->
+          <div>
+            <!-- HERO CARD -->
+            <article class="card profile-hero reveal" id="profile-hero">
+              <div class="profile-hero-left">
+                <div class="profile-identity">
+                  <div class="profile-avatar" id="avatar-tilt">
+                    <img src="https://via.placeholder.com/80"
+                         alt="{{ user.username }} avatar">
+                  </div>
+                  <div class="profile-name-block">
+                    <h2 id="profile-name">{{ user.username }}</h2>
+                    <span id="profile-tagline">
+                      <span>⚡ Calibrating discipline</span> ·
+                      <span id="greeting-label">Good day</span>
+                    </span>
+                  </div>
+                </div>
+
+                <p class="profile-bio" id="profile-bio">
+                  Focused on consistent habits, long-term growth, and building skills that compound over time.
+                </p>
+
+                <div class="profile-highlight-row">
+                  <div class="profile-highlight">Joined · {{ user.date_joined|date:"M Y" }}</div>
+                  <div class="profile-highlight">Primary focus · Skill building</div>
+                  <div class="profile-highlight">Location · Central time</div>
+                </div>
+
+                <div class="profile-quick-actions">
+                  <button type="button" class="btn-glass" id="simulate-level">
+                    ⚙️ Simulate Level Up
+                  </button>
+                  <button type="button" class="btn-glass" id="sparkle-activity">
+                    ✨ Highlight Activity
+                  </button>
+                </div>
+              </div>
+
+              <div class="profile-hero-right">
+                <div class="xp-ring" data-percent="68" id="xp-ring">
+                  <svg viewBox="0 0 120 120">
+                    <defs>
+                      <linearGradient id="xpGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#0ea5e9"/>
+                        <stop offset="45%" stop-color="#3b82f6"/>
+                        <stop offset="100%" stop-color="#22c55e"/>
+                      </linearGradient>
+                    </defs>
+                    <circle class="xp-ring-bg" cx="60" cy="60" r="50"></circle>
+                    <circle class="xp-ring-progress" cx="60" cy="60" r="50"></circle>
+                  </svg>
+                  <div class="xp-ring-center">
+                    <span class="xp-ring-value" id="xp-percent">0%</span>
+                    <span class="xp-ring-label">Profile completion</span>
+                  </div>
+                </div>
+
+                <div class="xp-meta-row">
+                  <div class="xp-meta-pill" id="xp-today-pill">🔥 XP Today: 0</div>
+                  <div class="xp-meta-pill" id="streak-pill">📆 Streak: 0 days</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- MAIN TABS CARD -->
+            <article class="card profile-main-card reveal">
+              <div class="tab-row">
+                <button type="button" class="tab-btn active" data-tab="tab-overview">Overview</button>
+                <button type="button" class="tab-btn" data-tab="tab-skills">Skills & Habits</button>
+                <button type="button" class="tab-btn" data-tab="tab-timeline">Timeline</button>
+                <button type="button" class="tab-btn" data-tab="tab-journal">Journal Snapshot</button>
+              </div>
+
+              <!-- OVERVIEW -->
+              <div class="tab-content active" id="tab-overview">
+                <h2 class="section-title">Snapshot</h2>
+                <p class="section-sub">A quick look at how you’re doing right now.</p>
+
+                <div class="overview-grid">
+                  <div class="overview-card" data-counter="xp" data-target="{{ total_xp }}">
+                    <div class="overview-glow"></div>
+                    <div class="overview-label">Total XP</div>
+                    <div class="overview-value counter" data-prefix="">{{ total_xp|default:0 }}</div>
+                    <p class="overview-sub">Earned from skills, habits, and tasks</p>
+                  </div>
+                  <div class="overview-card" data-counter="streak" data-target="{{ login_streak }}">
+                    <div class="overview-glow"></div>
+                    <div class="overview-label">Current streak</div>
+                    <div class="overview-value counter" data-prefix="">{{ login_streak|default:0 }}</div>
+                    <p class="overview-sub">consecutive days with at least 1 action</p>
+                  </div>
+                  <div class="overview-card" data-counter="skills" data-target="{{ skills_count }}">
+                    <div class="overview-glow"></div>
+                    <div class="overview-label">Skills tracked</div>
+                    <div class="overview-value counter" data-prefix="">{{ skills_count|default:0 }}</div>
+                    <p class="overview-sub">active skills in your system</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SKILLS & HABITS -->
+              <div class="tab-content" id="tab-skills">
+                <h2 class="section-title">Skills & Habits</h2>
+                <p class="section-sub">
+                  A preview of where your attention has been recently.
+                </p>
+
+                <div class="list-grid">
+                  <div class="list-card">
+                    <h3 style="margin:0 0 6px; font-size:0.9rem;">Top Skills</h3>
+                    {% for s in skills_data %}
+                    <div class="list-item" data-progress="{{ s.progress }}">
+                      <div class="list-item-head">
+                        <span class="list-item-name">{{ s.name }}</span>
+                        <span class="list-item-meta">Lvl {{ s.level }} – {{ s.progress }}%</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                      </div>
+                    </div>
+                    {% empty %}
+                      <p class="muted">No skills yet. Add one in Discipline Builder.</p>
+                    {% endfor %}
+                  </div>
+
+                  <div class="list-card">
+                    <h3 style="margin:0 0 6px; font-size:0.9rem;">Core Habits</h3>
+                    {% for h in habits_data %}
+                    <div class="list-item" data-progress="{{ h.progress }}">
+                      <div class="list-item-head">
+                        <span class="list-item-name">{{ h.name }}</span>
+                        <span class="list-item-meta">{{ h.progress }}% of goal</span>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill habit"></div>
+                      </div>
+                    </div>
+                    {% empty %}
+                      <p class="muted">No habits yet. Create one to track consistency.</p>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+<!-- TIMELINE -->
+              <div class="tab-content" id="tab-timeline">
+                <h2 class="section-title">Recent Milestones</h2>
+                <p class="section-sub">A mini-timeline of what you?ve done lately.</p>
+
+                <div class="timeline" id="timeline">
+                  {% for item in recent_activity %}
+                  <div class="timeline-item">
+                    <div class="timeline-item-dot"></div>
+                    <div class="timeline-item-title">{{ item.title }}</div>
+                    <div class="timeline-item-meta">{{ item.meta }}</div>
+                  </div>
+                  {% empty %}
+                  <p class="muted">No recent activity yet. Complete a task or add a journal entry to see it here.</p>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <!-- JOURNAL SNAPSHOT -->
+              <div class="tab-content" id="tab-journal">
+                <h2 class="section-title">Journal Snapshot</h2>
+                <p class="section-sub">
+                  A quick composite of your last entries.
+                </p>
+
+                <div style="display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:12px;">
+                  <div class="list-card">
+                    <h3 style="margin:0 0 6px; font-size:0.9rem;">Latest reflection</h3>
+                    <p style="font-size:0.86rem; margin:4px 0 0; color:var(--text-main);" id="journal-preview">
+                      {% if latest_journal %}
+                        {{ latest_journal.note|default:"(no note provided)" }}
+                      {% else %}
+                        No journal entries yet. Log one to see it here.
+                      {% endif %}
+                    </p>
+                  </div>
+
+                  <div class="list-card">
+                    <h3 style="margin:0 0 4px; font-size:0.9rem;">Mood ? last 5 entries</h3>
+                    <div id="mood-pills" style="display:flex; flex-wrap:wrap; gap:6px; font-size:0.78rem;">
+                      {% for m in mood_recent %}
+                        <span class="chip">{{ m.timestamp|date:"M j" }} ? {{ m.mood_score }}</span>
+                      {% empty %}
+                        <span class="muted">No mood entries yet.</span>
+                      {% endfor %}
+                    </div>
+                    <p style="font-size:0.78rem; color:var(--text-muted); margin-top:6px;">
+                      Mood data updates when you log a task or journal entry with mood details.
+                    </p>
+                  </div>
+                </div>
+              </div>
+<!-- JOURNAL SNAPSHOT -->
+              <div class="tab-content" id="tab-journal">
+                <h2 class="section-title">Journal Snapshot</h2>
+                <p class="section-sub">
+                  A quick composite of your last entries. Later this can pull real data.
+                </p>
+
+                <div style="display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:12px;">
+                  <div class="list-card">
+                    <h3 style="margin:0 0 6px; font-size:0.9rem;">Latest reflection</h3>
+                    <p style="font-size:0.86rem; margin:4px 0 0; color:var(--text-main);" id="journal-preview">
+                      “Today I focused more on systems than outcomes. My energy dipped around mid-day,
+                      but once I broke things down into tiny actions, I actually got more done than I expected...”
+                    </p>
+                  </div>
+
+                  <div class="list-card">
+                    <h3 style="margin:0 0 4px; font-size:0.9rem;">Mood · last 5 days</h3>
+                    <div id="mood-pills" style="display:flex; flex-wrap:wrap; gap:6px; font-size:0.78rem;">
+                      <!-- JS will inject mood chips -->
+                    </div>
+                    <p style="font-size:0.78rem; color:var(--text-muted); margin-top:6px;">
+                      This will eventually connect to your mood + habit correlation data.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- RIGHT: FRIENDS + LIVE ACTIVITY -->
+          <aside class="profile-side-col">
+            <!-- FRIENDS -->
+            <article class="card friends-card reveal">
+              <div class="friends-header">
+                <div>
+                  <h2>Friends</h2>
+                  <span>People you’re connected with in Calibration.</span>
+                </div>
+                <button type="button" class="btn btn-ghost" style="font-size:0.78rem; padding:5px 10px;" id="add-friend-btn">
+                  + Add
+                </button>
+              </div>
+
+              <div class="friends-list" id="friends-list">
+                <!-- JS will animate these in -->
+                <div class="friend-card">
+                  <div class="friend-row">
+                    <div class="friend-avatar">RJ</div>
+                    <div>
+                      <div class="friend-name">Riku</div>
+                      <div class="friend-status">Online · Deep work</div>
+                    </div>
+                  </div>
+                  <div class="friend-tag">Focus: Frontend & music</div>
+                </div>
+
+                <div class="friend-card">
+                  <div class="friend-row">
+                    <div class="friend-avatar">MN</div>
+                    <div>
+                      <div class="friend-name">Minyoung</div>
+                      <div class="friend-status">Today · Gym streak</div>
+                    </div>
+                  </div>
+                  <div class="friend-tag">Focus: Systems thinking</div>
+                </div>
+
+                <div class="friend-card">
+                  <div class="friend-row">
+                    <div class="friend-avatar">TJ</div>
+                    <div>
+                      <div class="friend-name">Taeyong</div>
+                      <div class="friend-status">Offline · Planning</div>
+                    </div>
+                  </div>
+                  <div class="friend-tag">Focus: Creative discipline</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- LIVE ACTIVITY -->
+            <article class="card activity-card reveal">
+              <div class="activity-header">
+                <div>
+                  <h2>Live Activity</h2>
+                  <span style="font-size:0.8rem; color:var(--text-muted);">
+                    Stream of your latest actions (demo data for now).
+                  </span>
+                </div>
+                <span class="chip" id="activity-clock">—:—</span>
+              </div>
+
+              <div class="activity-stream" id="activity-stream">
+                <!-- JS will fill activity items -->
+              </div>
+            </article>
+          </aside>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+  // HELPER: clamp
+  function clamp(num, min, max) {
+    return Math.min(Math.max(num, min), max);
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    /* ========== GREETING BASED ON TIME ========== */
+    const greetingLabel = document.getElementById("greeting-label");
+    const now = new Date();
+    const hour = now.getHours();
+    let greeting = "Good day";
+    if (hour < 6) greeting = "Up late";
+    else if (hour < 12) greeting = "Good morning";
+    else if (hour < 18) greeting = "Good afternoon";
+    else greeting = "Good evening";
+    if (greetingLabel) greetingLabel.textContent = greeting;
+
+    /* ========== XP RING ANIMATION ========== */
+    const xpRing = document.getElementById("xp-ring");
+    const xpPercentEl = document.getElementById("xp-percent");
+    const xpTodayPill = document.getElementById("xp-today-pill");
+    const streakPill = document.getElementById("streak-pill");
+
+    if (xpRing && xpPercentEl) {
+      const percent = parseInt(xpRing.dataset.percent || "65", 10);
+      const circle = xpRing.querySelector(".xp-ring-progress");
+      const circumference = 314; // matches CSS
+      const offset = circumference - (percent / 100) * circumference;
+
+      // animate stroke and number
+      requestAnimationFrame(() => {
+        circle.style.strokeDashoffset = offset;
+      });
+
+      let current = 0;
+      const step = () => {
+        current += 2;
+        if (current > percent) current = percent;
+        xpPercentEl.textContent = current + "%";
+        if (current < percent) {
+          requestAnimationFrame(step);
+        }
+      };
+      requestAnimationFrame(step);
+
+    }
+
+    /* ========== AVATAR TILT ON MOUSE MOVE ========== */
+    const avatarTilt = document.getElementById("avatar-tilt");
+    if (avatarTilt) {
+      avatarTilt.addEventListener("mousemove", (e) => {
+        const rect = avatarTilt.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const rotateX = clamp(-y * 10, -10, 10);
+        const rotateY = clamp(x * 10, -10, 10);
+        avatarTilt.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      avatarTilt.addEventListener("mouseleave", () => {
+        avatarTilt.style.transform = "rotateX(0deg) rotateY(0deg)";
+      });
+    }
+
+    /* ========== TAB SWITCHING ========== */
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tabId = btn.getAttribute("data-tab");
+        if (!tabId) return;
+
+        tabButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        tabContents.forEach((c) => {
+          c.classList.toggle("active", c.id === tabId);
+        });
+      });
+    });
+
+    /* ========== COUNTERS (OVERVIEW CARDS) ========== */
+    const counters = document.querySelectorAll(".overview-card .counter");
+    counters.forEach((counter) => {
+      const card = counter.closest(".overview-card");
+      const target = parseInt(card.dataset.target || "0", 10);
+      let current = 0;
+      const duration = 900;
+      const start = performance.now();
+
+      const animate = (time) => {
+        const progress = clamp((time - start) / duration, 0, 1);
+        current = Math.floor(target * progress);
+        counter.textContent = current;
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          counter.textContent = target;
+        }
+      };
+      requestAnimationFrame(animate);
+    });
+
+    /* ========== PROGRESS BAR FILL (SKILLS & HABITS) ========== */
+    const progressItems = document.querySelectorAll(".list-item");
+    progressItems.forEach((item) => {
+      const percent = parseInt(item.dataset.progress || "0", 10);
+      const fill = item.querySelector(".progress-fill");
+      if (!fill) return;
+      // set initial to 0
+      fill.style.width = "0%";
+      // animate a bit later for effect
+      setTimeout(() => {
+        fill.style.width = clamp(percent, 0, 100) + "%";
+      }, 250);
+    });
+
+    /* ========== TIMELINE REVEAL ========== */
+    const timelineItems = document.querySelectorAll(".timeline-item");
+    timelineItems.forEach((item, index) => {
+      setTimeout(() => {
+        item.style.opacity = "1";
+        item.style.transform = "translateY(0)";
+      }, 180 + index * 80);
+    });
+
+    /* ========== MOOD PILL GENERATOR (JOURNAL TAB) ========== */
+    const moodTarget = document.getElementById("mood-pills");
+    if (moodTarget) {
+      const moods = [
+        { label: "Calm", color: "#bbf7d0" },
+        { label: "Focused", color: "#bfdbfe" },
+        { label: "Tired", color: "#fee2e2" },
+        { label: "Motivated", color: "#fde68a" },
+        { label: "Stressed", color: "#fecaca" },
+      ];
+      moods.forEach((m) => {
+        const pill = document.createElement("span");
+        pill.textContent = m.label;
+        pill.style.padding = "3px 8px";
+        pill.style.borderRadius = "999px";
+        pill.style.background = m.color;
+        pill.style.fontSize = "0.78rem";
+        pill.style.border = "1px solid rgba(15,23,42,0.08)";
+        moodTarget.appendChild(pill);
+      });
+    }
+
+    /* ========== LIVE ACTIVITY STREAM (FAKE DATA + JS) ========== */
+    const activityStream = document.getElementById("activity-stream");
+    const activityClock = document.getElementById("activity-clock");
+
+    const sampleActivities = [];
+
+    function renderActivity() {
+      if (!activityStream) return;
+      activityStream.innerHTML = "";
+      sampleActivities.forEach((item, index) => {
+        const node = document.createElement("div");
+        node.className = "activity-item";
+        node.innerHTML = `
+          <div class="activity-item-title">${item.title}</div>
+          <div class="activity-item-meta">
+            <span class="chip">${item.type}</span>
+            <span>${item.ago}</span>
+          </div>
+        `;
+        activityStream.appendChild(node);
+        setTimeout(() => {
+          node.style.opacity = "1";
+          node.style.transform = "translateY(0)";
+        }, 160 + index * 90);
+      });
+    }
+
+    renderActivity();
+
+    // fake "live" by shuffling every ~25 seconds
+    setInterval(() => {
+      sampleActivities.push(sampleActivities.shift());
+      renderActivity();
+    }, 25000);
+
+    // simple clock
+    function updateClock() {
+      if (!activityClock) return;
+      const d = new Date();
+      const hh = String(d.getHours()).padStart(2, "0");
+      const mm = String(d.getMinutes()).padStart(2, "0");
+      activityClock.textContent = hh + ":" + mm;
+    }
+    updateClock();
+    setInterval(updateClock, 60000);
+
+    /* ========== FRIEND "ADD" DEMO ========== */
+    const addFriendBtn = document.getElementById("add-friend-btn");
+    const friendsList = document.getElementById("friends-list");
+    if (addFriendBtn && friendsList) {
+      addFriendBtn.addEventListener("click", () => {
+        const friendNames = ["Kai", "Vivian", "Jongho", "Heejin", "Mark", "Jennie"];
+        const pick = friendNames[Math.floor(Math.random() * friendNames.length)];
+        const initials = pick
+          .split(" ")
+          .map((p) => p[0])
+          .join("")
+          .toUpperCase();
+        const card = document.createElement("div");
+        card.className = "friend-card";
+        card.innerHTML = `
+          <div class="friend-row">
+            <div class="friend-avatar">${initials}</div>
+            <div>
+              <div class="friend-name">${pick}</div>
+              <div class="friend-status">New · Just added</div>
+            </div>
+          </div>
+          <div class="friend-tag">Focus: To be defined</div>
+        `;
+        friendsList.prepend(card);
+        card.style.transform = "translateY(-6px)";
+        setTimeout(() => {
+          card.style.transform = "translateY(0)";
+        }, 160);
+      });
+    }
+
+    /* ========== SCROLL REVEAL (INTERSECTION OBSERVER) ========== */
+    const revealEls = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      revealEls.forEach((el) => observer.observe(el));
+    } else {
+      revealEls.forEach((el) => el.classList.add("visible"));
+    }
+
+    /* ========== CTA BUTTON EFFECTS ========== */
+    const simulateLevelBtn = document.getElementById("simulate-level");
+    if (simulateLevelBtn && xpRing && xpPercentEl) {
+      simulateLevelBtn.addEventListener("click", () => {
+        const circle = xpRing.querySelector(".xp-ring-progress");
+        let percent = Math.floor(Math.random() * 30) + 70; // 70-100
+        const circumference = 314;
+        const offset = circumference - (percent / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
+
+        let current = 0;
+        const animate = () => {
+          current += 3;
+          if (current > percent) current = percent;
+          xpPercentEl.textContent = current + "%";
+          if (current < percent) {
+            requestAnimationFrame(animate);
+          }
+        };
+        requestAnimationFrame(animate);
+      });
+    }
+
+    const sparkleBtn = document.getElementById("sparkle-activity");
+    if (sparkleBtn && activityStream) {
+      sparkleBtn.addEventListener("click", () => {
+        activityStream.classList.add("sparkle");
+        activityStream.style.boxShadow = "0 0 0 2px rgba(56,189,248,0.4)";
+        setTimeout(() => {
+          activityStream.style.boxShadow = "none";
+          activityStream.classList.remove("sparkle");
+        }, 600);
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

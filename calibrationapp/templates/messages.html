@@ -1,175 +1,888 @@
-<!--The html template was created using AI Generated Code as a starting point-->
-
-<!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="en">
 <head>
-<title>Messages</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>Messages · Calibration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-:root{
-  --sidebar-w: 250px;
-  --sidebar-br: 1px;
-  --header-h: 80px;
-}
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --pane-bg: #ffffff;
 
-html, body{
-  margin: 0;
-  padding: 0;
-  background: #f8fafc; 
-  color: #0f172a;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --primary: #2563eb;
+      --primary-soft: #dbeafe;
+      --primary-border: #bfdbfe;
 
-}
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --border-subtle: #e5e7eb;
 
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin-inline: auto;
-  padding: clamp(16px, 3vw, 32px);
-}
+      --radius-md: 10px;
+      --radius-pill: 999px;
 
-/* ---header--- */
-header{
-  position: fixed;
-  top: 0;
-  left: calc(var(--sidebar-w) + var(--sidebar-br));
-  right:0;
-  height: var(--header-h);
-  display: flex;
-  background:rgba(255,255,255,0.6);
-  border-bottom: 1px solid #e5e7eb;
-  padding: 0 20px 0 24px;
-  justify-content: space-between;
-  backdrop-filter: blur(10px);
-  align-items: center;
-  z-index: 1000;
-  gap: 12px;
-  
+      --sidebar-w: 240px;
+      --pane-h: min(78vh, 680px);
+    }
 
-}
+    *, *::before, *::after { box-sizing: border-box; }
 
-.sidebar {
-    position: fixed; 
-    inset: 0 auto 0 0;
-    width: var(--sidebar-w);
-    background: #0b1723;
-    color: #e5eef7;
-    border-right: var(--sidebar-br) solid rgba(255,255,255,.08);
-    padding: 16px 12px;
-    overflow-y: auto;
-    z-index: 1200;
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
+    }
 
-}
+    a { color: inherit; text-decoration: none; }
 
-.brand{
-    display:flex; 
-    align-items:center; 
-    gap:10px; 
-    font-weight:700; 
-    margin: 6px 8px 14px;
-  }
+    /* APP LAYOUT */
+    .app-shell {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      min-height: 100vh;
+    }
 
-.nav{
-    display:flex; 
-    flex-direction:column; 
-    gap:6px; 
-    margin-top: 8px;
-}
-.nav a {
-  padding:10px 12px; 
-  border-radius:10px; 
-  color:#cbd5e1;
-  text-decoration: none;
-  font-size: 15px;
- 
-}
+    @media (max-width: 900px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+    }
 
-/* Active/current link */
-.nav a.active {
-    background: #0ea5e9; 
-    color:#001018 
-  
-}
+    /* SIDEBAR */
+    .sidebar {
+      background: #020617;
+      color: #e5e7eb;
+      padding: 16px 16px 20px;
+      border-right: 1px solid rgba(15, 23, 42, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-.nav a:hover{ background: rgba(255,255,255,.08); 
-  color:white }
+    @media (max-width: 900px) {
+      .sidebar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
 
-.main{
-    margin-left:  var(--sidebar-w);
-    padding: calc(var(--header-h) + 20px) 20px 20px;
-    min-height: 100dvh;  
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-.card{
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 16px;
-  }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #60a5fa, #0ea5e9 40%, #4f46e5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #020617;
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
 
-.btn{
-    display:inline-flex; 
-    align-items:center; 
-    gap:8px;
-    padding:10px 14px; 
-    border-radius:999px; 
-    border:1px solid #e5e7eb;
-    background:#fff; 
-    cursor:pointer;
-  }
-  .btn-primary{ 
-    background: #0ea5e9; 
-    color:#001018; 
-    border-color:transparent }
-  .btn-primary:hover{ 
-    background: #0369a1 }
+    .brand-text { display: flex; flex-direction: column; gap: 2px; }
+    .brand-title {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+    .brand-subtitle { font-size: 0.72rem; color: #9ca3af; }
 
-</style>
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
+    @media (max-width: 900px) {
+      .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+    }
+
+    .nav-link {
+      padding: 7px 9px;
+      border-radius: var(--radius-md);
+      font-size: 0.8rem;
+      color: #cbd5f5;
+      border: 1px solid transparent;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.12s, border-color 0.12s, transform 0.1s;
+    }
+
+    .nav-link:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .nav-link.active {
+      background: #0ea5e9;
+      color: #020617;
+      font-weight: 600;
+    }
+
+    /* MAIN */
+    .site-main {
+      padding: 20px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #ffffff;        /* makes it feel like full page content */
+    }
+
+    @media (max-width: 640px) { .site-main { padding: 14px; } }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .page-title { display: flex; flex-direction: column; gap: 3px; }
+    .page-title h1 {
+      margin: 0;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+    .page-title span { font-size: 0.85rem; color: var(--text-muted); }
+
+    .page-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 6px 11px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      color: #111827;
+      transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.1s;
+    }
+
+    .btn:hover {
+      background: #f9fafb;
+      border-color: #cbd5e1;
+      box-shadow: 0 10px 22px rgba(148, 163, 184, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      background: var(--primary);
+      color: #f9fafb;
+    }
+
+    .user-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 9px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      font-size: 0.8rem;
+    }
+
+    .user-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #4b5563;
+    }
+
+    /* 3-COLUMN MESSAGES AREA – this is the page, not inside a box */
+    .messages-main {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1.6fr) 260px;
+      min-height: var(--pane-h);
+      border: 1px solid var(--border-subtle);
+      border-radius: 0;
+      background: var(--pane-bg);
+    }
+
+    @media (max-width: 1100px) {
+      .messages-main {
+        grid-template-columns: 260px minmax(0, 1.5fr);
+        grid-template-areas:
+          "list chat"
+          "list details";
+      }
+      .pane-list { grid-area: list; }
+      .pane-chat { grid-area: chat; }
+      .pane-details { grid-area: details; }
+    }
+
+    @media (max-width: 800px) {
+      .messages-main {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "list"
+          "chat"
+          "details";
+      }
+    }
+
+    .pane {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    .pane:last-child { border-right: none; }
+
+    /* LEFT PANE – LIST */
+    .pane-list-header {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .pane-list-header-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .pane-list-header small { font-size: 0.72rem; color: var(--text-muted); }
+
+    .pane-search {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .pane-search input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 0.78rem;
+      flex: 1;
+    }
+
+    .conversation-list {
+      list-style: none;
+      margin: 0;
+      padding: 6px 6px;
+      flex: 1;
+      overflow-y: auto;
+      background: #f9fafb;
+    }
+
+    .conversation-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 8px;
+      padding: 7px 8px;
+      margin-bottom: 4px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      align-items: center;
+      transition: background 0.12s, transform 0.1s;
+    }
+
+    .conversation-item:hover {
+      background: #edf2ff;
+      transform: translateY(-1px);
+    }
+
+    .conversation-item.active {
+      background: var(--primary-soft);
+    }
+
+    .conv-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: #e5edff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #1d4ed8;
+      flex-shrink: 0;
+    }
+
+    .conv-main { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .conv-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+    }
+    .conv-name {
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .conv-time { font-size: 0.7rem; color: #9ca3af; flex-shrink: 0; }
+    .conv-preview {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .conv-badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #166534;
+      flex-shrink: 0;
+    }
+
+    /* MIDDLE PANE – CHAT */
+    .pane-chat-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chat-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .chat-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: #e5edff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #1d4ed8;
+      flex-shrink: 0;
+    }
+
+    .chat-user-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .chat-user-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chat-user-sub { font-size: 0.72rem; color: var(--text-muted); }
+    .chat-meta { font-size: 0.72rem; color: var(--text-muted); text-align: right; }
+
+    .chat-thread {
+      flex: 1;
+      padding: 10px 16px;
+      overflow-y: auto;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .day-label-wrap { text-align: center; margin-bottom: 6px; }
+    .day-label {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      font-size: 0.7rem;
+      color: #9ca3af;
+    }
+
+    .message-row {
+      display: flex;
+      margin-bottom: 2px;
+    }
+
+    .message-row.me { justify-content: flex-end; }
+    .message-row.them { justify-content: flex-start; }
+
+    .message-bubble {
+      max-width: 72%;
+      border-radius: 14px;
+      padding: 6px 9px;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .message-bubble.me {
+      background: var(--primary);
+      color: #f9fafb;
+    }
+
+    .message-meta {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 0.7rem;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    .chat-input-wrap {
+      border-top: 1px solid var(--border-subtle);
+      padding: 9px 12px;
+      background: #f9fafb;
+    }
+
+    .chat-input-inner {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      padding: 4px 8px;
+    }
+
+    .chat-input-inner textarea {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      resize: none;
+      padding: 6px 4px;
+      font-size: 0.84rem;
+      height: 38px;
+      max-height: 90px;
+      overflow-y: auto;
+    }
+
+    .icon-btn {
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 4px 4px;
+    }
+
+    .send-btn {
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 6px 13px;
+      background: var(--primary);
+      color: #f9fafb;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* RIGHT PANE – DETAILS/BUDDIES */
+    .pane-details-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .detail-block {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.8rem;
+    }
+
+    .detail-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .buddies-list {
+      list-style: none;
+      margin: 0;
+      padding: 10px 12px 10px 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .buddy-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 8px;
+      padding: 6px 6px 6px 0;
+      font-size: 0.8rem;
+      align-items: center;
+    }
+
+    .buddy-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: #e5edff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    .buddy-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .buddy-name {
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .buddy-note { font-size: 0.72rem; color: var(--text-muted); }
+
+    .buddy-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-end;
+    }
+
+    .buddy-btn {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      font-size: 0.72rem;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      font-size: 0.7rem;
+      color: #10b981;
+    }
+  </style>
 </head>
-
-
 <body>
 
- <nav class="sidebar" role="navigation" aria-label="Sidebar">
- <div class="brand">
- <strong>Calibration</strong>
- </div>
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">CB</div>
+      <div class="brand-text">
+        <div class="brand-title">Calibration</div>
+        <div class="brand-subtitle">Discipline · Habits · Skills</div>
+      </div>
+    </div>
 
- <div class="nav">
- <a href="{% url 'dashboard' %}" >Dashboard</a>
- <a href="{% url 'disciplinebuilder' %}">Discipline Builder</a>
- <a href="{% url 'progresstracker' %}">Progress Tracker </a>
- <a href="{% url 'rewards' %}">Rewards</a>
- <a href="{% url 'coaching' %}">Coaching</a>
- <a class="active" href="{% url 'messages' %}">Messages</a>
- <a href="{% url 'community' %}">Community</a>
- </div>
-</nav>
+    <div class="nav">
+      <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+      <a href="{% url 'disciplinebuilder' %}" class="nav-link">Discipline Builder</a>
+      <a href="{% url 'progresstracker' %}" class="nav-link">Progress Tracker</a>
+      <a href="{% url 'rewards' %}" class="nav-link">Rewards</a>
+      <a href="{% url 'coaching' %}" class="nav-link">Coaching</a>
+      <a href="{% url 'messages' %}" class="nav-link active">Messages</a>
+      <a href="{% url 'community' %}" class="nav-link">Community</a>
+      <a href="{% url 'buddies' %}" class="nav-link">Buddies</a>
+    </div>
+  </nav>
 
-<header>
-  <strong>Messages</strong>
-  <div>
-    <a class="btn" href="#">Settings</a>
-    <a class="btn btn-primary" href="/accounts/logout/"> Log out</a>
-  </div>
-</header>
+  <!-- MAIN -->
+  <main class="site-main">
+    <div class="page-header">
+      <div class="page-title">
+        <h1>MESSAGES</h1>
+        <span>Inbox-style messaging to keep your discipline on track.</span>
+      </div>
+      <div class="page-actions">
+        <a class="btn" href="{% url 'buddies' %}">Find buddies</a>
+        <div class="user-pill">
+          <div class="user-avatar">
+            {{ request.user.username|slice:":2"|upper }}
+          </div>
+          <span>{{ request.user.username }}</span>
+        </div>
+      </div>
+    </div>
 
-<main class="main">
-<div class="card">
+    <!-- FULL-PAGE 3 COLUMN LAYOUT -->
+    <section class="messages-main">
+      <!-- LEFT: conversation list -->
+      <aside class="pane pane-list">
+        <div class="pane-list-header">
+          <div class="pane-list-header-title">
+            <span>Messages</span>
+            <small>All</small>
+          </div>
+          <div class="pane-search">
+            🔍
+            <input type="text" placeholder="Search messages" disabled>
+          </div>
+        </div>
 
+        <ul class="conversation-list">
+          {% if other_user %}
+          <li class="conversation-item active">
+            <div class="conv-avatar">
+              {{ other_user.username|slice:":2"|upper }}
+            </div>
+            <div class="conv-main">
+              <div class="conv-top">
+                <span class="conv-name">{{ other_user.username }}</span>
+                <span class="conv-time">Now</span>
+              </div>
+              <div class="conv-preview">Direct messages with this buddy.</div>
+            </div>
+            <span class="conv-badge">Active</span>
+          </li>
+          {% else %}
+          <li class="conversation-item">
+            <div class="conv-avatar">?</div>
+            <div class="conv-main">
+              <div class="conv-top">
+                <span class="conv-name">No active chat</span>
+              </div>
+              <div class="conv-preview">
+                Select a buddy on the right to start a conversation.
+              </div>
+            </div>
+          </li>
+          {% endif %}
+        </ul>
+      </aside>
+
+      <!-- MIDDLE: chat thread -->
+      <section class="pane pane-chat">
+        <div class="pane-chat-header">
+          <div class="chat-user">
+            <div class="chat-avatar">
+              {% if other_user %}
+                {{ other_user.username|slice:":2"|upper }}
+              {% else %}
+                ??
+              {% endif %}
+            </div>
+            <div class="chat-user-text">
+              <div class="chat-user-name">
+                {% if other_user %}
+                  {{ other_user.username }}
+                {% else %}
+                  Select someone to chat with
+                {% endif %}
+              </div>
+              <div class="chat-user-sub">
+                Accountability buddy · Private chat
+              </div>
+            </div>
+          </div>
+          <div class="chat-meta">
+            <div>Today</div>
+          </div>
+        </div>
+
+        <div class="chat-thread"
+             id="chat-body"
+             data-room-name="{{ room_name }}"
+             data-username="{{ request.user.username }}">
+          <div class="day-label-wrap">
+            <span class="day-label">Today</span>
+          </div>
+
+          {% for msg in chat_messages %}
+            <div class="message-row {% if msg.sender_id == request.user.id %}me{% else %}them{% endif %}">
+              <div class="message-bubble {% if msg.sender_id == request.user.id %}me{% endif %}">
+                {{ msg.body|linebreaksbr }}
+                <div class="message-meta">
+                  <span>{{ msg.created_at|time:"g:i A" }}</span>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p style="font-size:0.8rem; color:#6b7280; margin:0;">
+              No messages yet. Say hi 👋
+            </p>
+          {% endfor %}
+        </div>
+
+        <div class="chat-input-wrap">
+          <form id="chat-form">
+            <div class="chat-input-inner">
+              <button type="button" class="icon-btn" title="Emoji">😊</button>
+              <textarea id="chat-input" placeholder="Type a message…" autocomplete="off"></textarea>
+              <button type="button" class="icon-btn" title="Attach">📎</button>
+              <button type="submit" class="send-btn">Send</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- RIGHT: details + buddies -->
+      <aside class="pane pane-details">
+        <div class="pane-details-header">Details</div>
+
+        <div class="detail-block">
+          <div class="detail-label">Active chat</div>
+          {% if other_user %}
+            <div>{{ other_user.username }}</div>
+            <div class="detail-label" style="margin-top:6px;">Relationship</div>
+            <div>Accountability buddy</div>
+          {% else %}
+            <div>No active conversation selected.</div>
+          {% endif %}
+        </div>
+
+        <div class="detail-block">
+          <div class="detail-label">Notes</div>
+          <div>Check in regularly, share progress, and keep each other accountable.</div>
+        </div>
+
+        <div class="pane-details-header" style="border-top:none;">Buddies</div>
+
+        <ul class="buddies-list">
+          {% for buddy in buddies %}
+          <li class="buddy-item">
+            <div class="buddy-avatar">
+              {{ buddy.user.username|slice:":2"|upper }}
+            </div>
+            <div class="buddy-main">
+              <div class="buddy-name">{{ buddy.user.username }}</div>
+              <div class="buddy-note">Chat & accountability</div>
+            </div>
+            <div class="buddy-actions">
+              <span class="status-dot">● Online</span>
+              <a class="buddy-btn" href="{% url 'messages' %}?with={{ buddy.user.id }}">Open chat</a>
+            </div>
+          </li>
+          {% empty %}
+          <li class="buddy-item">
+            <div class="buddy-main">
+              <div class="buddy-name">No buddies yet</div>
+              <div class="buddy-note">Find someone to share progress with.</div>
+            </div>
+            <div class="buddy-actions">
+              <a href="{% url 'buddies' %}" class="buddy-btn">Find buddies</a>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </aside>
+    </section>
+  </main>
 </div>
 
-</main>
+<script>
+(function () {
+  const chatBody = document.getElementById("chat-body");
+  const chatForm = document.getElementById("chat-form");
+  const chatInput = document.getElementById("chat-input");
 
+  if (!chatBody || !chatForm || !chatInput) {
+    console.warn("Chat DOM not found.");
+    return;
+  }
+
+  const roomName = chatBody.dataset.roomName;
+  const username = chatBody.dataset.username;
+  const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+  const socketUrl = `${wsScheme}://${window.location.host}/ws/chat/${roomName}/`;
+
+  const chatSocket = new WebSocket(socketUrl);
+
+  chatSocket.onmessage = function (e) {
+    let data;
+    try {
+      data = JSON.parse(e.data);
+    } catch (err) {
+      console.error("Could not parse WebSocket message", e.data);
+      return;
+    }
+
+    const msgText = (data.message || "").trim();
+    const fromUser = data.user || "";
+    if (!msgText) return;
+
+    const isMe = fromUser === username;
+
+    const row = document.createElement("div");
+    row.className = "message-row " + (isMe ? "me" : "them");
+
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble" + (isMe ? " me" : "");
+    bubble.textContent = msgText;
+
+    const meta = document.createElement("div");
+    meta.className = "message-meta";
+    const timeSpan = document.createElement("span");
+    const now = new Date();
+    timeSpan.textContent = now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    meta.appendChild(timeSpan);
+
+    bubble.appendChild(meta);
+    row.appendChild(bubble);
+    chatBody.appendChild(row);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  };
+
+  chatSocket.onclose = function (e) {
+    console.error("Chat socket closed unexpectedly", e);
+  };
+
+  chatForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const text = chatInput.value.trim();
+    if (!text) return;
+
+    chatSocket.send(JSON.stringify({ message: text }));
+    chatInput.value = "";
+    chatInput.focus();
+  });
+})();
+</script>
 
 </body>
-
 </html>

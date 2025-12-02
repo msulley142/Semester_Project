@@ -1,0 +1,96 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Account Settings - Calibration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root{
+      --bg:#f3f7fb;
+      --card:#ffffff;
+      --border:#e2e8f0;
+      --text:#0f172a;
+      --muted:#64748b;
+      --accent:#0ea5e9;
+      --accent-deep:#0284c7;
+      --radius:14px;
+      --shadow:0 12px 30px rgba(15,23,42,0.12);
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);} 
+    a{text-decoration:none;color:inherit;}
+    .shell{max-width:1024px;margin:32px auto;padding:0 18px 48px;}
+    .page-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;}
+    .page-head h1{margin:0;font-size:1.35rem;}
+    .muted{color:var(--muted);}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px 14px;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;}
+    label{font-size:0.9rem;font-weight:600;display:block;margin-bottom:4px;}
+    input,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:0.95rem;}
+    textarea{min-height:96px;}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;font-weight:600;}
+    .btn-primary{background:var(--accent);border-color:transparent;color:#001018;box-shadow:0 10px 22px rgba(14,165,233,0.35);} 
+    .btn-ghost{background:transparent;}
+    .field{margin-bottom:14px;}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="page-head">
+      <div>
+        <h1>Account Settings</h1>
+        <p class="muted">Update your profile, contact details, and avatar.</p>
+      </div>
+      <a class="btn" href="{% url 'dashboard' %}">Back to dashboard</a>
+    </div>
+
+    <form class="card" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="grid">
+        <div class="field">
+          {{ user_form.first_name.label_tag }}
+          {{ user_form.first_name }}
+        </div>
+        <div class="field">
+          {{ user_form.last_name.label_tag }}
+          {{ user_form.last_name }}
+        </div>
+        <div class="field">
+          {{ user_form.email.label_tag }}
+          {{ user_form.email }}
+          <small class="muted">Used for login and notifications.</small>
+        </div>
+        <div class="field">
+          <label>Username</label>
+          <div class="muted">{{ user.username }}</div>
+          <small class="muted">Username changes are not available here.</small>
+        </div>
+        <div class="field">
+          {{ profile_form.phone_number.label_tag }}
+          {{ profile_form.phone_number }}
+          <small class="muted">Shared only with your buddies.</small>
+        </div>
+        <div class="field">
+          {{ profile_form.profile_picture.label_tag }}
+          {{ profile_form.profile_picture }}
+        </div>
+      </div>
+      <div class="field">
+        {{ profile_form.bio.label_tag }}
+        {{ profile_form.bio }}
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" type="submit">Save changes</button>
+        <a class="btn" href="{% url 'password_change' %}">Change password</a>
+        <a class="btn btn-ghost" href="/accounts/logout/">Log out</a>
+      </div>
+    </form>
+
+    <div class="card" style="margin-top:14px;">
+      <strong>Last login:</strong> {{ user.last_login|date:"M j, Y H:i" }}
+    </div>
+  </div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 from django import forms
-from .models import Skill, Habit, Journal, Reward, Task, Profile, User
+from django.contrib.auth.models import User
+from .models import Skill, Habit, Journal, Reward, Task, Profile, Mood, Goals, Forum, Topics, Post, BuddyRequest
 
 
 
@@ -8,7 +9,7 @@ class SkillForm(forms.ModelForm):
 
     class Meta:
         model = Skill
-        fields = ['name', 'description', 'created_at']
+        fields = ['name', 'description']
 
 
 class HabitForm(forms.ModelForm):
@@ -17,7 +18,6 @@ class HabitForm(forms.ModelForm):
         model = Habit
         fields = ['name', 'habit_type', 'goal_start', 'goal_end', 'description']
 
-      
 
 class RewardForm(forms.ModelForm):
     
@@ -42,6 +42,22 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ["title", "points" ,"skill", "habit", "status", "description", "date"]
 
+
+
+
+class GoalForm(forms.ModelForm):
+
+    class Meta:
+        model = Goals
+        fields = ["title", "description", "goal_type","skill", "habit", "start_date", "due_date", "status", "priority", "reason", "reflection", "target_value", "current_value"]
+
+
+class MoodForm(forms.ModelForm):
+
+    class Meta:
+        model = Mood
+        fields = ["mood_score", "mood_type", "note", "energy_level", "stress_level", "related_goal" , "timestamp"] 
+
 class UserForm(forms.ModelForm):
         class Meta:
             model = User
@@ -53,5 +69,46 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['phone_number', 'address', 'profile_picture']
+        fields = ['phone_number', 'bio', 'profile_picture']
 
+class TopicsForm(forms.ModelForm):
+
+    class Meta:
+        model = Topics 
+        fields = "__all__"
+
+
+
+class ForumForm(forms.ModelForm):
+
+   class Meta:
+        model = Forum
+        fields = ["topic", "title", "body"]
+        widgets = {
+            "body": forms.Textarea(attrs={"rows": 6}),
+        }
+ 
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ["body"]
+        widgets = {
+            "body": forms.Textarea(attrs={"rows": 4, "placeholder": "Share your thoughts"}),
+        }
+
+
+
+class BuddyRequestForm(forms.ModelForm):
+    class Meta:
+        model = BuddyRequest
+        fields = ["receiver"]
+
+class BuddyRespondForm(forms.Form):
+    ACTION_ACCEPT, ACTION_DECLINE, ACTION_CANCEL = ("accept", "decline", "cancel")
+    ACTION_CHOICES = [
+        (ACTION_ACCEPT, "Accept"),
+        (ACTION_DECLINE, "Decline"),
+        (ACTION_CANCEL, "Cancel"),
+    ]
+    request_id = forms.IntegerField(widget=forms.HiddenInput)
+    action = forms.ChoiceField(choices=ACTION_CHOICES)

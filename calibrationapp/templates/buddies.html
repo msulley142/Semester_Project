@@ -1,0 +1,42 @@
+
+{% block content %}
+<h2>Your buddies</h2>
+<ul>
+  {% for b in buddies %}
+    <li>
+      {{ b.user.username }}
+      <form action="{% url 'buddy-remove' b.id %}" method="post">{% csrf_token %}<button type="submit">Remove</button></form>
+    </li>
+  {% empty %}<li>No buddies yet.</li>{% endfor %}
+</ul>
+
+<h3>Incoming requests</h3>
+{% for r in incoming %}
+  <div>
+    {{ r.sender.user.username }}
+    <form action="{% url 'buddy-respond' %}" method="post">{% csrf_token %}
+      <input type="hidden" name="request_id" value="{{ r.id }}">
+      <button name="action" value="accept">Accept</button>
+      <button name="action" value="decline">Decline</button>
+    </form>
+  </div>
+{% empty %}<p>No incoming.</p>{% endfor %}
+
+<h3>Outgoing requests</h3>
+{% for r in outgoing %}
+  <div>
+    {{ r.receiver.user.username }} (pending)
+    <form action="{% url 'buddy-respond' %}" method="post">{% csrf_token %}
+      <input type="hidden" name="request_id" value="{{ r.id }}">
+      <button name="action" value="cancel">Cancel</button>
+    </form>
+  </div>
+{% empty %}<p>No outgoing.</p>{% endfor %}
+
+<h3>Send a buddy request</h3>
+<form action="{% url 'buddy-send' %}" method="post">
+  {% csrf_token %}
+  {{ form.receiver }}
+  <button type="submit">Send</button>
+</form>
+{% endblock %}

@@ -1,175 +1,1268 @@
-<!--The html template was created using AI Generated Code as a starting point-->
-
-<!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="en">
 <head>
-<title>Progress Tracker</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>Progress Tracker – Calibration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-:root{
-  --sidebar-w: 250px;
-  --sidebar-br: 1px;
-  --header-h: 80px;
-}
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --card-soft: #f9fafb;
+      --accent: #0ea5e9;
+      --accent-dark: #1d2b64;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --border-subtle: #e5e7eb;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --sidebar-w: 260px;
+    }
 
-html, body{
-  margin: 0;
-  padding: 0;
-  background: #f8fafc; 
-  color: #0f172a;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    *, *::before, *::after { box-sizing: border-box; }
 
-}
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
+    }
 
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin-inline: auto;
-  padding: clamp(16px, 3vw, 32px);
-}
+    a { color: inherit; text-decoration: none; }
 
-/* ---header--- */
-header{
-  position: fixed;
-  top: 0;
-  left: calc(var(--sidebar-w) + var(--sidebar-br));
-  right:0;
-  height: var(--header-h);
-  display: flex;
-  background:rgba(255,255,255,0.6);
-  border-bottom: 1px solid #e5e7eb;
-  padding: 0 20px 0 24px;
-  justify-content: space-between;
-  backdrop-filter: blur(10px);
-  align-items: center;
-  z-index: 1000;
-  gap: 12px;
-  
+    /* === APP LAYOUT === */
+    .app-shell {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      min-height: 100vh;
+    }
 
-}
+    @media (max-width: 900px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+    }
 
-.sidebar {
-    position: fixed; 
-    inset: 0 auto 0 0;
-    width: var(--sidebar-w);
-    background: #0b1723;
-    color: #e5eef7;
-    border-right: var(--sidebar-br) solid rgba(255,255,255,.08);
-    padding: 16px 12px;
-    overflow-y: auto;
-    z-index: 1200;
+    /* === SIDEBAR (same style as dashboard, but sticky full-height) === */
+    .sidebar {
+      background: #0b1723;
+      color: #e5eef7;
+      border-right: 1px solid rgba(148, 163, 184, 0.3);
+      padding: 16px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      align-self: start;
+    }
 
-}
+    @media (max-width: 900px) {
+      .sidebar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        position: static;
+        height: auto;
+      }
+    }
 
-.brand{
-    display:flex; 
-    align-items:center; 
-    gap:10px; 
-    font-weight:700; 
-    margin: 6px 8px 14px;
-  }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-.nav{
-    display:flex; 
-    flex-direction:column; 
-    gap:6px; 
-    margin-top: 8px;
-}
-.nav a {
-  padding:10px 12px; 
-  border-radius:10px; 
-  color:#cbd5e1;
-  text-decoration: none;
-  font-size: 15px;
- 
-}
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8, #0ea5e9 40%, #a855f7 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1120;
+      font-weight: 800;
+      font-size: 0.9rem;
+      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.08);
+    }
 
-/* Active/current link */
-.nav a.active {
-    background: #0ea5e9; 
-    color:#001018 
-  
-}
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
 
-.nav a:hover{ background: rgba(255,255,255,.08); 
-  color:white }
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
 
-.main{
-    margin-left:  var(--sidebar-w);
-    padding: calc(var(--header-h) + 20px) 20px 20px;
-    min-height: 100dvh;  
-}
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
 
-.card{
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 16px;
-  }
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
 
-.btn{
-    display:inline-flex; 
-    align-items:center; 
-    gap:8px;
-    padding:10px 14px; 
-    border-radius:999px; 
-    border:1px solid #e5e7eb;
-    background:#fff; 
-    cursor:pointer;
-  }
-  .btn-primary{ 
-    background: #0ea5e9; 
-    color:#001018; 
-    border-color:transparent }
-  .btn-primary:hover{ 
-    background: #0369a1 }
+    @media (max-width: 900px) {
+      .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: flex-end;
+      }
+    }
 
-</style>
+    .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      font-size: 0.86rem;
+      color: #cbd5f5;
+      border: 1px solid transparent;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
 
+    .nav-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    .nav-link:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.5);
+      color: #f9fafb;
+    }
+
+    .nav-link.active {
+      background: #0ea5e9;
+      color: #001018;
+      font-weight: 600;
+      border-color: transparent;
+    }
+
+    .nav-link.active .nav-indicator {
+      background: #001018;
+    }
+
+    /* === MAIN AREA === */
+    .site-main {
+      padding: 0 24px 40px 0;
+    }
+
+    @media (max-width: 900px) {
+      .site-main {
+        padding: 0 18px 32px 18px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .site-main {
+        padding: 0 12px 24px 12px;
+      }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 100%;
+      margin-inline: 0;
+    }
+
+    /* === HEADER (same structure as dashboard header) === */
+    .site-header {
+      margin: 0 0 24px;
+      padding: 16px 24px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+      background: rgba(248, 250, 252, 0.96);
+      backdrop-filter: blur(6px);
+    }
+
+    @media (max-width: 640px) {
+      .site-header {
+        flex-wrap: wrap;
+        padding: 14px 16px 12px;
+        margin-bottom: 20px;
+      }
+    }
+
+    .site-header-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .site-header-title h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .site-header-title span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      font-weight: 500;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      color: #0f172a;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.1s ease, transform 0.1s ease;
+    }
+
+    .btn:hover {
+      background: #f9fafb;
+      border-color: #cbd5e1;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      background: #0ea5e9;
+      color: #0b1120;
+      box-shadow: 0 10px 25px rgba(14, 165, 233, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: #0284c7;
+      box-shadow: 0 12px 30px rgba(14, 165, 233, 0.45);
+    }
+
+    .btn-sm { padding: 6px 10px; font-size: 0.78rem; }
+
+    /* profile pill (same as dashboard) */
+    .profile-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #e0f2ff;
+      box-shadow: 0 10px 25px rgba(15,23,42,0.12);
+      border: 1px solid #bfdbfe;
+      cursor: pointer;
+    }
+    .profile-button:hover {
+      filter: brightness(1.04);
+      box-shadow: 0 14px 30px rgba(15,23,42,0.18);
+    }
+    .avatar-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: #facc15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .gear-icon {
+      font-size: 18px;
+      color: #0284c7;
+    }
+
+    /* === SUMMARY BANNER (darker) === */
+    .summary-banner {
+      margin: 0 24px 22px;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 0 0, #0ea5e9 0, #0f172a 45%, #020617 100%);
+      color: #e5f3ff;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.3);
+      padding: 18px 22px 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr);
+      gap: 14px;
+      border: 1px solid rgba(15, 23, 42, 0.5);
+    }
+
+    @media (max-width: 900px) {
+      .summary-banner {
+        grid-template-columns: minmax(0, 1fr);
+        margin: 0 16px 20px;
+      }
+    }
+
+    .summary-main h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .summary-main p {
+      margin: 6px 0 0;
+      font-size: 0.88rem;
+      color: #dbeafe;
+    }
+
+    .summary-tags {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.76rem;
+    }
+
+    .summary-tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(191, 219, 254, 0.8);
+    }
+
+    .summary-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      font-size: 0.8rem;
+    }
+
+    .summary-metric {
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 10px 12px;
+    }
+
+    .summary-metric-label {
+      font-size: 0.75rem;
+      opacity: 0.85;
+    }
+
+    .summary-metric-value {
+      margin-top: 4px;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* === TOP STATS ROW (subtle, all white cards) === */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin: 0 24px 24px;
+    }
+
+    @media (max-width: 900px) {
+      .stats-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin: 0 16px 22px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .stats-row {
+        grid-template-columns: minmax(0, 1fr);
+        margin: 0 12px 20px;
+      }
+    }
+
+    .stat-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+    }
+
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 10px;
+      bottom: 10px;
+      width: 4px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #0ea5e9, #22c55e);
+    }
+
+    .stat-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-left: 6px;
+    }
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+    .stat-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-left: 6px;
+    }
+
+    /* === MAIN GRID: analytics + lists === */
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.4fr);
+      gap: 18px;
+      margin: 0 24px 0;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 1000px) {
+      .main-grid {
+        grid-template-columns: minmax(0, 1fr);
+        margin: 0 16px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .main-grid {
+        margin: 0 12px;
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 14px 12px;
+      font-size: 0.86rem;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 0.96rem;
+    }
+
+    .card-sub {
+      margin: 0 0 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* === Behavior analytics === */
+    .behavior-layout {
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 14px;
+    }
+
+    .mini-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .mini-metric {
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 8px 10px;
+    }
+
+    .mini-label {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      margin-bottom: 3px;
+    }
+
+    .mini-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .mini-note {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .behavior-timeline {
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 10px 10px 8px;
+    }
+
+    .behavior-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      height: 160px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .behavior-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 42px;
+    }
+
+    .behavior-bar-track {
+      width: 100%;
+      height: 110px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .behavior-bar-fill {
+      width: 100%;
+      height: 10%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #0ea5e9, #22c55e); /* default */
+      opacity: 0.95;
+      transition: height 0.4s ease, background 0.2s ease;
+    }
+
+    .behavior-bar-fill.mood-low {
+      background: linear-gradient(180deg, #fb923c, #ef4444);
+    }
+
+    .behavior-bar-fill.mood-high {
+      background: linear-gradient(180deg, #22c55e, #0ea5e9);
+    }
+
+    .behavior-label {
+      font-size: 0.72rem;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .behavior-score {
+      font-size: 0.76rem;
+      color: #0f172a;
+    }
+
+    /* === Lists (scrollable boxes) === */
+    .lists-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .list-box {
+      max-height: 210px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .list-item {
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+    }
+
+    .item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .item-title {
+      font-weight: 600;
+    }
+
+    .pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      border: 1px solid #e2e8f0;
+      background: #e5f3ff;
+      color: #0f172a;
+    }
+
+    .pill.success { background: #dcfce7; border-color: #bbf7d0; color: #166534; }
+    .pill.warn { background: #fef9c3; border-color: #fde68a; color: #854d0e; }
+    .pill.danger { background: #fee2e2; border-color: #fecaca; color: #b91c1c; }
+
+    .item-meta {
+      font-size: 0.76rem;
+      color: #6b7280;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .muted { color: #64748b; }
+
+    /* === PROFILE MODAL (same behavior as dashboard) === */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.15);
+      display: none;
+      z-index: 2000;
+    }
+    .modal-overlay.is-open { display: block; }
+
+    .modal {
+      position: fixed;
+      top: 80px;
+      right: 24px;
+      width: 340px;
+      max-width: 90vw;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      border: 1px solid #e5e7eb;
+      padding: 18px 20px;
+      animation: slideIn 0.25s ease forwards;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .modal-header h3 { margin: 0; font-size: 1rem; }
+    .modal-close {
+      font-size: 1.6rem;
+      line-height: 1;
+      background: transparent;
+      color: #6b7280;
+      border: none;
+      cursor: pointer;
+    }
+    .modal-close:hover { color: #111827; }
+
+    .profile-card {
+      background: var(--card-soft);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 24px rgba(15,23,42,0.12);
+    }
+    .profile-card-header {
+      background: radial-gradient(circle at 15% 0, #38bdf8, #0ea5e9 35%, #1d2b64 85%);
+      padding: 34px 20px 52px;
+      position: relative;
+      color: #e5f3ff;
+      text-align: center;
+    }
+    .profile-greeting {
+      margin: 0 0 4px;
+      font-size: 0.78rem;
+      opacity: 0.9;
+    }
+    .profile-display-name-modal {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+    .profile-tagline {
+      margin: 4px 0 0;
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+    .profile-avatar-shell {
+      position: absolute;
+      left: 50%;
+      bottom: -30px;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      border: 3px solid #ffffff;
+      overflow: hidden;
+      background: #fbbf24;
+      box-shadow: 0 12px 24px rgba(15,23,42,0.4);
+    }
+    .profile-avatar-shell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .profile-card-main {
+      padding: 40px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .profile-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .p-btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .p-btn-primary {
+      background: #0ea5e9;
+      color: #0b1120;
+      border-color: transparent;
+      box-shadow: 0 8px 18px rgba(14,165,233,0.35);
+    }
+    .p-btn-ghost { background: transparent; }
+    .p-btn-ghost:hover { background: #e5e7eb; }
+    .p-btn-logout {
+      background: #fee2e2;
+      border-color: #fecaca;
+      color: #b91c1c;
+    }
+    .p-btn-logout:hover { background: #fecaca; }
+
+    .profile-quick-links {
+      border-radius: 14px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      margin-top: 10px;
+    }
+    .profile-quick-links h4 {
+      margin: 0 0 4px;
+      font-size: 0.84rem;
+    }
+    .profile-quick-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .profile-quick-links li + li { margin-top: 3px; }
+
+  </style>
 </head>
-
-
 <body>
 
- <nav class="sidebar" role="navigation" aria-label="Sidebar">
- <div class="brand">
- <strong>Calibration</strong>
- </div>
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" role="navigation" aria-label="Sidebar">
+    <div class="brand">
+      <div class="brand-mark">CB</div>
+      <div class="brand-text">
+        <div class="brand-title">Calibration</div>
+        <div class="brand-subtitle">Discipline • Habits • Skills</div>
+      </div>
+    </div>
 
- <div class="nav">
- <a href="{% url 'dashboard' %}" >Dashboard</a>
- <a href="{% url 'disciplinebuilder' %}">Discipline Builder</a>
- <a class="active" href="{% url 'progresstracker' %}">Progress Tracker </a>
- <a href="{% url 'rewards' %}">Rewards</a>
- <a href="{% url 'coaching' %}">Coaching</a>
- <a href="{% url 'messages' %}">Messages</a>
- <a href="{% url 'community' %}">Community</a>
- </div>
-</nav>
+    <div class="nav">
+      <a href="{% url 'dashboard' %}" class="nav-link">
+        <span>Dashboard</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'disciplinebuilder' %}" class="nav-link">
+        <span>Discipline Builder</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'progresstracker' %}" class="nav-link active">
+        <span>Progress Tracker</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'rewards' %}" class="nav-link">
+        <span>Rewards</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'coaching' %}" class="nav-link">
+        <span>Coaching</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'messages' %}" class="nav-link">
+        <span>Messages</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'community' %}" class="nav-link">
+        <span>Community</span>
+        <span class="nav-indicator"></span>
+      </a>
+    </div>
+  </nav>
 
-<header>
-  <strong>Discipline Builder</strong>
-  <div>
-    <a class="btn" href="#">Settings</a>
-    <a class="btn btn-primary" href="/accounts/logout/"> Log out</a>
-  </div>
-</header>
+  <!-- MAIN -->
+  <main class="site-main">
+    <div class="container">
+      <!-- HEADER (same structure as dashboard) -->
+      <header class="site-header">
+        <div class="site-header-title">
+          <h1>Progress Tracker</h1>
+          <span>See your stats, mood patterns, and recent activity in one place.</span>
+        </div>
+        <div class="header-actions">
+          <button class="profile-button" id="profile-button">
+            <span class="avatar-wrap">
+              <img src="https://via.placeholder.com/40x40.png" alt="User avatar">
+            </span>
+            <span class="gear-icon">⚙️</span>
+          </button>
+          <a class="btn btn-primary" href="/accounts/logout/">Log out</a>
+        </div>
+      </header>
 
-<main class="main">
-<div class="card">
+      <!-- PROFILE MODAL -->
+      <div class="modal-overlay" id="profile-modal" aria-hidden="true">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Profile</h3>
+            <button type="button" class="modal-close" id="modal-close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <article class="profile-card">
+              <div class="profile-card-header">
+                <p class="profile-greeting">Welcome back</p>
+                <h4 class="profile-display-name-modal">{{ user.username }}</h4>
+                <p class="profile-tagline">Adjust your account and settings here.</p>
+                <div class="profile-avatar-shell">
+                  <img src="https://via.placeholder.com/80" alt="Avatar for {{ user.username }}">
+                </div>
+              </div>
+              <div class="profile-card-main">
+                <div class="profile-actions-row">
+                  <a href="{% url 'user_profile' %}" class="p-btn p-btn-primary">View profile</a>
+                  <a href="{% url 'user_settings' %}" class="p-btn p-btn-ghost">Account settings</a>
+                  <a href="/accounts/logout/" class="p-btn p-btn-logout">Log out</a>
+                </div>
+              </div>
+            </article>
 
+            <div class="profile-quick-links">
+              <h4>Quick tips</h4>
+              <ul>
+                <li>Use Progress Tracker to spot patterns in your consistency.</li>
+                <li>Add one small habit at a time to keep momentum.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DARK SUMMARY BANNER -->
+      <section class="summary-banner">
+        <div class="summary-main">
+          <h2>Good day, {{ user.username }} 👋</h2>
+          <p>
+            Here’s how your week is going. Check your consistency and mood,
+            then decide what to focus on next.
+          </p>
+
+          <div class="summary-tags">
+            <span class="summary-tag">
+              🔥 Streak:
+              {{ analytics.login_streak|default:0 }} days
+            </span>
+            <span class="summary-tag">
+              Avg mood:
+              {{ analytics.avg_mood|default:"—" }}/5
+            </span>
+            <span class="summary-tag">
+              Tasks done:
+              {{ stats.tasks_completed|default:0 }}/{{ stats.tasks_total|default:0 }}
+            </span>
+          </div>
+        </div>
+
+        <div class="summary-metrics">
+          <div class="summary-metric">
+            <div class="summary-metric-label">Consistency</div>
+            <div class="summary-metric-value">
+              {{ analytics.consistency_score|default:"—" }}%
+            </div>
+            <div style="font-size:0.75rem; margin-top:4px;">
+              {% if analytics.consistency_text %}
+                {{ analytics.consistency_text }}
+              {% else %}
+                Keep checking in to build your streak.
+              {% endif %}
+            </div>
+          </div>
+          <div class="summary-metric">
+            <div class="summary-metric-label">Goals completed</div>
+            <div class="summary-metric-value">
+              {{ stats.goals_completed|default:0 }}
+            </div>
+            <div style="font-size:0.75rem; margin-top:4px;">
+              {{ stats.goals_active|default:0 }} active goals right now.
+            </div>
+          </div>
+          <div class="summary-metric">
+            <div class="summary-metric-label">Habits & Skills</div>
+            <div class="summary-metric-value">
+              {{ stats.habits_count|default:0 }} / {{ stats.skills_count|default:0 }}
+            </div>
+            <div style="font-size:0.75rem; margin-top:4px;">
+              Keep logging to level up your skills and habits.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TOP STATS ROW (simple white cards) -->
+      <section class="stats-row">
+        <article class="stat-card">
+          <p class="stat-title">Tasks completed</p>
+          <p class="stat-value">{{ stats.tasks_completed|default:0 }}</p>
+          <p class="stat-sub">
+            {{ stats.tasks_total|default:0 }} total ·
+            {{ stats.tasks_completion_rate|default:0 }}% done
+          </p>
+        </article>
+        <article class="stat-card">
+          <p class="stat-title">Open tasks</p>
+          <p class="stat-value">{{ stats.tasks_in_progress|default:0 }}</p>
+          <p class="stat-sub">
+            {{ stats.tasks_not_started|default:0 }} not started
+          </p>
+        </article>
+        <article class="stat-card">
+          <p class="stat-title">Goals</p>
+          <p class="stat-value">{{ stats.goals_active|default:0 }}</p>
+          <p class="stat-sub">
+            {{ stats.goals_completed|default:0 }} complete ·
+            {{ stats.goals_completion_rate|default:0 }}% done
+          </p>
+        </article>
+        <article class="stat-card">
+          <p class="stat-title">Habits & skills</p>
+          <p class="stat-value">{{ stats.habits_count|default:0 }}</p>
+          <p class="stat-sub">
+            {{ stats.skills_count|default:0 }} skills tracked
+          </p>
+        </article>
+      </section>
+
+      <!-- MAIN GRID: analytics + lists -->
+      <section class="main-grid">
+        <!-- LEFT: behavior + mood analytics -->
+        <div class="behavior-layout">
+          <article class="card">
+            <h3>Behavior & Mood Snapshot</h3>
+            <p class="card-sub">
+              High-level patterns based on your recent logs.
+            </p>
+
+            <div class="mini-metrics">
+              <div class="mini-metric">
+                <div class="mini-label">Login streak</div>
+                <div class="mini-value">
+                  {{ analytics.login_streak|default:0 }} days
+                </div>
+                <div class="mini-note">
+                  Longest streak: {{ analytics.longest_streak|default:0 }} days
+                </div>
+              </div>
+              <div class="mini-metric">
+                <div class="mini-label">Average mood</div>
+                <div class="mini-value">
+                  {{ analytics.avg_mood|default:"—" }}/5
+                </div>
+                <div class="mini-note">
+                  {% if analytics.mood_trend_text %}
+                    {{ analytics.mood_trend_text }}
+                  {% else %}
+                    Keep logging mood to see trends.
+                  {% endif %}
+                </div>
+              </div>
+              <div class="mini-metric">
+                <div class="mini-label">Mood vs productivity</div>
+                <div class="mini-value">
+                  {{ analytics.mood_productivity_correlation|default:"—" }}
+                </div>
+                <div class="mini-note">
+                  {% if analytics.mood_correlation_text %}
+                    {{ analytics.mood_correlation_text }}
+                  {% else %}
+                    Shows how your mood lines up with finished work.
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Week Mood & Output Timeline</h3>
+            <p class="card-sub">
+              Taller bars = more progress. Colors shift with mood (green/blue high, orange/red low).
+            </p>
+
+            <div class="behavior-timeline">
+              <div class="behavior-chart" id="behavior-chart">
+                {% if behavior_points %}
+                  {% for p in behavior_points %}
+                    <div class="behavior-col">
+                      <div class="behavior-bar-track">
+                        <div
+                          class="behavior-bar-fill"
+                          data-value="{{ p.score|default:0 }}"
+                          data-mood="{{ p.mood|default:'' }}"
+                          title="{{ p.label }} · Score {{ p.score|default:0 }} / Mood {{ p.mood|default:'-' }}"
+                        ></div>
+                      </div>
+                      <div class="behavior-label">{{ p.label }}</div>
+                      <div class="behavior-score">
+                        {{ p.score|default:0 }}
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <div style="font-size:0.8rem; color:#64748b; padding:12px 4px;">
+                    No recent behavior points yet. Once you’ve completed tasks and logged mood this week,
+                    your timeline will appear here.
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- RIGHT: scrollable lists -->
+        <div class="lists-grid">
+          <article class="card">
+            <h3>Recent Tasks</h3>
+            <p class="card-sub">Latest items across Not Started, In Progress, and Completed.</p>
+            <div class="list-box">
+              <div class="list">
+                {% for t in recent_tasks %}
+                  <div class="list-item">
+                    <div class="item-head">
+                      <span class="item-title">{{ t.title }}</span>
+                      {% if t.status == "COMPLETED" %}
+                        <span class="pill success">Completed</span>
+                      {% elif t.status == "INPROGRESS" %}
+                        <span class="pill">In progress</span>
+                      {% else %}
+                        <span class="pill warn">Not started</span>
+                      {% endif %}
+                    </div>
+                    <div class="item-meta">
+                      {% if t.skill %}<span>Skill: {{ t.skill.name }}</span>{% endif %}
+                      {% if t.habit %}<span>Habit: {{ t.habit.name }}</span>{% endif %}
+                      {% if t.goals %}<span>Goal: {{ t.goals.title }}</span>{% endif %}
+                      <span>{{ t.date|date:"M d, Y g:i A" }}</span>
+                    </div>
+                  </div>
+                {% empty %}
+                  <p class="muted">No recent tasks. Add one from Discipline Builder.</p>
+                {% endfor %}
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Goals</h3>
+            <p class="card-sub">Active and completed goals with due dates.</p>
+            <div class="list-box">
+              <div class="list">
+                {% for g in goals %}
+                  <div class="list-item">
+                    <div class="item-head">
+                      <span class="item-title">{{ g.title }}</span>
+                      {% if g.status == "completed" %}
+                        <span class="pill success">Completed</span>
+                      {% elif g.status == "in_progress" %}
+                        <span class="pill">In progress</span>
+                      {% elif g.status == "abandoned" %}
+                        <span class="pill danger">Abandoned</span>
+                      {% else %}
+                        <span class="pill warn">Not started</span>
+                      {% endif %}
+                    </div>
+                    <div class="item-meta">
+                      {% if g.due_date %}
+                        <span>Due {{ g.due_date|date:"M d, Y" }}</span>
+                      {% else %}
+                        <span>No due date</span>
+                      {% endif %}
+                      {% if g.goal_type %}<span>Type: {{ g.goal_type }}</span>{% endif %}
+                    </div>
+                  </div>
+                {% empty %}
+                  <p class="muted">No goals yet. Set one from Discipline Builder.</p>
+                {% endfor %}
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Habits</h3>
+            <p class="card-sub">Snapshot of current habits and progress.</p>
+            <div class="list-box">
+              <div class="list">
+                {% for h in habits %}
+                  <div class="list-item">
+                    <div class="item-head">
+                      <span class="item-title">{{ h.name }}</span>
+                      <span class="pill">{{ h.habit_type|default:"-" }}</span>
+                    </div>
+                    <div class="item-meta">
+                      <span>{{ h.goal_percentage|default:0 }}% to goal</span>
+                      {% if h.days_left is not None %}
+                        <span>{{ h.days_left }} days left</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% empty %}
+                  <p class="muted">No habits tracked yet.</p>
+                {% endfor %}
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Skills</h3>
+            <p class="card-sub">XP and progress to your next level.</p>
+            <div class="list-box">
+              <div class="list">
+                {% for s in skills %}
+                  <div class="list-item">
+                    <div class="item-head">
+                      <span class="item-title">{{ s.name }}</span>
+                      <span class="pill">Level {{ s.level }}</span>
+                    </div>
+                    <div class="item-meta">
+                      <span>{{ s.left_over|default:0 }} XP to next</span>
+                      <span>Total: {{ s.to_level_up|default:0 }} XP</span>
+                    </div>
+                    <div style="margin-top:4px; height:8px; border-radius:999px; background:#e2e8f0; overflow:hidden;">
+                      <div style="width: {{ s.skill_progress_tracked|default:0 }}%; height:100%; border-radius:999px; background: linear-gradient(90deg,#0ea5e9,#22c55e);"></div>
+                    </div>
+                  </div>
+                {% empty %}
+                  <p class="muted">No skills yet. Add one from Discipline Builder.</p>
+                {% endfor %}
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
 </div>
 
-</main>
+<script>
+  // Behavior timeline: scale bars + color based on mood value
+  document.addEventListener("DOMContentLoaded", function () {
+    const bars = document.querySelectorAll(".behavior-bar-fill");
+    if (bars.length) {
+      const values = Array.from(bars).map(b => Number(b.dataset.value || 0));
+      const max = Math.max(...values, 1); // avoid divide by zero
 
+      bars.forEach(bar => {
+        const val = Number(bar.dataset.value || 0);
+        const pct = Math.max(8, (val / max) * 100); // min 8% so tiny values still visible
+        bar.style.height = pct + "%";
+
+        const moodRaw = (bar.dataset.mood || "").toString();
+        const mood = parseFloat(moodRaw);
+
+        if (!isNaN(mood)) {
+          if (mood >= 4) {
+            bar.classList.add("mood-high");
+          } else if (mood <= 2) {
+            bar.classList.add("mood-low");
+          }
+        }
+      });
+    }
+
+    // Profile modal open/close
+    const profileBtn = document.getElementById("profile-button");
+    const modal = document.getElementById("profile-modal");
+    const closeBtn = document.getElementById("modal-close");
+
+    function openModal() {
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+    }
+    function closeModal() {
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    if (profileBtn) profileBtn.addEventListener("click", openModal);
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+
+    if (modal) {
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && modal.classList.contains("is-open")) {
+        closeModal();
+      }
+    });
+  });
+</script>
 
 </body>
-
 </html>

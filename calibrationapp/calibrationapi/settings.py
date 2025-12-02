@@ -31,8 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'crispy_forms',
-    'crispy_tailwind',
+    'daphne',
+    'channels',
     'rest_framework',
     'widget_tweaks',
     'calibration_app.apps.CalibrationAppConfig',
@@ -44,8 +44,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
-CRISPY_TEMPLATE_PACK = "tailwind"
+ASGI_APPLICATION = "calibrationapi.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        # In-memory layer for local dev; swap to channels_redis in production
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    }
+}
+
+
+
+
+
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
@@ -90,17 +100,24 @@ WSGI_APPLICATION = 'calibrationapi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': 'db',
+#         'PORT': '5432',
+#     }
+# } 
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
