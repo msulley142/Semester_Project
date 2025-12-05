@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>{{ user.username }} – Profile · Calibration</title>
+  <title>{{ profile_user.username|default:target_user.username }} – Profile · Calibration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -157,16 +157,6 @@
       color: #f9fafb;
     }
 
-    .nav-link.active {
-      background: #0ea5e9;
-      color: #001018;
-      font-weight: 600;
-    }
-
-    .nav-link.active .nav-indicator {
-      background: #001018;
-    }
-
     .nav-link.has-unread::after {
       content: "";
       width: 8px;
@@ -286,7 +276,7 @@
       box-shadow: var(--shadow-soft);
     }
 
-    /* COVER + HEADER (Facebook-style) */
+    /* COVER + HEADER */
     .profile-cover {
       position: relative;
       overflow: hidden;
@@ -426,7 +416,7 @@
       font-weight: 600;
     }
 
-    /* SUB NAV (Timeline / About / Growth / Buddies) */
+    /* SUB NAV */
     .profile-subnav-wrap {
       padding: 0 20px 12px;
       margin-top: -22px;
@@ -591,7 +581,7 @@
       gap: 6px;
     }
 
-    /* GROUPS / COMMUNITIES */
+    /* GROUPS */
     .group-list {
       display: flex;
       flex-direction: column;
@@ -621,7 +611,7 @@
       font-weight: 600;
     }
 
-    /* BUDDIES MINI CARD (LEFT) */
+    /* BUDDIES MINI */
     .buddies-mini-list {
       display: flex;
       flex-wrap: wrap;
@@ -653,77 +643,7 @@
       font-weight: 600;
     }
 
-    /* RIGHT COL: COMPOSER + FEED */
-    .composer-card {
-      padding: 10px 14px;
-    }
-
-    .composer-row {
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-    }
-
-    .composer-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background: #0ea5e9;
-      color: #f9fafb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-
-    .composer-input-wrap {
-      flex: 1;
-    }
-
-    .composer-input {
-      width: 100%;
-      min-height: 48px;
-      border-radius: 18px;
-      border: 1px solid #d1d5db;
-      padding: 8px 12px;
-      font-size: 0.84rem;
-      resize: vertical;
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .composer-input:focus {
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 1px #93c5fd;
-    }
-
-    .composer-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 6px;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .composer-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-size: 0.76rem;
-    }
-
-    .composer-tag {
-      padding: 3px 7px;
-      border-radius: var(--radius-pill);
-      background: #f3f4ff;
-      border: 1px solid #e0e7ff;
-      cursor: pointer;
-    }
-
-    /* FEED POSTS */
+    /* RIGHT COL: TIMELINE (READ ONLY) */
     .feed-card {
       padding: 10px 14px;
     }
@@ -788,7 +708,7 @@
       color: #075985;
     }
 
-    /* RIGHT: FULL BUDDIES / LIVE ACTIVITY */
+    /* RIGHT: BUDDIES + LIVE ACTIVITY */
     .friends-card {
       padding: 10px 14px;
     }
@@ -938,8 +858,9 @@
       <a href="{% url 'community' %}" class="nav-link">
         <span>Community</span><span class="nav-indicator"></span>
       </a>
-      <a href="{% url 'user_profile' %}" class="nav-link active">
-        <span>Profile</span><span class="nav-indicator"></span>
+      <!-- This "Profile" link still points to *your* profile -->
+      <a href="{% url 'user_profile' %}" class="nav-link">
+      <span>Profile</span><span class="nav-indicator"></span>
       </a>
     </div>
   </nav>
@@ -950,11 +871,11 @@
       <header class="site-header">
         <div class="site-header-title">
           <h1>Profile</h1>
-          <span>Your Calibration identity – timeline, stats, and buddies.</span>
+          <span>Viewing {{ profile_user.username }}’s Calibration identity.</span>
         </div>
         <div class="header-actions">
           <a href="{% url 'dashboard' %}" class="btn btn-ghost">← Back</a>
-          <a href="/settings/" class="btn btn-primary">Edit Profile</a>
+          <a href="{% url 'messages' %}" class="btn btn-primary">Open Messages</a>
         </div>
       </header>
 
@@ -968,23 +889,23 @@
             <div>
               <div class="profile-ident-row">
                 <div class="profile-avatar-wrap">
-                  {% if user.profile.avatar %}
-                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }} avatar">
+                  {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="{{ profile_user.username }} avatar">
                   {% else %}
-                    <img src="https://via.placeholder.com/200" alt="{{ user.username }} avatar">
+                    <img src="https://via.placeholder.com/200" alt="{{ profile_user.username }} avatar">
                   {% endif %}
                 </div>
                 <div class="profile-name-meta">
-                  <h2>{{ user.username }}</h2>
+                  <h2>{{ profile_user.username }}</h2>
                   <div class="profile-tagline">
                     <span id="greeting-label">Good day</span>
                     <span>·</span>
                     <span>Calibrating habits & skills</span>
-                    <span class="profile-pill">Member since {{ user.date_joined|date:"M Y" }}</span>
+                    <span class="profile-pill">Member since {{ profile_user.date_joined|date:"M Y" }}</span>
                   </div>
                   <p class="profile-bio">
-                    {% if user.profile.bio %}
-                      {{ user.profile.bio }}
+                    {% if profile.bio %}
+                      {{ profile.bio }}
                     {% else %}
                       Focused on consistent habits, long-term growth, and building skills that compound over time.
                     {% endif %}
@@ -1015,10 +936,9 @@
             <div class="profile-actions-row">
               <button type="button" class="btn btn-ghost btn-sm" id="btn-scroll-timeline">Timeline</button>
               <button type="button" class="btn btn-ghost btn-sm" id="btn-scroll-about">About</button>
-              <a href="{% url 'buddies' %}" class="btn btn-ghost btn-sm">Manage Buddies</a>
-              <button type="button" class="btn btn-primary btn-sm" id="simulate-boost">
-                ⚡ Boost Day (demo)
-              </button>
+              <a href="{% url 'messages' %}" class="btn btn-primary btn-sm">
+                ✉️ Message (inbox)
+              </a>
             </div>
           </div>
 
@@ -1039,23 +959,23 @@
             <!-- ABOUT PANEL -->
             <article class="card about-card reveal profile-section" id="section-about">
               <h2 class="section-heading">About</h2>
-              <p class="section-subtext">Basic info tied to your Calibration profile.</p>
+              <p class="section-subtext">Basic info for this Calibration profile.</p>
               <div class="about-row">
                 <div class="about-item">
                   <div class="about-label">Name</div>
-                  <div>{{ user.get_full_name|default:user.username }}</div>
+                  <div>{{ profile_user.get_full_name|default:profile_user.username }}</div>
                 </div>
                 <div class="about-item">
                   <div class="about-label">Timezone</div>
-                  <div>{{ user.profile.timezone|default:"Central Time" }}</div>
+                  <div>Not shared</div>
                 </div>
                 <div class="about-item">
                   <div class="about-label">Focus</div>
-                  <div>{{ user.profile.primary_focus|default:"Discipline & skill-building" }}</div>
+                  <div>{{ profile.bio|default:"Discipline & skill-building" }}</div>
                 </div>
                 <div class="about-item">
                   <div class="about-label">Joined</div>
-                  <div>{{ user.date_joined|date:"F j, Y" }}</div>
+                  <div>{{ profile_user.date_joined|date:"F j, Y" }}</div>
                 </div>
               </div>
             </article>
@@ -1063,7 +983,7 @@
             <!-- FOCUS / SKILLS SUMMARY -->
             <article class="card about-card reveal profile-section" id="section-growth">
               <h2 class="section-heading">Focus Areas</h2>
-              <p class="section-subtext">What you’ve been building lately.</p>
+              <p class="section-subtext">Where {{ profile_user.username }} has been building lately.</p>
               <div class="mini-grid">
                 <div class="mini-card">
                   <div class="mini-card-title">Top Skills</div>
@@ -1071,7 +991,7 @@
                     {% for s in skills_data|slice:":4" %}
                       <span class="pill">{{ s.name }} · L{{ s.level }}</span>
                     {% empty %}
-                      <span class="muted">No skills yet. Add one in Discipline Builder.</span>
+                      <span class="muted">{{ profile_user.username }} hasn’t added skills yet.</span>
                     {% endfor %}
                   </div>
                 </div>
@@ -1081,7 +1001,7 @@
                     {% for h in habits_data|slice:":4" %}
                       <span class="pill">{{ h.name }}</span>
                     {% empty %}
-                      <span class="muted">No habits yet. Create one to track consistency.</span>
+                      <span class="muted">{{ profile_user.username }} hasn’t added habits yet.</span>
                     {% endfor %}
                   </div>
                 </div>
@@ -1091,36 +1011,39 @@
             <!-- BADGES -->
             <article class="card about-card reveal">
               <h2 class="section-heading">Badges</h2>
-              <p class="section-subtext">Milestones unlocked through consistent effort.</p>
+              <p class="section-subtext">Visible milestones unlocked by this user.</p>
               <div class="badge-grid">
-                <div class="badge-chip">🏁 First Skill</div>
-                <div class="badge-chip">📓 First Journal</div>
+                <div class="badge-chip">🔐 Profile Created</div>
+                {% if skills_count|default:0 > 0 %}
+                  <div class="badge-chip">🏁 First Skill</div>
+                {% endif %}
                 {% if login_streak|default:0 >= 7 %}
                   <div class="badge-chip">🔥 7-day Streak</div>
                 {% endif %}
                 {% if login_streak|default:0 >= 30 %}
                   <div class="badge-chip">🌕 30-day Streak</div>
                 {% endif %}
-                <div class="badge-chip">🔐 Profile Created</div>
               </div>
             </article>
 
             <!-- GROUPS / FUTURE COMMUNITIES -->
             <article class="card about-card reveal">
               <h2 class="section-heading">Groups</h2>
-              <p class="section-subtext">Calibration groups based on skills, habits, or goals (coming soon).</p>
+              <p class="section-subtext">
+                Calibration groups based on skills, habits, or goals (preview only).
+              </p>
               <div class="group-list">
                 <div class="group-item">
                   <div class="group-meta">
                     <span class="group-name">Deep Work · Focus Circle</span>
-                    <span class="muted">Focus & concentration · 42 members</span>
+                    <span class="muted">Focus & concentration</span>
                   </div>
                   <span class="chip">Preview</span>
                 </div>
                 <div class="group-item">
                   <div class="group-meta">
                     <span class="group-name">Morning Routines Club</span>
-                    <span class="muted">Habits · 87 members</span>
+                    <span class="muted">Habits</span>
                   </div>
                   <span class="chip">Preview</span>
                 </div>
@@ -1130,7 +1053,9 @@
             <!-- BUDDIES MINI -->
             <article class="card about-card reveal profile-section" id="section-buddies">
               <h2 class="section-heading">Buddies</h2>
-              <p class="section-subtext">Your accountability network in a snapshot.</p>
+              <p class="section-subtext">
+                A quick look at some of {{ profile_user.username }}’s buddies (preview).
+              </p>
               <div class="buddies-mini-list">
                 {% for buddy in friends|slice:":6" %}
                   <div class="buddy-pill">
@@ -1138,7 +1063,7 @@
                     <span>{{ buddy.user.username }}</span>
                   </div>
                 {% empty %}
-                  <span class="muted">No buddies yet. <a href="{% url 'buddies' %}">Find one now.</a></span>
+                  <span class="muted">{{ profile_user.username }} has no buddies yet.</span>
                 {% endfor %}
               </div>
             </article>
@@ -1146,34 +1071,12 @@
 
           <!-- RIGHT COLUMN -->
           <div class="profile-col-right">
-            <!-- TIMELINE COMPOSER -->
-            <article class="card composer-card reveal profile-section" id="section-timeline">
-              <h2 class="section-heading">Share an update</h2>
-              <p class="section-subtext">In the future this can post to your timeline or log a journal entry.</p>
-              <div class="composer-row">
-                <div class="composer-avatar">
-                  {{ user.username|slice:":2"|upper }}
-                </div>
-                <div class="composer-input-wrap">
-                  <textarea class="composer-input" placeholder="What did you work on today? (e.g., 30 mins deep work, gym, journaling)"></textarea>
-                  <div class="composer-actions">
-                    <div class="composer-tags">
-                      <span class="composer-tag">+ Skill session</span>
-                      <span class="composer-tag">+ Habit check-in</span>
-                      <span class="composer-tag">+ Mood note</span>
-                    </div>
-                    <button class="btn btn-primary btn-sm" type="button" disabled>
-                      Post (demo)
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <!-- FEED -->
-            <article class="card feed-card reveal">
-              <h2 class="section-heading">Timeline</h2>
-              <p class="section-subtext">A feed of your recent activity across habits, skills, and journals.</p>
+            <!-- READ-ONLY TIMELINE -->
+            <article class="card feed-card reveal profile-section" id="section-timeline">
+              <h2 class="section-heading">{{ profile_user.username }}’s Timeline</h2>
+              <p class="section-subtext">
+                Public activity from this account (skills, habits, and journals).
+              </p>
 
               <div id="feed-list">
                 {% if recent_activity %}
@@ -1201,7 +1104,7 @@
                   {% endfor %}
                 {% else %}
                   <p class="feed-empty">
-                    No activity yet. Complete a skill session, habit, or journal entry to see it here.
+                    No public activity visible yet.
                   </p>
                 {% endif %}
               </div>
@@ -1212,9 +1115,10 @@
               <div class="friends-header">
                 <div>
                   <h2 class="section-heading">Buddies</h2>
-                  <p class="section-subtext">People who can see your Calibration progress (later: permissions & privacy).</p>
+                  <p class="section-subtext">
+                    People connected to {{ profile_user.username }} in Calibration.
+                  </p>
                 </div>
-                <a href="{% url 'buddies' %}" class="btn btn-ghost btn-sm">Manage</a>
               </div>
               <div class="friends-list-scroll">
                 {% for buddy in friends %}
@@ -1232,7 +1136,7 @@
                     </div>
                   </div>
                 {% empty %}
-                  <p class="muted">No buddies yet.</p>
+                  <p class="muted">{{ profile_user.username }} has no buddies yet.</p>
                 {% endfor %}
               </div>
             </article>
@@ -1242,7 +1146,9 @@
               <div class="activity-header">
                 <div>
                   <h2 class="section-heading">Live Activity</h2>
-                  <p class="section-subtext">Demo stream – later this can show real-time habit & skill events.</p>
+                  <p class="section-subtext">
+                    Demo stream – later this can show their real-time habit & skill events.
+                  </p>
                 </div>
                 <span class="chip" id="activity-clock">--:--</span>
               </div>
@@ -1272,30 +1178,8 @@
     else greeting = "Good evening";
     if (greetingLabel) greetingLabel.textContent = greeting;
 
-    /* SUBNAV SWITCHING (just highlights + optional scroll) */
-    const subnav = document.getElementById("profile-subnav");
+    /* SUBNAV SWITCHING + SCROLL */
     const subnavBtns = document.querySelectorAll(".profile-subnav-btn");
-    const sections = document.querySelectorAll(".profile-section");
-
-    subnavBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const targetId = btn.getAttribute("data-section");
-        subnavBtns.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const targetEl = document.getElementById(targetId);
-        if (targetEl) {
-          const rect = targetEl.getBoundingClientRect();
-          const offset = rect.top + window.scrollY - 90;
-          window.scrollTo({ top: offset, behavior: "smooth" });
-        }
-      });
-    });
-
-    /* QUICK SCROLL BUTTONS IN HEADER */
-    const scrollTimelineBtn = document.getElementById("btn-scroll-timeline");
-    const scrollAboutBtn = document.getElementById("btn-scroll-about");
-    const timelineSection = document.getElementById("section-timeline");
-    const aboutSection = document.getElementById("section-about");
 
     function smartScroll(target) {
       if (!target) return;
@@ -1303,6 +1187,21 @@
       const offset = rect.top + window.scrollY - 90;
       window.scrollTo({ top: offset, behavior: "smooth" });
     }
+
+    subnavBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-section");
+        subnavBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const targetEl = document.getElementById(targetId);
+        smartScroll(targetEl);
+      });
+    });
+
+    const scrollTimelineBtn = document.getElementById("btn-scroll-timeline");
+    const scrollAboutBtn = document.getElementById("btn-scroll-about");
+    const timelineSection = document.getElementById("section-timeline");
+    const aboutSection = document.getElementById("section-about");
 
     scrollTimelineBtn && scrollTimelineBtn.addEventListener("click", () => smartScroll(timelineSection));
     scrollAboutBtn && scrollAboutBtn.addEventListener("click", () => smartScroll(aboutSection));
@@ -1378,17 +1277,6 @@
     }
     updateClock();
     setInterval(updateClock, 60000);
-
-    /* BOOST DEMO BUTTON */
-    const boostBtn = document.getElementById("simulate-boost");
-    if (boostBtn) {
-      boostBtn.addEventListener("click", () => {
-        boostBtn.textContent = "⚡ Boost applied (demo)";
-        boostBtn.disabled = true;
-        boostBtn.style.opacity = "0.8";
-        boostBtn.style.cursor = "default";
-      });
-    }
   });
 </script>
 </body>

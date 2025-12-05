@@ -134,6 +134,7 @@
       justify-content: space-between;
       gap: 8px;
       padding: 8px 10px;
+      position: relative;
       border-radius: var(--radius-md);
       font-size: 0.86rem;
       color: #cbd5f5;
@@ -163,6 +164,24 @@
 
     .nav-link.active .nav-indicator {
       background: #001018;
+    }
+
+    .nav-link.has-unread .nav-indicator {
+      background: #ef4444;
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+    }
+
+    .nav-link.has-unread::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
     }
 
     /* === MAIN AREA === */
@@ -836,8 +855,12 @@
         <span>Coaching</span>
         <span class="nav-indicator"></span>
       </a>
-      <a href="{% url 'messages' %}" class="nav-link">
+      <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}">
         <span>Messages</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'user_profile' %}" class="nav-link">
+        <span>Profile</span>
         <span class="nav-indicator"></span>
       </a>
       <a href="{% url 'community' %}" class="nav-link">
@@ -1085,6 +1108,42 @@
 
         <!-- RIGHT: scrollable lists -->
         <div class="lists-grid">
+          <article class="card" style="margin-bottom:10px;">
+            <h3>Filters</h3>
+            <p class="card-sub">Search and narrow tasks/goals.</p>
+            <form method="get" class="filter-form" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;">
+              <input type="text" name="q" placeholder="Search title…" value="{{ filters.q }}" style="padding:6px 8px;border:1px solid #e5e7eb;border-radius:8px;">
+              <select name="task_status" style="padding:6px 8px;border:1px solid #e5e7eb;border-radius:8px;">
+                <option value="">Task status (all)</option>
+                <option value="NOTSTARTED" {% if filters.task_status == "NOTSTARTED" %}selected{% endif %}>Not started</option>
+                <option value="INPROGRESS" {% if filters.task_status == "INPROGRESS" %}selected{% endif %}>In progress</option>
+                <option value="COMPLETED" {% if filters.task_status == "COMPLETED" %}selected{% endif %}>Completed</option>
+              </select>
+              <select name="goal_status" style="padding:6px 8px;border:1px solid #e5e7eb;border-radius:8px;">
+                <option value="">Goal status (all)</option>
+                <option value="not_started" {% if filters.goal_status == "not_started" %}selected{% endif %}>Not started</option>
+                <option value="in_progress" {% if filters.goal_status == "in_progress" %}selected{% endif %}>In progress</option>
+                <option value="completed" {% if filters.goal_status == "completed" %}selected{% endif %}>Completed</option>
+                <option value="abandoned" {% if filters.goal_status == "abandoned" %}selected{% endif %}>Abandoned</option>
+              </select>
+              <input type="date" name="date_from" value="{{ filters.date_from }}" style="padding:6px 8px;border:1px solid #e5e7eb;border-radius:8px;">
+              <input type="date" name="date_to" value="{{ filters.date_to }}" style="padding:6px 8px;border:1px solid #e5e7eb;border-radius:8px;">
+              <select name="task_sort" style="padding:6px 8px;border:1px solid #e5e7eb;border-radius:8px;">
+                <option value="recent" {% if filters.task_sort == "recent" %}selected{% endif %}>Tasks: Recent</option>
+                <option value="oldest" {% if filters.task_sort == "oldest" %}selected{% endif %}>Tasks: Oldest</option>
+                <option value="points" {% if filters.task_sort == "points" %}selected{% endif %}>Tasks: Points</option>
+              </select>
+              <select name="goal_sort" style="padding:6px 8px;border:1px solid #e5e7eb;border-radius:8px;">
+                <option value="due" {% if filters.goal_sort == "due" %}selected{% endif %}>Goals: Due soon</option>
+                <option value="priority" {% if filters.goal_sort == "priority" %}selected{% endif %}>Goals: Priority</option>
+                <option value="recent" {% if filters.goal_sort == "recent" %}selected{% endif %}>Goals: Recently added</option>
+              </select>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+                <a href="{% url 'progresstracker' %}" class="btn btn-sm">Reset</a>
+              </div>
+            </form>
+          </article>
           <article class="card">
             <h3>Recent Tasks</h3>
             <p class="card-sub">Latest items across Not Started, In Progress, and Completed.</p>
@@ -1107,6 +1166,10 @@
                       {% if t.habit %}<span>Habit: {{ t.habit.name }}</span>{% endif %}
                       {% if t.goals %}<span>Goal: {{ t.goals.title }}</span>{% endif %}
                       <span>{{ t.date|date:"M d, Y g:i A" }}</span>
+                      <form method="post" action="{% url 'task_delete' t.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm" style="padding:4px 8px; color:#b91c1c;">Delete</button>
+                      </form>
                     </div>
                   </div>
                 {% empty %}

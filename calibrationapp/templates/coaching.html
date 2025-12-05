@@ -87,14 +87,27 @@ header{
   color:#cbd5e1;
   text-decoration: none;
   font-size: 15px;
+  position: relative;
  
+}
+
+.nav a.has-unread::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
 }
 
 
 .nav a.active {
     background: #0ea5e9; 
     color:#001018 
-  
+ 
 }
 
 .nav a:hover{ background: rgba(255,255,255,.08); 
@@ -148,7 +161,8 @@ header{
  <a href="{% url 'progresstracker' %}">Progress Tracker </a>
  <a href="{% url 'rewards' %}">Rewards</a>
  <a class="active" href="{% url 'coaching' %}">Coaching</a>
- <a href="{% url 'messages' %}">Messages</a>
+ <a href="{% url 'messages' %}" class="{% if has_unread_messages %}has-unread{% endif %}">Messages</a>
+ <a href="{% url 'user_profile' %}">Profile</a>
  <a href="{% url 'community' %}">Community</a>
  </div>
 </nav>

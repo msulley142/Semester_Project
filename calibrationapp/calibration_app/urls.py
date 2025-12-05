@@ -46,6 +46,9 @@ urlpatterns = [
     path("community/", views.CommunityView.as_view(), name="community"),
     path("community/new/", views.ForumCreateView.as_view(), name="community_new_thread"),
     path("community/thread/<int:pk>/", views.ForumDetailView.as_view(), name="community_thread"),
+    path("community/thread/<int:pk>/vote/", views.forum_vote, name="forum_vote"),
+    path("community/thread/<int:pk>/delete/", views.ForumDeleteView.as_view(), name="community_thread_delete"),
+    path("profile/<int:user_id>/", views.VisitorProfileView.as_view(), name="visitor_profile"),
 
     path("buddies/", views.BuddiesView.as_view(), name="buddies"),
     path("buddies/send/", views.BuddySendView.as_view(), name="buddy-send"),

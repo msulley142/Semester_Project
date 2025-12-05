@@ -140,6 +140,7 @@
       align-items: center;
       gap: 8px;
       padding: 8px 10px;
+      position: relative;
       border-radius: var(--radius-md);
       font-size: 0.86rem;
       color: #cbd5f5;
@@ -174,6 +175,24 @@
 
     .nav-link.active .nav-indicator {
       background: #001018;
+    }
+
+    .nav-link.has-unread .nav-indicator {
+      background: #ef4444;
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+    }
+
+    .nav-link.has-unread::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
     }
 
     /* MAIN AREA */
@@ -1186,8 +1205,12 @@
         <span>Coaching</span>
         <span class="nav-indicator"></span>
       </a>
-      <a href="{% url 'messages' %}" class="nav-link">
+      <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}">
         <span>Messages</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'user_profile' %}" class="nav-link">
+        <span>Profile</span>
         <span class="nav-indicator"></span>
       </a>
       <a href="{% url 'community' %}" class="nav-link">
@@ -1497,7 +1520,13 @@
                 </div>
 
                 <div class="journal-entry-footer">
-                  <button type="button" class="journal-toggle-btn">View details</button>
+                  <div style="display:flex; gap:6px; justify-content:flex-end; flex-wrap:wrap;">
+                    <button type="button" class="journal-toggle-btn">View details</button>
+                    <form method="post" action="{% url 'journal_delete' j.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-ghost btn-sm" style="color:#b91c1c;">Delete</button>
+                    </form>
+                  </div>
                 </div>
               </div>
             {% empty %}
@@ -1540,7 +1569,13 @@
                   <p class="journal-note">{{ t.description|default:"No description provided." }}</p>
                 </div>
                 <div class="journal-entry-footer">
-                  <button type="button" class="journal-toggle-btn">View details</button>
+                  <div style="display:flex; gap:6px; justify-content:flex-end; flex-wrap:wrap;">
+                    <button type="button" class="journal-toggle-btn">View details</button>
+                    <form method="post" action="{% url 'task_delete' t.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-ghost btn-sm" style="color:#b91c1c;">Delete</button>
+                    </form>
+                  </div>
                 </div>
                 <div class="task-details">
                   <p class="journal-note"><strong>Points:</strong> {{ t.points|default:0 }}</p>

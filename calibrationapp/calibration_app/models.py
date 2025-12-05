@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils import timezone 
 from datetime import date
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 
 
 
@@ -246,6 +246,7 @@ class Task(models.Model):
     status = models.CharField(max_length=15, choices=status_OP)
     description = models.TextField(blank=True)
     date =  models.DateTimeField(default=timezone.now)
+    completed_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.title}"
@@ -263,7 +264,12 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20, blank=True)
     bio = models.TextField(max_length=500, blank=True)
-    profile_picture = models.ImageField(upload_to='profile_pic/', blank=True, null=True)
+    profile_picture = models.ImageField(
+        upload_to='profile_pic/',
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(allowed_extensions=["jpg", "jpeg", "png", "gif"])],
+    )
     buddies = models.ManyToManyField(
         "self",
         through="Friendship",
@@ -280,6 +286,14 @@ class Profile(models.Model):
         return Profile.objects.filter(
             models.Q(friendships_sent__buddy=self) | models.Q(friendships_received__requester=self)
         ).distinct()
+
+    def clean(self):
+        super().clean()
+        if self.profile_picture:
+            max_bytes = 2 * 1024 * 1024  # 2 MB limit for uploads
+            size = getattr(self.profile_picture, "size", 0) or 0
+            if size > max_bytes:
+                raise ValidationError({"profile_picture": "Profile picture must be 2MB or smaller."})
 
 
 class Topics(models.Model):
@@ -307,6 +321,23 @@ class Forum(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ForumVote(models.Model):
+    UP = 1
+    DOWN = -1
+    VALUE_CHOICES = ((UP, "Upvote"), (DOWN, "Downvote"))
+
+    forum = models.ForeignKey(Forum, related_name="votes", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="forum_votes", on_delete=models.CASCADE)
+    value = models.SmallIntegerField(choices=VALUE_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("forum", "user")
+
+    def __str__(self):
+        return f"{self.user} -> {self.forum} ({self.value})"
 
 
 class Post(models.Model):

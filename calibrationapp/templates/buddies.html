@@ -1,42 +1,483 @@
-
 {% block content %}
-<h2>Your buddies</h2>
-<ul>
-  {% for b in buddies %}
-    <li>
-      {{ b.user.username }}
-      <form action="{% url 'buddy-remove' b.id %}" method="post">{% csrf_token %}<button type="submit">Remove</button></form>
-    </li>
-  {% empty %}<li>No buddies yet.</li>{% endfor %}
-</ul>
+<style>
+  :root {
+    --cb-bg: #f1f5f9;
+    --cb-bg-soft: #e0f2fe;
+    --cb-card: #ffffff;
+    --cb-card-soft: #f8fafc;
+    --cb-accent: #0ea5e9;
+    --cb-accent-strong: #1d4ed8;
+    --cb-danger: #ef4444;
+    --cb-success: #22c55e;
+    --cb-text-main: #0f172a;
+    --cb-text-muted: #6b7280;
+    --cb-border-subtle: #e5e7eb;
+    --cb-radius-lg: 18px;
+    --cb-radius-md: 12px;
+    --cb-radius-pill: 999px;
+    --cb-shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
+  }
 
-<h3>Incoming requests</h3>
-{% for r in incoming %}
-  <div>
-    {{ r.sender.user.username }}
-    <form action="{% url 'buddy-respond' %}" method="post">{% csrf_token %}
-      <input type="hidden" name="request_id" value="{{ r.id }}">
-      <button name="action" value="accept">Accept</button>
-      <button name="action" value="decline">Decline</button>
-    </form>
+  .buddies-shell {
+    padding: 18px 20px 32px;
+    background: radial-gradient(circle at top left, #e0f2fe 0, #f1f5f9 45%, #e0f2fe 100%);
+    color: var(--cb-text-main);
+  }
+
+  @media (max-width: 640px) {
+    .buddies-shell {
+      padding: 14px 10px 24px;
+    }
+  }
+
+  .buddies-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  @media (max-width: 640px) {
+    .buddies-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+
+  .buddies-title-block h1 {
+    margin: 0;
+    font-size: 1.35rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .buddies-title-block p {
+    margin: 4px 0 0;
+    font-size: 0.86rem;
+    color: var(--cb-text-muted);
+  }
+
+  .buddies-badge {
+    padding: 5px 12px;
+    border-radius: var(--cb-radius-pill);
+    background: rgba(14, 165, 233, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.6);
+    font-size: 0.8rem;
+    color: #0369a1;
+  }
+
+  .buddies-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 960px) {
+    .buddies-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .buddies-card {
+    background: var(--cb-card);
+    border-radius: var(--cb-radius-lg);
+    border: 1px solid var(--cb-border-subtle);
+    box-shadow: var(--cb-shadow-soft);
+    padding: 14px 14px 12px;
+  }
+
+  .buddies-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .buddies-card-header h2 {
+    margin: 0;
+    font-size: 0.98rem;
+  }
+
+  .buddies-card-header span {
+    font-size: 0.78rem;
+    color: var(--cb-text-muted);
+  }
+
+  .buddies-section-sub {
+    margin: 0 0 8px;
+    font-size: 0.78rem;
+    color: var(--cb-text-muted);
+  }
+
+  .buddies-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .buddies-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 8px;
+    border-radius: var(--cb-radius-md);
+    background: var(--cb-card-soft);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 6px;
+    transition: box-shadow 0.15s ease, transform 0.12s ease, border-color 0.15s ease;
+  }
+
+  .buddies-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(148, 163, 184, 0.45);
+    border-color: #bfdbfe;
+  }
+
+  .buddy-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .buddy-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #0ea5e9, #1d4ed8);
+    color: #eff6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 0 0 2px #e0f2fe;
+  }
+
+  .buddy-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  .buddy-tag {
+    font-size: 0.76rem;
+    color: var(--cb-text-muted);
+  }
+
+  .buddy-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .buddy-inline-form {
+    margin: 0;
+  }
+
+  .buddy-inline-form button {
+    font-family: inherit;
+  }
+
+  .btn-chip {
+    border-radius: var(--cb-radius-pill);
+    border: 1px solid var(--cb-border-subtle);
+    padding: 5px 10px;
+    font-size: 0.76rem;
+    background: #ffffff;
+    color: var(--cb-text-main);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+  }
+
+  .btn-chip:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .btn-chip-danger {
+    border-color: rgba(248, 113, 113, 0.7);
+    background: #fef2f2;
+    color: #b91c1c;
+  }
+
+  .btn-chip-danger:hover {
+    background: #fee2e2;
+    border-color: #f97373;
+  }
+
+  .btn-chip-success {
+    border-color: rgba(34, 197, 94, 0.7);
+    background: #ecfdf3;
+    color: #15803d;
+  }
+
+  .btn-chip-success:hover {
+    background: #dcfce7;
+  }
+
+  .btn-chip-muted {
+    border-color: #e5e7eb;
+    color: #4b5563;
+    background: #f9fafb;
+  }
+
+  .badge-small {
+    padding: 2px 8px;
+    border-radius: var(--cb-radius-pill);
+    font-size: 0.72rem;
+    background: #e0f2fe;
+    color: #1d4ed8;
+  }
+
+  .buddies-requests-stack > div,
+  .buddies-requests-stack > p {
+    margin-bottom: 6px;
+  }
+
+  .request-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .request-label {
+    font-size: 0.78rem;
+    color: var(--cb-text-muted);
+  }
+
+  .send-request-form {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .send-request-form select {
+    border-radius: var(--cb-radius-pill);
+    border: 1px solid var(--cb-border-subtle);
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    min-width: 180px;
+    background: #ffffff;
+  }
+
+  .send-request-form button {
+    border-radius: var(--cb-radius-pill);
+    border: none;
+    padding: 7px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: linear-gradient(135deg, #0ea5e9, #1d4ed8);
+    color: #eff6ff;
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.55);
+    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+  }
+
+  .send-request-form button:hover {
+    background: linear-gradient(135deg, #0284c7, #1e40af);
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.7);
+    transform: translateY(-1px);
+  }
+
+  .empty-text {
+    font-size: 0.8rem;
+    color: var(--cb-text-muted);
+    padding: 4px 0;
+  }
+</style>
+
+<div class="buddies-shell">
+  <div class="buddies-header">
+    <div class="buddies-title-block">
+      <h1>Buddies</h1>
+      <p>Manage your accountability partners, friend requests, and outgoing invites.</p>
+    </div>
+    <div class="buddies-badge">
+      🤝 Social layer · Stay accountable together
+    </div>
   </div>
-{% empty %}<p>No incoming.</p>{% endfor %}
 
-<h3>Outgoing requests</h3>
-{% for r in outgoing %}
-  <div>
-    {{ r.receiver.user.username }} (pending)
-    <form action="{% url 'buddy-respond' %}" method="post">{% csrf_token %}
-      <input type="hidden" name="request_id" value="{{ r.id }}">
-      <button name="action" value="cancel">Cancel</button>
-    </form>
+  <div class="buddies-grid">
+    <!-- LEFT COLUMN: buddies + send request -->
+    <div>
+      <!-- Your buddies -->
+      <section class="buddies-card">
+        <div class="buddies-card-header">
+          <div>
+            <h2>Your buddies</h2>
+            <p class="buddies-section-sub">
+              People you’re actively connected with in Calibration.
+            </p>
+          </div>
+          <span class="badge-small">
+            {% if buddies %}{{ buddies|length }} total{% else %}0 buddies{% endif %}
+          </span>
+        </div>
+
+        <ul class="buddies-list">
+          {% for b in buddies %}
+            <li class="buddies-item">
+              <div class="buddy-meta">
+                <div class="buddy-avatar">
+                  {{ b.user.username|slice:":2"|upper }}
+                </div>
+                <div>
+                  <div class="buddy-name">
+                    <a href="{% url 'visitor_profile' b.user.id %}" style="color:inherit; text-decoration:none;">
+                      {{ b.user.username }}
+                    </a>
+                  </div>
+                  <div class="buddy-tag">Active buddy</div>
+                </div>
+              </div>
+              <div class="buddy-actions">
+                <form class="buddy-inline-form"
+                      action="{% url 'buddy-remove' b.id %}"
+                      method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-chip btn-chip-danger">
+                    ✕ Remove
+                  </button>
+                </form>
+              </div>
+            </li>
+          {% empty %}
+            <li class="empty-text">No buddies yet. Send a request to start your first connection.</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <!-- Send request -->
+      <section class="buddies-card" style="margin-top: 14px;">
+        <div class="buddies-card-header">
+          <div>
+            <h2>Send a buddy request</h2>
+            <p class="buddies-section-sub">
+              Choose a user to invite as an accountability partner.
+            </p>
+          </div>
+        </div>
+
+        <form action="{% url 'buddy-send' %}" method="post" class="send-request-form">
+          {% csrf_token %}
+          {{ form.receiver }}
+          <button type="submit">
+            ➕ Send request
+          </button>
+        </form>
+      </section>
+    </div>
+
+    <!-- RIGHT COLUMN: incoming + outgoing -->
+    <div>
+      <!-- Incoming -->
+      <section class="buddies-card">
+        <div class="buddies-card-header">
+          <div>
+            <h2>Incoming requests</h2>
+            <p class="buddies-section-sub">
+              Other users who want to connect with you.
+            </p>
+          </div>
+          <span class="badge-small">
+            {% if incoming %}{{ incoming|length }} pending{% else %}No pending{% endif %}
+          </span>
+        </div>
+
+        <div class="buddies-requests-stack">
+          {% for r in incoming %}
+            <div class="buddies-item">
+              <div>
+                <div class="request-user">
+                  <div class="buddy-avatar">
+                    {{ r.sender.user.username|slice:":2"|upper }}
+                  </div>
+                  <div>
+                    <div class="buddy-name">{{ r.sender.user.username }}</div>
+                    <div class="request-label">Incoming buddy request</div>
+                  </div>
+                </div>
+              </div>
+              <div class="buddy-actions">
+                <form class="buddy-inline-form"
+                      action="{% url 'buddy-respond' %}"
+                      method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="request_id" value="{{ r.id }}">
+                  <button name="action" value="accept" class="btn-chip btn-chip-success">
+                    ✓ Accept
+                  </button>
+                  <button name="action" value="decline" class="btn-chip btn-chip-muted">
+                    ✕ Decline
+                  </button>
+                </form>
+              </div>
+            </div>
+          {% empty %}
+            <p class="empty-text">No incoming requests right now.</p>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Outgoing -->
+      <section class="buddies-card" style="margin-top: 14px;">
+        <div class="buddies-card-header">
+          <div>
+            <h2>Outgoing requests</h2>
+            <p class="buddies-section-sub">
+              Requests you’ve sent that are still waiting on a response.
+            </p>
+          </div>
+          <span class="badge-small">
+            {% if outgoing %}{{ outgoing|length }} pending{% else %}No pending{% endif %}
+          </span>
+        </div>
+
+        <div class="buddies-requests-stack">
+          {% for r in outgoing %}
+            <div class="buddies-item">
+              <div>
+                <div class="request-user">
+                  <div class="buddy-avatar">
+                    {{ r.receiver.user.username|slice:":2"|upper }}
+                  </div>
+                  <div>
+                    <div class="buddy-name">{{ r.receiver.user.username }}</div>
+                    <div class="request-label">Waiting for them to accept</div>
+                  </div>
+                </div>
+              </div>
+              <div class="buddy-actions">
+                <form class="buddy-inline-form"
+                      action="{% url 'buddy-respond' %}"
+                      method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="request_id" value="{{ r.id }}">
+                  <button name="action" value="cancel" class="btn-chip btn-chip-danger">
+                    ✕ Cancel
+                  </button>
+                </form>
+              </div>
+            </div>
+          {% empty %}
+            <p class="empty-text">No outgoing requests right now.</p>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
   </div>
-{% empty %}<p>No outgoing.</p>{% endfor %}
-
-<h3>Send a buddy request</h3>
-<form action="{% url 'buddy-send' %}" method="post">
-  {% csrf_token %}
-  {{ form.receiver }}
-  <button type="submit">Send</button>
-</form>
+</div>
 {% endblock %}

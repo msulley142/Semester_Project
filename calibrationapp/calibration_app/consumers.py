@@ -3,10 +3,14 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
+import re
 
 from .models import ChatMessage
 
 User = get_user_model()
+
+ROOM_PATTERN = re.compile(r"^dm-(\d+)-(\d+)$")
+MAX_MESSAGE_LENGTH = 2000
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -14,6 +18,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # room_name is taken from the URL: /ws/chat/<room_name>/
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.group_name = f"chat_{self.room_name}"
+
+        # Require login
+        user = self.scope.get("user")
+        if not user or not user.is_authenticated:
+            await self.close(code=4401)
+            return
+
+        # Validate room pattern and ensure current user is part of the room
+        match = ROOM_PATTERN.match(self.room_name or "")
+        if not match:
+            await self.close(code=4400)
+            return
+        uid_a, uid_b = match.groups()
+        if str(user.id) not in {uid_a, uid_b}:
+            await self.close(code=4403)
+            return
 
         # Join group
         await self.channel_layer.group_add(
@@ -45,6 +65,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return
 
         message = (data.get("message") or "").strip()
+        if len(message) > MAX_MESSAGE_LENGTH:
+            message = message[:MAX_MESSAGE_LENGTH]
         if not message:
             return
 

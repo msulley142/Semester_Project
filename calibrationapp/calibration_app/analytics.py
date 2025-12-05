@@ -2,7 +2,9 @@
 from datetime import timedelta
 from itertools import chain
 
+from django.db import models
 from django.db.models import Avg, Count, Q
+from django.db.models.functions import Coalesce, TruncDate
 from django.db.models.functions import TruncDate
 from django.utils import timezone
 
@@ -77,6 +79,49 @@ def habits_skills_summary(user):
     return {
         "habits_count": habits_count,
         "skills_count": skills_count,
+    }
+
+
+def xp_activity_summary(user):
+    """
+    XP Today / XP This Week:
+    Uses completed tasks' points (on completion date) plus journal XP from
+    PRACTICE (5 XP) and REFLECTION (1 XP) entries on their logged date.
+    """
+    today = timezone.now().date()
+    start_week = today - timedelta(days=today.weekday())  # Monday
+
+    # ---- Tasks XP ----
+    base_qs = (
+        Task.objects.filter(account_user=user, status=Task.COMPLETED)
+        .annotate(done_date=Coalesce("completed_at", "date"))
+    )
+    xp_today = base_qs.filter(done_date__date=today).aggregate(total=models.Sum("points"))["total"] or 0
+    xp_week = base_qs.filter(done_date__date__gte=start_week).aggregate(total=models.Sum("points"))["total"] or 0
+
+    # ---- Journal XP ----
+    journal_today = Journal.objects.filter(
+        account_user=user,
+        date__date=today,
+        entry_type__in=[Journal.PRACTICE, Journal.REFLECTION],
+    )
+    journal_week = Journal.objects.filter(
+        account_user=user,
+        date__date__gte=start_week,
+        entry_type__in=[Journal.PRACTICE, Journal.REFLECTION],
+    )
+
+    def journal_xp(qs):
+        practice = qs.filter(entry_type=Journal.PRACTICE).count()
+        reflection = qs.filter(entry_type=Journal.REFLECTION).count()
+        return practice * 5 + reflection * 1
+
+    xp_today += journal_xp(journal_today)
+    xp_week += journal_xp(journal_week)
+
+    return {
+        "xp_today": xp_today,
+        "xp_week": xp_week,
     }
 
 

@@ -155,6 +155,7 @@
       justify-content: space-between;
       gap: 8px;
       padding: 8px 10px;
+      position: relative;
       border-radius: var(--radius-md);
       font-size: 0.86rem;
       color: #e5e7eb;
@@ -193,6 +194,24 @@
     .nav-link.active .nav-indicator {
       background: #f9fafb;
       border-color: transparent;
+    }
+
+    .nav-link.has-unread .nav-indicator {
+      background: #ef4444;
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+    }
+
+    .nav-link.has-unread::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
     }
 
     /* ---- MAIN ---- */
@@ -933,7 +952,7 @@
       color: var(--text-muted);
     }
 
-    /* PROFILE MODAL */
+    /* PROFILE MODAL / GENERIC MODAL */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -1237,8 +1256,12 @@
         <span>Coaching</span>
         <span class="nav-indicator"></span>
       </a>
-      <a href="{% url 'messages' %}" class="nav-link">
+      <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}">
         <span>Messages</span>
+        <span class="nav-indicator"></span>
+      </a>
+      <a href="{% url 'user_profile' %}" class="nav-link">
+        <span>Profile</span>
         <span class="nav-indicator"></span>
       </a>
       <a href="{% url 'community' %}" class="nav-link">
@@ -1335,6 +1358,21 @@
                   Use the dashboard for day-to-day tracking; this space is for account details.
                 </p>
               </section>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY DETAIL MODAL -->
+      <div class="modal-overlay" id="day-modal" aria-hidden="true">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 id="day-modal-title">Day details</h3>
+            <button type="button" class="modal-close" id="day-modal-close">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div id="day-modal-content" style="font-size:0.88rem;">
+              <!-- Filled dynamically -->
             </div>
           </div>
         </div>
@@ -1602,6 +1640,12 @@
     const nextBtn = document.getElementById("next-week");
     const events = JSON.parse('{{ calendar_events_json|default:"{}"|escapejs }}');
 
+    // Day detail modal elements
+    const dayModal = document.getElementById("day-modal");
+    const dayModalClose = document.getElementById("day-modal-close");
+    const dayModalTitle = document.getElementById("day-modal-title");
+    const dayModalContent = document.getElementById("day-modal-content");
+
     if (!grid || !summary) return;
 
     let currentOffset = 0;
@@ -1616,6 +1660,75 @@
 
     function formatShort(d) {
       return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    }
+
+    function formatFull(d) {
+      return d.toLocaleDateString(undefined, {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      });
+    }
+
+    function openDayModal(dayDate, dayEvents) {
+      if (!dayModal || !dayModalTitle || !dayModalContent) return;
+
+      dayModalTitle.textContent = formatFull(dayDate);
+
+      let html = "";
+
+      if (!dayEvents) {
+        html = "<p>No events scheduled for this day.</p>";
+      } else {
+        // If you later include a richer structure like:
+        // { "items": [{ "title": "...", "time": "...", "description": "..." }, ...] }
+        if (Array.isArray(dayEvents.items)) {
+          html += "<ul style='padding-left: 1.1rem; margin: 0;'>";
+          dayEvents.items.forEach(function (evt) {
+            const title = evt.title || "Event";
+            const time = evt.time ? `<strong>${evt.time}</strong> – ` : "";
+            const desc = evt.description ? `<br><span class='muted'>${evt.description}</span>` : "";
+            html += `<li style="margin-bottom: 6px;">${time}${title}${desc}</li>`;
+          });
+          html += "</ul>";
+        } else {
+          const tasks = (typeof dayEvents.tasks === "number") ? dayEvents.tasks : (dayEvents.tasks || 0);
+          const goals = (typeof dayEvents.goals === "number") ? dayEvents.goals : (dayEvents.goals || 0);
+
+          html += `<p><strong>${tasks}</strong> task(s) and <strong>${goals}</strong> goal(s) scheduled.</p>`;
+
+          if (Array.isArray(dayEvents.tasks_detail) && dayEvents.tasks_detail.length) {
+            html += "<h4 style='margin: 8px 0 4px; font-size:0.86rem;'>Tasks</h4><ul style='padding-left:1.1rem; margin:0;'>";
+            dayEvents.tasks_detail.forEach(function (t) {
+              const title = t.title || "Task";
+              const status = t.status ? ` <span class='muted'>(${t.status})</span>` : "";
+              html += `<li style="margin-bottom:4px;">${title}${status}</li>`;
+            });
+            html += "</ul>";
+          }
+
+          if (Array.isArray(dayEvents.goals_detail) && dayEvents.goals_detail.length) {
+            html += "<h4 style='margin: 8px 0 4px; font-size:0.86rem;'>Goals</h4><ul style='padding-left:1.1rem; margin:0;'>";
+            dayEvents.goals_detail.forEach(function (g) {
+              const title = g.title || "Goal";
+              const status = g.status ? ` <span class='muted'>(${g.status})</span>` : "";
+              html += `<li style="margin-bottom:4px;">${title}${status}</li>`;
+            });
+            html += "</ul>";
+          }
+        }
+      }
+
+      dayModalContent.innerHTML = html;
+      dayModal.classList.add("is-open");
+      dayModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeDayModal() {
+      if (!dayModal) return;
+      dayModal.classList.remove("is-open");
+      dayModal.setAttribute("aria-hidden", "true");
     }
 
     function renderWeek(offset) {
@@ -1664,8 +1777,11 @@
           } else {
             summary.textContent = `${niceDate}: nothing scheduled.`;
           }
+
           grid.querySelectorAll(".calendar-day").forEach(d => d.classList.remove("is-selected"));
           cell.classList.add("is-selected");
+
+          openDayModal(dayDate, dayEvents);
         });
 
         grid.appendChild(cell);
@@ -1686,6 +1802,20 @@
         renderWeek(currentOffset);
       });
     }
+
+    if (dayModalClose) {
+      dayModalClose.addEventListener("click", closeDayModal);
+    }
+    if (dayModal) {
+      dayModal.addEventListener("click", function (e) {
+        if (e.target === dayModal) closeDayModal();
+      });
+    }
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && dayModal && dayModal.classList.contains("is-open")) {
+        closeDayModal();
+      }
+    });
 
     // Animate progress bars
     const fills = document.querySelectorAll(".skill_progress_fill, .habit_progress_fill");

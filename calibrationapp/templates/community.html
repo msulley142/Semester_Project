@@ -98,11 +98,23 @@
       justify-content: space-between;
       gap: 8px;
       padding: 8px 10px;
+      position: relative;
       border-radius: 10px;
       font-size: 0.86rem;
       color: #cbd5f5;
       border: 1px solid transparent;
       transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .nav-link.has-unread::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
     }
     .nav-link:hover {
       background: rgba(15, 23, 42, 0.9);
@@ -717,7 +729,8 @@
     <a href="{% url 'progresstracker' %}" class="nav-link"><span>Progress Tracker</span></a>
     <a href="{% url 'rewards' %}" class="nav-link"><span>Rewards</span></a>
     <a href="{% url 'coaching' %}" class="nav-link"><span>Coaching</span></a>
-    <a href="{% url 'messages' %}" class="nav-link"><span>Messages</span></a>
+    <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}"><span>Messages</span></a>
+    <a href="{% url 'user_profile' %}" class="nav-link"><span>Profile</span></a>
     <a href="{% url 'community' %}" class="nav-link active"><span>Community</span></a>
   </div>
 </nav>
@@ -808,6 +821,67 @@
           </li>
         {% endfor %}
       </ul>
+
+      <!-- Buddies box -->
+      <div class="card" style="margin-top:12px; border:1px solid #e5e7eb; border-radius:10px; padding:10px; background:#fff;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+          <div>
+            <h3 style="margin:0;">Buddies</h3>
+            <p style="margin:2px 0 6px; color:#64748b; font-size:0.85rem;">Send or respond to buddy requests.</p>
+          </div>
+          <a class="btn" href="{% url 'buddies' %}" style="font-size:0.78rem; padding:5px 10px;">Open buddies</a>
+        </div>
+
+        <div style="display:grid; gap:8px; margin-top:6px;">
+          <div style="border:1px solid #e5e7eb; border-radius:8px; padding:8px;">
+            <h4 style="margin:0 0 6px; font-size:0.9rem;">Incoming</h4>
+            {% for req in incoming %}
+              <form method="post" action="{% url 'buddy-respond' %}" style="display:flex; gap:6px; align-items:center; margin-bottom:6px;">
+                {% csrf_token %}
+                <input type="hidden" name="request_id" value="{{ req.id }}">
+                <span style="flex:1;">{{ req.sender.user.username }}</span>
+                <button class="btn btn-primary btn-sm" name="action" value="accept" type="submit">Accept</button>
+                <button class="btn btn-sm" name="action" value="decline" type="submit">Decline</button>
+              </form>
+            {% empty %}
+              <p style="margin:0; color:#6b7280; font-size:0.85rem;">No incoming requests.</p>
+            {% endfor %}
+          </div>
+
+          <div style="border:1px solid #e5e7eb; border-radius:8px; padding:8px;">
+            <h4 style="margin:0 0 6px; font-size:0.9rem;">Outgoing</h4>
+            {% for req in outgoing %}
+              <form method="post" action="{% url 'buddy-respond' %}" style="display:flex; gap:6px; align-items:center; margin-bottom:6px;">
+                {% csrf_token %}
+                <input type="hidden" name="request_id" value="{{ req.id }}">
+                <span style="flex:1;">{{ req.receiver.user.username }}</span>
+                <button class="btn btn-sm" name="action" value="cancel" type="submit">Cancel</button>
+              </form>
+            {% empty %}
+              <p style="margin:0; color:#6b7280; font-size:0.85rem;">No outgoing requests.</p>
+            {% endfor %}
+          </div>
+
+          <div style="border:1px solid #e5e7eb; border-radius:8px; padding:8px;">
+            <h4 style="margin:0 0 6px; font-size:0.9rem;">Send request</h4>
+            <form method="post" action="{% url 'buddy-send' %}" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              {% csrf_token %}
+              {{ buddy_form.receiver }}
+              <button class="btn btn-primary btn-sm" type="submit">Send</button>
+            </form>
+            <div style="margin-top:8px;">
+              <h5 style="margin:0 0 4px;">Buddies</h5>
+              {% if buddies %}
+                {% for b in buddies %}
+                  <div style="font-size:0.9rem; padding:4px 0; border-bottom:1px solid #e5e7eb;">{{ b.user.username }}</div>
+                {% endfor %}
+              {% else %}
+                <p style="margin:0; color:#6b7280; font-size:0.85rem;">No buddies yet.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
     </aside>
 
     <!-- Mobile filters drawer -->
@@ -859,12 +933,32 @@
                 <p class="thread-preview">{{ thread.body|truncatechars:220 }}</p>
 
                 <div class="thread-footer">
-                  <span class="vote vote-up">▲ 1.5K</span>
-                  <span class="vote vote-down">▼ 60</span>
+                  <form method="post" action="{% url 'forum_vote' thread.id %}" class="vote-form" data-thread="{{ thread.id }}" style="display:flex; gap:6px; align-items:center;">
+                    {% csrf_token %}
+                    <button type="submit" name="vote" value="up" class="vote vote-up">▲</button>
+                    <span class="vote-count up-count" data-thread="{{ thread.id }}">{{ thread.up_count|default:0 }}</span>
+                    <button type="submit" name="vote" value="down" class="vote vote-down">▼</button>
+                    <span class="vote-count down-count" data-thread="{{ thread.id }}">{{ thread.down_count|default:0 }}</span>
+                  </form>
                   <div class="thread-footer-spacer"></div>
-                  <span>👁 2K</span>
-                  <span>💬 {{ thread.comment_count|default:0 }}</span>
+                  <span class="comment-count" data-thread="{{ thread.id }}">💬 {{ thread.comment_count|default:0 }}</span>
+                  <button type="button" class="btn btn-sm open-reply" data-thread="{{ thread.id }}" style="padding:4px 8px;">Reply</button>
+                  {% if thread.author_id == request.user.id %}
+                    <form method="post" action="{% url 'community_thread_delete' thread.id %}" style="display:inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm" style="padding:4px 8px; color:#b91c1c;">Delete</button>
+                    </form>
+                  {% endif %}
                 </div>
+
+                <form method="post" action="{% url 'community_thread' thread.id %}" class="inline-reply-form" data-thread="{{ thread.id }}" style="display:none; margin-top:8px; border-top:1px solid #e5e7eb; padding-top:8px;">
+                  {% csrf_token %}
+                  <textarea name="body" rows="2" placeholder="Write a reply..." style="width:100%; border:1px solid #e5e7eb; border-radius:8px; padding:6px 8px;"></textarea>
+                  <div style="margin-top:6px; display:flex; gap:6px; justify-content:flex-end;">
+                    <button type="button" class="btn btn-sm close-reply" data-thread="{{ thread.id }}">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Post reply</button>
+                  </div>
+                </form>
               </article>
             </a>
           {% empty %}
@@ -1039,6 +1133,77 @@
       filtersDrawer.classList.toggle("open");
     });
   }
+
+  // Inline replies
+  document.querySelectorAll(".open-reply").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const threadId = btn.dataset.thread;
+      const form = document.querySelector(`.inline-reply-form[data-thread="${threadId}"]`);
+      if (form) form.style.display = form.style.display === "none" ? "block" : "none";
+    });
+  });
+  document.querySelectorAll(".close-reply").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const threadId = btn.dataset.thread;
+      const form = document.querySelector(`.inline-reply-form[data-thread="${threadId}"]`);
+      if (form) form.style.display = "none";
+    });
+  });
+  document.querySelectorAll(".inline-reply-form").forEach((form) => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const threadId = form.dataset.thread;
+      const body = form.querySelector("textarea").value.trim();
+      if (!body) return;
+      const tokenInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
+      const token = tokenInput ? tokenInput.value : "";
+      const res = await fetch(form.action, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": token,
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: new FormData(form),
+      });
+      if (!res.ok) return;
+      const data = await res.json().catch(() => null);
+      if (data && data.ok) {
+        const countEl = document.querySelector(`.comment-count[data-thread="${threadId}"]`);
+        if (countEl) {
+          countEl.textContent = `💬 ${data.comment_count}`;
+        }
+        form.reset();
+        form.style.display = "none";
+      }
+    });
+  });
+
+  // Votes
+  document.querySelectorAll(".vote-form").forEach((form) => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const threadId = form.dataset.thread;
+      const formData = new FormData(form);
+      const tokenInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
+      const token = tokenInput ? tokenInput.value : "";
+      const res = await fetch(form.action, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": token,
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: formData,
+      });
+      if (!res.ok) return;
+      const data = await res.json().catch(() => null);
+      if (data && data.ok) {
+        const upEl = document.querySelector(`.up-count[data-thread="${threadId}"]`);
+        const downEl = document.querySelector(`.down-count[data-thread="${threadId}"]`);
+        if (upEl) upEl.textContent = data.up;
+        if (downEl) downEl.textContent = data.down;
+      }
+    });
+  });
 </script>
 
 </body>

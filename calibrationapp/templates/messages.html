@@ -626,7 +626,8 @@
       <a href="{% url 'progresstracker' %}" class="nav-link">Progress Tracker</a>
       <a href="{% url 'rewards' %}" class="nav-link">Rewards</a>
       <a href="{% url 'coaching' %}" class="nav-link">Coaching</a>
-      <a href="{% url 'messages' %}" class="nav-link active">Messages</a>
+      <a href="{% url 'messages' %}" class="nav-link active{% if has_unread_messages %} has-unread{% endif %}">Messages</a>
+      <a href="{% url 'user_profile' %}" class="nav-link">Profile</a>
       <a href="{% url 'community' %}" class="nav-link">Community</a>
       <a href="{% url 'buddies' %}" class="nav-link">Buddies</a>
     </div>
@@ -660,8 +661,7 @@
             <small>All</small>
           </div>
           <div class="pane-search">
-            🔍
-            <input type="text" placeholder="Search messages" disabled>
+            <input type="text" id="conversation-search" placeholder="Search conversations">
           </div>
         </div>
 
@@ -820,6 +820,8 @@
   const chatBody = document.getElementById("chat-body");
   const chatForm = document.getElementById("chat-form");
   const chatInput = document.getElementById("chat-input");
+  const conversationSearch = document.getElementById("conversation-search");
+  const conversationList = document.querySelector(".conversation-list");
 
   if (!chatBody || !chatForm || !chatInput) {
     console.warn("Chat DOM not found.");
@@ -881,6 +883,20 @@
     chatInput.value = "";
     chatInput.focus();
   });
+
+  // ---- CONVERSATION SEARCH ----
+  if (conversationSearch && conversationList) {
+    conversationSearch.addEventListener("input", function () {
+      const term = (conversationSearch.value || "").toLowerCase();
+      const items = Array.from(conversationList.querySelectorAll(".conversation-item"));
+      items.forEach((item) => {
+        const text = (item.textContent || "").toLowerCase();
+        item.style.display = term && !text.includes(term) ? "none" : "";
+      });
+      const anyVisible = items.some((el) => el.style.display !== "none");
+      conversationList.style.opacity = anyVisible ? "1" : "0.7";
+    });
+  }
 })();
 </script>
 
