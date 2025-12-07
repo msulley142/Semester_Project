@@ -10,9 +10,6 @@
     :root {
       /* --- OCEAN TEAL CALIBRATION THEME --- */
       --bg-main: #EEEEEE;
-      --bg-soft: #C3E4E9;
-      --bg-sidebar: #023653;
-
       --card: #FFFFFF;
       --card-soft: #EAF3F6;
 
@@ -32,9 +29,6 @@
       --shadow-soft: 0 16px 40px rgba(2, 54, 83, 0.18);
 
       --sidebar-w: 260px;
-
-      --danger: #ef4444;
-      --success: #22c55e;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -70,10 +64,10 @@
 
     /* SIDEBAR (match Messages / Dashboard) */
     .sidebar {
-      background: linear-gradient(180deg, var(--bg-sidebar) 0%, #011823 100%);
+      background: linear-gradient(180deg, #023653 0%, #000000 100%);
       color: #E5E7EB;
-      border-right: 1px solid #011824;
-      padding: 16px 18px 18px;
+      border-right: 1px solid #000000;
+      padding: 18px 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 18px;
@@ -83,7 +77,7 @@
       height: 100vh;
       align-self: start;
       z-index: 40;
-      box-shadow: 10px 0 30px rgba(2, 20, 32, 0.55);
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
     }
 
     @media (max-width: 900px) {
@@ -96,89 +90,90 @@
       }
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+   .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #27B0C7, #58D58F);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #F9FAFB;
-      font-weight: 800;
-      font-size: 0.9rem;
-      box-shadow: 0 0 0 2px #011627;
-    }
-    .brand-text { display: flex; flex-direction: column; gap: 2px; }
-    .brand-title { font-size: 1rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
-    .brand-subtitle { font-size: 0.72rem; color: #9CA3AF; }
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f9fafb;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 0 0 2px #000000;
+  }
 
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 4px;
-    }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #F9FAFB;
+  }
+  .brand-subtitle {
+    font-size: 0.72rem;
+    color: #D1E2F2;
+  }
 
-    @media (max-width: 900px) {
-      .nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: 6px;
-      }
-    }
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    position: relative;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    color: #e5e7eb;
+    background: rgba(2, 16, 32, 0.8);
+    border: 1px solid transparent;
+    transition: background 0.16s ease, border-color 0.16s ease,
+                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
+  }
+  .nav-link:hover {
+    background: #011524;
+    border-color: #056C89;
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+    transform: translateY(-1px);
+  }
+  .nav-link.active {
+    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+    border-color: transparent;
+  }
+  .nav-link.has-unread::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+  }
 
-    .nav-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px 10px;
-      position: relative;
-      border-radius: 10px;
-      font-size: 0.86rem;
-      color: #E5E7EB;
-      background: rgba(1, 16, 28, 0.92);
-      border: 1px solid transparent;
-      transition:
-        background 0.16s ease,
-        border-color 0.16s ease,
-        box-shadow 0.16s ease,
-        transform 0.12s ease,
-        color 0.16s ease;
-    }
-    .nav-link:hover {
-      background: rgba(2, 31, 47, 1);
-      border-color: rgba(148, 163, 184, 0.6);
-      color: #F9FAFB;
-      box-shadow: 0 8px 18px rgba(1, 20, 33, 0.7);
-      transform: translateY(-1px);
-    }
-    .nav-link.active {
-      background: linear-gradient(120deg, #27B0C7, #056C89);
-      color: #F9FAFB;
-      font-weight: 600;
-      box-shadow: 0 10px 26px rgba(4, 120, 132, 0.75);
-      border-color: transparent;
-    }
-    .nav-link.has-unread::after {
-      content: "";
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #F97373;
-      box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.22);
-    }
 
     /* MAIN LAYOUT */
     .site-main {
@@ -188,21 +183,20 @@
         var(--bg-main);
     }
 
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
     .site-header {
-      padding: 16px 24px 14px;
-      border-bottom: 1px solid rgba(197, 212, 216, 0.95);
-      background: rgba(250, 252, 255, 0.96);
-      backdrop-filter: blur(6px);
+      margin: 0 0 18px;
+      padding: 14px 24px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 6px 16px rgba(2, 54, 83, 0.08);
     }
 
     @media (max-width: 640px) {
@@ -704,79 +698,6 @@
     }
 
     /* RIGHT COL: COMPOSER + FEED */
-    .composer-card {
-      padding: 10px 14px;
-      background: var(--card);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .composer-row {
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-    }
-
-    .composer-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background: var(--accent);
-      color: #F9FAFB;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-
-    .composer-input-wrap {
-      flex: 1;
-    }
-
-    .composer-input {
-      width: 100%;
-      min-height: 48px;
-      border-radius: 18px;
-      border: 1px solid #D1D5DB;
-      padding: 8px 12px;
-      font-size: 0.84rem;
-      resize: vertical;
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .composer-input:focus {
-      border-color: #88B4BE;
-      box-shadow: 0 0 0 1px rgba(8, 86, 110, 0.35);
-    }
-
-    .composer-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 6px;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .composer-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-size: 0.76rem;
-    }
-
-    .composer-tag {
-      padding: 3px 7px;
-      border-radius: var(--radius-pill);
-      background: #F5FAFB;
-      border: 1px solid #D1DFE4;
-      cursor: pointer;
-    }
-
     /* FEED POSTS */
     .feed-card {
       padding: 10px 14px;
@@ -865,6 +786,54 @@
       opacity: 1;
       transform: translateY(0);
     }
+.profile-cover,
+.about-card,
+.feed-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.profile-cover:hover,
+.about-card:hover,
+.feed-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(2, 54, 83, 0.25);
+  border-color: #88B4BE;
+}
+
+/* Smaller chips / items also get a little motion */
+.mini-card,
+.group-item,
+.buddy-pill,
+.badge-mini,
+.feed-item {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.mini-card:hover,
+.group-item:hover,
+.buddy-pill:hover,
+.badge-mini:hover,
+.feed-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(2, 54, 83, 0.2);
+  background: #F5FAFB;
+}
+
+/* Make tags feel tappable */
+/* Make sure buttons show as interactive */
+.btn,
+.profile-subnav-btn {
+  cursor: pointer;
+}
+
+
   </style>
 </head>
 <body>
@@ -892,9 +861,6 @@
       <a href="{% url 'rewards' %}" class="nav-link">
         <span>Rewards</span>
       </a>
-      <a href="{% url 'coaching' %}" class="nav-link">
-        <span>Coaching</span>
-      </a>
       <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}">
         <span>Messages</span>
       </a>
@@ -903,6 +869,9 @@
       </a>
       <a href="{% url 'groups' %}" class="nav-link">
         <span>Groups</span>
+      </a>
+      <a href="{% url 'buddies' %}" class="nav-link">
+        <span>Buddies</span>
       </a>
       <a href="{% url 'user_profile' %}" class="nav-link active">
         <span>Profile</span>
@@ -920,7 +889,6 @@
         </div>
         <div class="header-actions">
           <a href="{% url 'dashboard' %}" class="btn btn-ghost">← Back</a>
-          <a href="/settings/" class="btn btn-primary">Edit Profile</a>
           <a class="btn btn-primary" href="/accounts/logout/">Log out</a>
         </div>
       </header>
@@ -980,12 +948,8 @@
             </div>
 
             <div class="profile-actions-row">
-              <button type="button" class="btn btn-ghost btn-sm" id="btn-scroll-timeline">Timeline</button>
-              <button type="button" class="btn btn-ghost btn-sm" id="btn-scroll-about">About</button>
               <a href="{% url 'buddies' %}" class="btn btn-ghost btn-sm">Manage Buddies</a>
-              <button type="button" class="btn btn-primary btn-sm" id="simulate-boost">
-                ⚡ Boost Day (demo)
-              </button>
+              <a href="/settings/" class="btn btn-primary btn-sm">Edit Profile</a>
             </div>
           </div>
 
@@ -1077,25 +1041,24 @@
               </div>
             </article>
 
-            <!-- GROUPS / FUTURE COMMUNITIES -->
+            <!-- GROUPS -->
             <article class="about-card reveal">
               <h2 class="section-heading">Groups</h2>
-              <p class="section-subtext">Calibration groups based on skills, habits, or goals (coming soon).</p>
+              <p class="section-subtext">Communities you have joined.</p>
               <div class="group-list">
-                <div class="group-item">
-                  <div class="group-meta">
-                    <span class="group-name">Deep Work · Focus Circle</span>
-                    <span class="muted">Focus & concentration · 42 members</span>
-                  </div>
-                  <span class="chip">Preview</span>
-                </div>
-                <div class="group-item">
-                  <div class="group-meta">
-                    <span class="group-name">Morning Routines Club</span>
-                    <span class="muted">Habits · 87 members</span>
-                  </div>
-                  <span class="chip">Preview</span>
-                </div>
+                {% for g in my_groups %}
+                  <a class="group-item" href="{% url 'group_detail' g.id %}" style="text-decoration:none; color:inherit;">
+                    <div class="group-meta">
+                      <span class="group-name">{{ g.name }}</span>
+                      <span class="muted">
+                        {{ g.category|default:"Group" }} - {{ g.members.count }} member{{ g.members.count|pluralize }}{% if g.tagline %} - {{ g.tagline }}{% endif %}
+                      </span>
+                    </div>
+                    <span class="chip">Joined</span>
+                  </a>
+                {% empty %}
+                  <p class="muted" style="margin:0;">You're not in any groups yet. Join one from the <a href="{% url 'groups' %}" class="muted" style="text-decoration:underline;">Groups page</a>.</p>
+                {% endfor %}
               </div>
             </article>
 
@@ -1105,10 +1068,10 @@
               <p class="section-subtext">Your accountability network in a snapshot.</p>
               <div class="buddies-mini-list">
                 {% for buddy in friends|slice:":6" %}
-                  <div class="buddy-pill">
+                  <a class="buddy-pill" href="{% url 'visitor_profile' buddy.user.id %}">
                     <div class="buddy-avatar">{{ buddy.user.username|slice:":2"|upper }}</div>
                     <span>{{ buddy.user.username }}</span>
-                  </div>
+                  </a>
                 {% empty %}
                   <span class="muted">No buddies yet. <a href="{% url 'buddies' %}">Find one now.</a></span>
                 {% endfor %}
@@ -1118,30 +1081,6 @@
 
           <!-- RIGHT COLUMN -->
           <div class="profile-col-right">
-            <!-- TIMELINE COMPOSER -->
-            <article class="composer-card reveal profile-section" id="section-timeline">
-              <h2 class="section-heading">Share an update</h2>
-              <p class="section-subtext">In the future this can post to your timeline or log a journal entry.</p>
-              <div class="composer-row">
-                <div class="composer-avatar">
-                  {{ user.username|slice:":2"|upper }}
-                </div>
-                <div class="composer-input-wrap">
-                  <textarea class="composer-input" placeholder="What did you work on today? (e.g., 30 mins deep work, gym, journaling)"></textarea>
-                  <div class="composer-actions">
-                    <div class="composer-tags">
-                      <span class="composer-tag">+ Skill session</span>
-                      <span class="composer-tag">+ Habit check-in</span>
-                      <span class="composer-tag">+ Mood note</span>
-                    </div>
-                    <button class="btn btn-primary btn-sm" type="button" disabled>
-                      Post (demo)
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </article>
-
             <!-- FEED -->
             <article class="feed-card reveal">
               <h2 class="section-heading">Timeline</h2>

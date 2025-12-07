@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from django.db.models import Q
 from django.utils import timezone
+from django.db.models import Q
 
-from .models import ChatMessage
+from .models import ChatMessage, Profile, UserBlock
 
 
 def unread_messages(request):
@@ -15,6 +15,8 @@ def unread_messages(request):
     user = getattr(request, "user", None)
     if not user or not user.is_authenticated:
         return {}
+
+    profile = Profile.objects.filter(user=user).first()
 
     # Parse the last time the user visited the messages page
     last_seen_raw = request.session.get("messages_last_seen_at")
@@ -34,7 +36,20 @@ def unread_messages(request):
         | Q(room__contains=f"-{user.id}-")
     )
 
+    if profile:
+        group_ids = profile.community_groups.values_list("id", flat=True)
+        group_rooms = [f"group-{gid}" for gid in group_ids]
+        if group_rooms:
+            room_filter = room_filter | Q(room__in=group_rooms)
+
     qs = ChatMessage.objects.filter(room_filter).exclude(sender=user)
+    blocked_ids = set(
+        UserBlock.objects.filter(Q(blocker=user) | Q(blocked=user)).values_list("blocked_id", flat=True)
+    ) | set(
+        UserBlock.objects.filter(Q(blocker=user) | Q(blocked=user)).values_list("blocker_id", flat=True)
+    )
+    if blocked_ids:
+        qs = qs.exclude(sender_id__in=blocked_ids)
     if last_seen:
         qs = qs.filter(created_at__gt=last_seen)
 

@@ -24,7 +24,7 @@
     --radius-pill: 999px;
     --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.12);
     --sidebar-w: 260px;
-    --header-h: 72px;
+  
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -169,7 +169,6 @@
 
   .site-main {
       margin-left: var(--sidebar-w);
-      background: var(--bg-main);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
@@ -286,11 +285,7 @@
     font-size: 0.78rem;
   }
 
-  .header-profile {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
+
 
   .profile-button {
     display: inline-flex;
@@ -801,7 +796,7 @@
   }
 
   .task-details { display: none; margin-top: 4px; }
-  .task-entry.is-expanded .task-details { display: block; }
+  
 
   .form-grid {
     display: grid;
@@ -850,217 +845,272 @@
     min-height: 80px;
   }
 
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-    backdrop-filter: blur(6px);
-  }
-  .modal-overlay.is-open { display: flex; }
+  /* MODALS */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.38);
+      display: none;
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      backdrop-filter: blur(6px);
+    }
 
-  .modal {
-    background: #ffffff;
-    border-radius: 18px;
-    border: 1px solid #C3E4E9;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-    width: 100%;
-    max-width: 420px;
-    padding: 14px 14px 12px;
-    color: #023653;
-  }
+    .modal-overlay.is-open {
+      display: flex;
+    }
 
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
+    .modal {
+      width: 380px;
+      max-width: 100%;
+      background: #FFFFFF;
+      border-radius: 18px;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
+      border: 1px solid #D3DFE8;
+      overflow: hidden;
+      animation: fadeInUp 0.22s ease-out forwards;
+      color: var(--text-main);
+    }
 
-  .modal-header h3 {
-    margin: 0;
-    font-size: 0.98rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
 
-  .modal-close {
-    border: none;
-    background: transparent;
-    font-size: 1.3rem;
-    line-height: 1;
-    cursor: pointer;
-    color: #9ca3af;
-  }
-  .modal-close:hover { color: #000000; }
+    .modal-header {
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+      color: #FFFFFF;
+    }
 
-  .modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    margin-bottom: 10px;
-    font-size: 0.78rem;
-  }
+    .modal-header h3 {
+      margin: 0;
+      font-size: 0.96rem;
+    }
 
-  .modal-body label {
-    color: var(--text-muted);
-    font-size: 0.76rem;
-  }
+    .modal-close {
+      font-size: 1.4rem;
+      line-height: 1;
+      background: transparent;
+      color: #E5E7EB;
+      border: none;
+      cursor: pointer;
+    }
 
-  .modal-body input,
-  .modal-body textarea,
-  .modal-body select {
-    border-radius: 10px;
-    border: 1px solid #C3E4E9;
-    background: #ffffff;
-    padding: 6px 8px;
-    font-size: 0.78rem;
-    color: #023653;
-    outline: none;
-  }
+    .modal-body {
+      padding: 12px 16px 16px;
+      font-size: 0.9rem;
+      background: #F5FAFC;
+    }
 
-  .modal-body input:focus,
-  .modal-body textarea:focus,
-  .modal-body select:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px rgba(5,108,137,0.4);
-    background: #ffffff;
-  }
+    .profile-modal-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-  .modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 6px;
-    margin-top: 4px;
-  }
+    .profile-card {
+      border-radius: 14px;
+      border: 1px solid #D3DFE8;
+      background: #FFFFFF;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+    }
 
-  .profile-modal-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
-    gap: 12px;
-  }
-  @media (max-width: 640px) {
-    .profile-modal-layout { grid-template-columns: minmax(0,1fr); }
-  }
+    .profile-card-header {
+      position: relative;
+      padding: 24px 18px 40px;
+      text-align: center;
+      color: var(--text-main);
+      background: linear-gradient(
+        135deg,
+        var(--card-soft) 0%,
+        #FFFFFF 60%
+      );
+    }
 
-  .profile-card {
-    border-radius: 16px;
-    border: 1px solid #C3E4E9;
-    background: #f9fafb;
-    padding: 10px 12px 12px;
-  }
+    .profile-card-header p {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
 
-  .profile-card-header {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    align-items: flex-start;
-  }
+    .profile-card-header h4 {
+      margin: 6px 0 0;
+      font-size: 1.05rem;
+      color: var(--accent-strong);
+    }
 
-  .profile-greeting {
-    margin: 0;
-    font-size: 0.76rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #6b7280;
-  }
+    .profile-tagline {
+      margin-top: 3px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
 
-  .profile-display-name {
-    margin: 0;
-    font-size: 0.98rem;
-    font-weight: 600;
-    color: #023653;
-  }
+    .profile-avatar-shell {
+      position: absolute;
+      left: 50%;
+      bottom: -28px;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 70px;
+      border-radius: 999px;
+      border: 3px solid #FFFFFF;
+      overflow: hidden;
+      background: #D1D5DB;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+    }
 
-  .profile-tagline {
-    margin: 0;
-    font-size: 0.78rem;
-    color: #6b7280;
-  }
+    .profile-avatar-shell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-  .profile-avatar-shell {
-    width: 64px;
-    height: 64px;
-    border-radius: 999px;
-    overflow: hidden;
-    border: 2px solid var(--accent);
-    margin-top: 6px;
-  }
+    .profile-card-main {
+      padding: 40px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #FFFFFF;
+    }
 
-  .profile-avatar-shell img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+    .profile-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 0.8rem;
+    }
 
-  .profile-card-main { margin-top: 10px; }
+    .profile-detail-item {
+      background: #F5FAFC;
+      border-radius: 10px;
+      padding: 6px 8px;
+      border: 1px solid #D3DFE8;
+    }
 
-  .profile-actions-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
+    .profile-detail-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 1px;
+    }
 
-  .p-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 0.78rem;
-    border: 1px solid #C3E4E9;
-    background: #ffffff;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
-  }
-  .p-btn:hover {
-    background: #f3f4f6;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-    transform: translateY(-1px);
-  }
+    .profile-detail-value {
+      font-size: 0.86rem;
+      color: var(--text-main);
+    }
 
-  .p-btn-primary {
-    border-color: transparent;
-    background: var(--accent);
-    color: #EEEEEE;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-  }
-  .p-btn-primary:hover { background: var(--accent-strong); }
+    .profile-quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
 
-  .p-btn-ghost { color: #4b5563; }
+    .p-btn {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #D3DFE8;
+      background: #FFFFFF;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+      transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease,
+        transform 0.14s ease;
+    }
 
-  .p-btn-logout {
-    background: #FEF2F2;
-    border-color: #fecaca;
-    color: #b91c1c;
-  }
+    .p-btn-primary {
+      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+      color: #FFFFFF;
+      border-color: transparent;
+      box-shadow: 0 8px 18px rgba(2, 54, 83, 0.5);
+    }
 
-  .profile-quick-links {
-    border-radius: 14px;
-    border: 1px dashed #C3E4E9;
-    padding: 8px 10px;
-    font-size: 0.78rem;
-    background: #f9fafb;
-  }
+    .p-btn-primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
 
-  .profile-quick-links h4 {
-    margin: 0 0 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #023653;
-  }
+    .p-btn-ghost {
+      background: #F5FAFC;
+    }
 
-  .profile-quick-links ul {
-    margin: 0;
-    padding-left: 18px;
-    color: #6b7280;
-  }
+    .p-btn-ghost:hover {
+      background: var(--card-soft);
+    }
 
-  .profile-quick-links li { margin-bottom: 2px; }
+    .p-btn-logout {
+      background: #FEE2E2;
+      border-color: #FECACA;
+      color: #B91C1C;
+    }
+
+    .p-btn-logout:hover {
+      background: #FECACA;
+    }
+
+    .profile-quick-links {
+      border-radius: 14px;
+      border: 1px solid #D3DFE8;
+      background: #FFFFFF;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      color: var(--text-main);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+    }
+
+    .profile-quick-links h4 {
+      margin: 0 0 4px;
+      font-size: 0.84rem;
+      color: var(--accent-strong);
+    }
+
+    .profile-quick-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .profile-quick-links li + li {
+      margin-top: 3px;
+    }
+
+    .profile-quick-links a {
+      color: var(--accent);
+    }
+
+    .profile-quick-links a:hover {
+      color: var(--accent-strong);
+      text-decoration: underline;
+    }
+
+    .profile-footnote {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ENTRANCE ANIMATIONS */
+    @keyframes fadeInSoft {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+
 </style>
 
 </head>
@@ -1083,11 +1133,11 @@
       <a href="{% url 'disciplinebuilder' %}" class="nav-link active"><span>Discipline Builder</span></a>
       <a href="{% url 'progresstracker' %}" class="nav-link"><span>Progress Tracker</span></a>
       <a href="{% url 'rewards' %}" class="nav-link"><span>Rewards</span></a>
-      <a href="{% url 'coaching' %}" class="nav-link"><span>Coaching</span></a>
       <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}"><span>Messages</span></a>
       <a href="{% url 'user_profile' %}" class="nav-link"><span>Profile</span></a>
       <a href="{% url 'community' %}" class="nav-link"><span>Community</span></a>
       <a href="{% url 'groups' %}" class="nav-link"><span>Groups</span></a>
+      <a href="{% url 'buddies' %}" class="nav-link"><span>Buddies</span></a>
     </div>
   </nav>
 
@@ -1118,58 +1168,73 @@
     <div class="site-main-inner">
     <!-- PROFILE MODAL -->
     <div class="modal-overlay" id="profile-modal" aria-hidden="true">
-      <div class="modal">
-        <div class="modal-header">
-          <h3>Profile</h3>
-          <button type="button" class="modal-close" data-close-modal="profile-modal">&times;</button>
-        </div>
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Profile & Account</h3>
+            <button type="button" class="modal-close" id="modal-close">&times;</button>
+          </div>
 
-        <div class="modal-body">
-          <div class="profile-modal-layout">
+          <div class="modal-body">
+            <div class="profile-modal-layout">
+              <article class="profile-card">
+                <div class="profile-card-header">
+                  <p>Welcome back</p>
+                  <h4>{{ user.username }}</h4>
+                  <p class="profile-tagline">Manage your Calibration account and shortcuts.</p>
+                  <div class="profile-avatar-shell">
+                    <img src="https://via.placeholder.com/80"
+                         alt="Avatar for {{ user.username }}">
+                  </div>
+                </div>
+                <div class="profile-card-main">
+                  <div class="profile-detail-grid">
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Account</div>
+                      <div class="profile-detail-value">Calibration Basic</div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Email</div>
+                      <div class="profile-detail-value">
+                        {{ user.email|default:"Not set" }}
+                      </div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Member since</div>
+                      <div class="profile-detail-value">
+                        {{ user.date_joined|date:"M j, Y" }}
+                      </div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Last login</div>
+                      <div class="profile-detail-value">
+                        {{ user.last_login|date:"M j, Y" }}
+                      </div>
+                    </div>
+                  </div>
 
-            <!-- PROFILE CARD -->
-            <article class="profile-card">
-              <div class="profile-card-header">
-                <p class="profile-greeting">Welcome back</p>
-                <h4 class="profile-display-name">{{ user.username }}</h4>
-                <p class="profile-tagline">
-                  Adjust your account and settings here.
+                  <div class="profile-quick-actions">
+                    <a href="{% url 'user_profile' %}" class="p-btn p-btn-primary">View profile</a>
+                    <a href="{% url 'user_settings' %}" class="p-btn p-btn-ghost">Account settings</a>
+                    <a href="/accounts/logout/" class="p-btn p-btn-logout">Log out</a>
+                  </div>
+                </div>
+              </article>
+
+              <section class="profile-quick-links">
+                <h4>Shortcuts</h4>
+                <ul>
+                  <li><a href="{% url 'skill_create' %}">Add a new skill</a></li>
+                  <li><a href="{% url 'habit_create' %}">Create a new habit</a></li>
+                  <li><a href="{% url 'rewards' %}">View your rewards</a></li>
+                </ul>
+                <p class="profile-footnote">
+                  Use the dashboard for day-to-day tracking; this space is for account details.
                 </p>
-
-                <div class="profile-avatar-shell">
-                  <img src="https://via.placeholder.com/80"
-                       alt="Avatar for {{ user.username }}">
-                </div>
-              </div>
-
-              <div class="profile-card-main">
-                <div class="profile-actions-row">
-                  <a href="{% url 'user_profile' %}" class="p-btn p-btn-primary">
-                    View profile
-                  </a>
-                  <a href="{% url 'user_settings' %}" class="p-btn p-btn-ghost">
-                    Account settings
-                  </a>
-                  <a href="/accounts/logout/" class="p-btn p-btn-logout">
-                    Log out
-                  </a>
-                </div>
-              </div>
-            </article>
-
-            <!-- QUICK LINKS -->
-            <div class="profile-quick-links">
-              <h4>Quick tips</h4>
-              <ul>
-                <li>Use Discipline Builder to connect skills, habits, and goals.</li>
-                <li>Start with one small habit to build momentum.</li>
-              </ul>
+              </section>
             </div>
-
           </div>
         </div>
       </div>
-    </div>
 
     <!-- HERO / SUMMARY -->
     <section class=" section-shell">
@@ -1893,10 +1958,9 @@
   }
 
   // Attach modals
-  setupModal(['open-skill-modal', 'open-skill-modal-header'], 'skill-modal');
-  setupModal(['open-habit-modal', 'open-habit-modal-header'], 'habit-modal');
+ 
   setupModal(['open-goal-modal'], 'goal-modal');
-  setupModal(['open-journal-modal', 'open-journal-modal-secondary', 'open-journal-modal-header'], 'journal-modal');
+  setupModal(['open-journal-modal', 'open-journal-modal-secondary',], 'journal-modal');
   setupModal(['open-task-modal'], 'task-modal');
   setupModal(['profile-button'], 'profile-modal');
 

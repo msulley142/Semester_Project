@@ -8,37 +8,28 @@
 
   <style>
     :root {
-      /* ---- OCEAN THEME (MATCHES DISCIPLINE BUILDER) ---- */
-      --bg-main: #EEEEEE;        /* page background */
-      --card: #FFFFFF;           /* main cards */
-      --card-soft: #C3E4E9;      /* soft card / pill */
-      --accent: #056C89;         /* primary accent */
-      --accent-soft: #88B4BE;    /* lighter accent */
-      --accent-strong: #023653;  /* deep teal (sidebar / titles) */
+    
+      --bg-main: #EEEEEE;        
+      --card: #FFFFFF;          
+      --card-soft: #C3E4E9;     
+      --accent: #056C89;         
+      --accent-soft: #88B4BE;   
+      --accent-strong: #023653;  
 
       --text-main: #02222E;
       --text-muted: #5B6B75;
-      --text-inverse: #F4FAFF;
+     
 
       --border-subtle: #D3DDE4;
 
       --radius-lg: 16px;
-      --radius-md: 10px;
       --radius-pill: 999px;
 
       --shadow-soft: 0 12px 26px rgba(2, 54, 83, 0.12);
       --sidebar-w: 260px;
 
       /* mapped “primary scale” so existing classes still work */
-      --primary-50:  #E8F5F8;
-      --primary-100: var(--card-soft);
-      --primary-200: #88B4BE;
-      --primary-300: #61A6BA;
-      --primary-400: var(--accent);
-      --primary-500: #045872;
-      --primary-600: #03435A;
-      --primary-700: var(--accent-strong);
-      --primary-800: #011E31;
+     
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -52,7 +43,7 @@
       background: var(--bg-main);
     }
 
-    body { margin: 0; }
+  
 
     a { color: inherit; text-decoration: none; }
     button { border: 0; background: none; cursor: pointer; }
@@ -66,23 +57,19 @@
     /* ---- SIDEBAR (same vibe everywhere) ---- */
     .sidebar {
       position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: var(--sidebar-w);
-      z-index: 40;
-      padding: 18px 18px 20px;
-      background: linear-gradient(
-        180deg,
-        var(--accent-strong) 0%,
-        var(--accent) 100%
-      );
-      border-right: 1px solid rgba(1, 28, 46, 0.7);
-      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.25);
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      color: var(--text-inverse);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    background: linear-gradient(180deg, #023653 0%, #000000 100%);
+    color: #e5e7eb;
+    border-right: 1px solid #000000;
+    padding: 18px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    z-index: 40;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
     }
 
     @media (max-width: 900px) {
@@ -98,108 +85,88 @@
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .brand-mark {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #F9FAFB;
-      font-weight: 800;
-      font-size: 0.9rem;
-      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
-    }
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f9fafb;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 0 0 2px #000000;
+  }
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #F9FAFB;
+  }
+  .brand-subtitle {
+    font-size: 0.72rem;
+    color: #D1E2F2;
+  }
 
-    .brand-title {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #F9FAFB;
-    }
-
-    .brand-subtitle {
-      font-size: 0.72rem;
-      color: #D1E2F2;
-    }
-
-    .nav {
-      margin-top: 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    @media (max-width: 900px) {
-      .nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: 6px;
-        margin-top: 0;
-      }
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px 10px;
-      position: relative;
-      border-radius: var(--radius-md);
-      font-size: 0.86rem;
-      color: #E4F0F8;
-      background: rgba(0, 0, 0, 0.08);
-      border: 1px solid transparent;
-      transition:
-        background 0.18s ease,
-        border-color 0.18s ease,
-        box-shadow 0.18s ease,
-        transform 0.12s ease,
-        color 0.16s ease;
-    }
-
-    .nav-link:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.25);
-      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
-      transform: translateY(-1px);
-    }
-
-    .nav-link.active {
-      background: #FFFFFF;
-      color: var(--accent-strong);
-      border-color: transparent;
-      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4);
-      font-weight: 600;
-    }
-
-    .nav-link.has-unread::after {
-      content: "";
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #F97373;
-      box-shadow: 0 0 0 3px rgba(249, 115, 115, 0.25);
-    }
-
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    position: relative;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    color: #e5e7eb;
+    background: rgba(2, 16, 32, 0.8);
+    border: 1px solid transparent;
+    transition: background 0.16s ease, border-color 0.16s ease,
+                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
+  }
+  .nav-link:hover {
+    background: #011524;
+    border-color: #056C89;
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+    transform: translateY(-1px);
+  }
+  .nav-link.active {
+    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+    border-color: transparent;
+  }
+  .nav-link.has-unread::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+  }
     /* ---- MAIN LAYOUT ---- */
     .site-main {
       margin-left: var(--sidebar-w);
@@ -330,7 +297,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 10px;
+      padding: 7px 12px;
       border-radius: 999px;
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
@@ -396,7 +363,11 @@
       position: relative;
       border-radius: var(--radius-lg);
       padding: 20px 22px 18px;
-      background: #FFFFFF;
+     background: radial-gradient(circle at top left,
+      rgba(5,108,137,0.92) 0,
+      #023653 45%,
+      #000000 100%);
+      color: #EAF6FA;
       border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-soft);
     }
@@ -404,13 +375,13 @@
     .hero-card h2 {
       margin: 0 0 6px;
       font-size: 1.2rem;
-      color: var(--accent-strong);
+      color: #FFFFFF;
     }
 
     .hero-card p {
       margin: 0;
       font-size: 0.9rem;
-      color: var(--text-muted);
+      color: #EAF6FA;
     }
 
     .hero-pills {
@@ -753,8 +724,8 @@
     }
 
     .skill_name,
-    .habit_name,
-    .reward_name {
+    .habit_name
+    {
       font-weight: 600;
     }
 
@@ -1314,11 +1285,11 @@
       <a href="{% url 'disciplinebuilder' %}" class="nav-link"><span>Discipline Builder</span></a>
       <a href="{% url 'progresstracker' %}" class="nav-link"><span>Progress Tracker</span></a>
       <a href="{% url 'rewards' %}" class="nav-link"><span>Rewards</span></a>
-      <a href="{% url 'coaching' %}" class="nav-link"><span>Coaching</span></a>
       <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}"><span>Messages</span></a>
       <a href="{% url 'user_profile' %}" class="nav-link"><span>Profile</span></a>
       <a href="{% url 'community' %}" class="nav-link"><span>Community</span></a>
       <a href="{% url 'groups' %}" class="nav-link"><span>Groups</span></a>
+      <a href="{% url 'buddies' %}" class="nav-link"><span>Buddies</span></a>
     </div>
   </nav>
 
@@ -1671,15 +1642,14 @@
               {% endfor %}
             </article>
 
-            <!-- Current Groups -->
-            <article class="tasks-card">
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                <h3 style="margin:0;">Current Groups</h3>
-                <a class="btn btn-sm" href="{% url 'groups' %}">Open groups</a>
-              </div>
+              <!-- Current Groups -->
+              <article class="tasks-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                  <h3 style="margin:0;">Current Groups</h3>
+                </div>
               {% if my_groups %}
                 {% for g in my_groups %}
-                  <div class="task_item">
+                  <a class="task_item" href="{% url 'group_detail' g.id %}" style="display:block; color:inherit; text-decoration:none;">
                     <div class="task_head">
                       <span class="task_name">{{ g.name }}</span>
                       <span class="task_status">{{ g.category|default:"Group" }}</span>
@@ -1687,18 +1657,19 @@
                     <p class="muted" style="margin:4px 0 0;">
                       {{ g.member_count|default:0 }} member(s)
                     </p>
-                  </div>
+                  </a>
                 {% endfor %}
               {% else %}
                 <p class="muted">You’re not in any groups yet. Join or create one from the Groups page.</p>
               {% endif %}
             </article>
 
-            <!-- Friends -->
+            <!-- Buddies -->
             <article class="tasks-card">
-              <h3>Friends</h3>
+              <h3>Buddies</h3>
               {% for f in friends %}
-                <div class="friend_item">
+                {% with buddy_url="#" %}{% if f.user and f.user.id %}{% url 'visitor_profile' f.user.id as buddy_url %}{% elif f.id %}{% url 'visitor_profile' f.id as buddy_url %}{% endif %}
+                <a class="friend_item" href="{{ buddy_url }}" style="text-decoration:none; color:inherit; display:block;">
                   <div class="friend-main">
                     <div class="friend-avatar">
                       {{ f.username|first|upper }}
@@ -1706,13 +1677,12 @@
                     <div class="friend-name">{{ f.username }}</div>
                   </div>
                   <div class="friend-status {% if not f.is_online %}offline{% endif %}">
-                    {% if f.is_online %}● Online{% else %}● Offline{% endif %}
+                    {% if f.is_online %}Online{% else %}Offline{% endif %}
                   </div>
-                </div>
+                </a>
+                {% endwith %}
               {% empty %}
-                <p class="muted">
-                  You haven't added any friends yet. Invite someone from the Community or Messages pages.
-                </p>
+                <div class="empty-friends">No buddies yet. Go add some on the Buddies page!</div>
               {% endfor %}
             </article>
           </div>

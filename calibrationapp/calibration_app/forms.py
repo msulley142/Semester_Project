@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Skill, Habit, Journal, Reward, Task, Profile, Mood, Goals, Forum, Topics, Post, BuddyRequest
+from .models import Skill, Habit, Journal, Task, Profile, Mood, Goals, Forum,  Post, BuddyRequest
 
 from .models import CommunityGroup
 
@@ -20,18 +20,13 @@ class HabitForm(forms.ModelForm):
         fields = ['name', 'habit_type', 'goal_start', 'goal_end', 'description']
 
 
-class RewardForm(forms.ModelForm):
-    
-    class Meta:
-        model = Reward
-        fields = ['tokens']
+
 
 class JournalForm(forms.ModelForm):
 
     class Meta:
         model = Journal
-        fields = [ "entry_type", "skill", "habit", "date",
-            "trigger", "note"]
+        fields = [ "entry_type", "skill", "habit", "date", "trigger", "note"]
 
         widgets = {
             'date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
@@ -72,11 +67,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ['phone_number', 'bio', 'profile_picture']
 
-class TopicsForm(forms.ModelForm):
 
-    class Meta:
-        model = Topics 
-        fields = "__all__"
 
 
 

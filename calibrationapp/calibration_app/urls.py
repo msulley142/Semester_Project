@@ -53,6 +53,9 @@ urlpatterns = [
     path("community/group/<int:pk>/join/", views.GroupJoinView.as_view(), name="group_join"),
     path("community/group/<int:pk>/leave/", views.GroupLeaveView.as_view(), name="group_leave"),
     path("community/groups/create/", views.GroupCreateView.as_view(), name="group_create"),
+    path("groups/<int:group_id>/threads/new/", views.GroupThreadCreateView.as_view(), name="group_thread_create"),
+    path("groups/<int:group_id>/threads/<int:pk>/", views.GroupThreadDetailView.as_view(), name="group_thread_detail"),
+    path("groups/<int:group_id>/threads/<int:thread_id>/reply/", views.GroupThreadReplyView.as_view(), name="group_thread_reply"),
     path("groups/<int:pk>/", views.GroupDetailView.as_view(), name="group_detail"),
     path("groups/", views.GroupsView.as_view(), name="groups"),
     path("profile/<int:user_id>/", views.VisitorProfileView.as_view(), name="visitor_profile"),
@@ -61,6 +64,8 @@ urlpatterns = [
     path("buddies/send/", views.BuddySendView.as_view(), name="buddy-send"),
     path("buddies/respond/", views.BuddyRespondView.as_view(), name="buddy-respond"),
     path("buddies/remove/<int:user_id>/", views.BuddyRemoveView.as_view(), name="buddy-remove"),
+    path("blocks/<int:user_id>/", views.BlockUserView.as_view(), name="block-user"),
+    path("blocks/<int:user_id>/unblock/", views.UnblockUserView.as_view(), name="unblock-user"),
 
 
 ]

@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from .models import Skill,  Habit, Journal, Reward, Badge, User_Badge, Quest, Task, Goals, Mood, Forum, Topics, Post
+from .models import Skill,  Habit, Journal, Reward, Badge, User_Badge,  Task, Goals, Mood, Forum, Topics, Post
 
 # The following functions were completed by Githubs coplit assistant. It's sugesstions were acurate and saved time. No prompt used.   
 class SkillAdmin(admin.ModelAdmin):
@@ -30,11 +30,6 @@ class BadgeAdmin(admin.ModelAdmin):
 class UserBadgeAdmin(admin.ModelAdmin):
     list_display = ("user", "badge", "awarded_at")
     search_fields = ("user_username", "badge_title") 
-
-class QuestAdmin(admin.ModelAdmin):
-    list_display = ("user", "title", "description", "is_completed", "created_at")
-    search_fields = ("user__username", "title")
-    list_filter = ("is_completed")
 
 
 class TaskAdmin(admin.ModelAdmin):
@@ -71,7 +66,6 @@ admin.site.register(Journal)
 admin.site.register(Reward)
 admin.site.register(Badge)
 admin.site.register(User_Badge)
-admin.site.register(Quest)
 admin.site.register(Task)
 admin.site.register(Goals)
 admin.site.register(Mood)

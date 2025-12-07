@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,40 +10,27 @@
   <style>
     :root {
       /* --- SHARED CALIBRATION THEME: OCEAN TEAL --- */
-      --bg-main: #EEEEEE;
-      --bg-soft-main: #C3E4E9;
-      --bg-sidebar: #023653;
-
       --card: #FFFFFF;
       --card-soft: #C3E4E9;
 
       /* teal primary scale derived from your accent colors */
-      --primary-50:  #E8F5F8;
-      --primary-100: #C3E4E9;
       --primary-200: #88B4BE;
       --primary-300: #56A6B8;
-      --primary-400: #3A8FA0;
       --primary-500: #056C89; /* accent */
       --primary-600: #045A72;
       --primary-700: #03465A;
       --primary-800: #023653; /* accent-strong */
-
-      --accent-emerald: #22c55e;
-      --accent-amber: #f59e0b;
 
       --text-main: #023653;
       --text-muted: #4b6470;
       --border-subtle: #B7CED4;
 
       --radius-lg: 18px;
-      --radius-md: 12px;
       --radius-pill: 999px;
 
       --shadow-soft: 0 16px 40px rgba(2, 54, 83, 0.18);
 
       /* aliases */
-      --bg: var(--bg-main);
-      --bg-soft: var(--bg-soft-main);
       --accent: #056C89;
       --accent-soft: #88B4BE;
       --accent-strong: #023653;
@@ -75,10 +62,10 @@
 
     /* ========== SIDEBAR (sticky, teal) ========== */
     .sidebar {
-      background: linear-gradient(180deg, var(--accent-strong) 0%, #012132 100%);
+     background: linear-gradient(180deg, #023653 0%, #000000 100%);
       color: #E4F0F3;
-      border-right: 1px solid #012132;
-      padding: 16px 18px 18px;
+      border-right: 1px solid #000000;
+      padding: 18px 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 18px;
@@ -88,115 +75,151 @@
       height: 100vh;
       align-self: start;
       z-index: 40;
-      box-shadow: 10px 0 30px rgba(1, 24, 39, 0.6);
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
     }
 
-    .brand {
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f9fafb;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 0 0 2px #000000;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #F9FAFB;
+  }
+  .brand-subtitle {
+    font-size: 0.72rem;
+    color: #D1E2F2;
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    position: relative;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    color: #e5e7eb;
+    background: rgba(2, 16, 32, 0.8);
+    border: 1px solid transparent;
+    transition: background 0.16s ease, border-color 0.16s ease,
+                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
+  }
+  .nav-link:hover {
+    background: #011524;
+    border-color: #056C89;
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+    transform: translateY(-1px);
+  }
+  .nav-link.active {
+    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+    border-color: transparent;
+  }
+  .nav-link.has-unread::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+  }
+
+  .site-header {
+      margin: 0 0 18px;
+      padding: 14px 24px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 6px 16px rgba(2, 54, 83, 0.08);
+    }
+
+    @media (max-width: 640px) {
+      .site-header {
+        flex-wrap: wrap;
+        padding: 12px 16px 10px;
+        margin-bottom: 16px;
+      }
+    }
+
+    .site-header-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .site-header-title h1 {
+      margin: 0;
+      font-size: 1.18rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+    }
+
+    .site-header-title span {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+
+    .toolbar {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--primary-500), var(--accent-emerald));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #f9fafb;
-      font-weight: 800;
-      font-size: 0.9rem;
-      box-shadow: 0 0 0 2px #01111f;
-    }
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .brand-title {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-    .brand-subtitle {
-      font-size: 0.72rem;
-      color: #9fb9c5;
-    }
 
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 4px;
-    }
 
-    .nav-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px 10px;
-      position: relative;
-      border-radius: 10px;
-      font-size: 0.86rem;
-      color: #E4F0F3;
-      background: rgba(3, 34, 55, 0.95);
-      border: 1px solid transparent;
-      transition:
-        background 0.16s ease,
-        border-color 0.16s ease,
-        box-shadow 0.16s ease,
-        transform 0.12s ease,
-        color 0.16s ease;
-    }
-
-    .nav-link.has-unread::after {
-      content: "";
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #ef4444;
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
-    }
-    .nav-link:hover {
-      background: rgba(1, 44, 70, 1);
-      border-color: #3A8FA0;
-      color: #f9fafb;
-      box-shadow: 0 8px 18px rgba(1, 24, 39, 0.8);
-      transform: translateY(-1px);
-    }
-    .nav-link.active {
-      background: linear-gradient(120deg, var(--primary-500), var(--primary-700));
-      color: #f9fafb;
-      font-weight: 600;
-      box-shadow: 0 10px 26px rgba(3, 70, 90, 0.75);
-      border-color: transparent;
-    }
-
-    @media (max-width: 1024px) {
-      .sidebar {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        height: auto;
-        padding: 12px 16px;
-      }
-      .nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-top: 0;
-        justify-content: flex-end;
-      }
-      .nav-link {
-        background: rgba(3, 34, 55, 0.95);
-      }
-    }
 
     /* ========== MAIN SHELL (stretched) ========== */
     .community-shell {
@@ -770,70 +793,496 @@
     }
 
     /* ========== MODAL ========== */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(2, 33, 50, 0.6);
-      display: none;
+    
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    backdrop-filter: blur(6px);
+  }
+  .modal-overlay.is-open { display: flex; }
+
+  .modal {
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #C3E4E9;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    width: 100%;
+    max-width: 420px;
+    padding: 14px 14px 12px;
+    color: #023653;
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    font-size: 0.98rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .modal-close {
+    border: none;
+    background: transparent;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #9ca3af;
+  }
+  .modal-close:hover { color: #000000; }
+
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 10px;
+    font-size: 0.78rem;
+  }
+
+  .modal-body label {
+    color: var(--text-muted);
+    font-size: 0.76rem;
+  }
+
+  .modal-body input,
+  .modal-body textarea,
+  .modal-body select {
+    border-radius: 10px;
+    border: 1px solid #C3E4E9;
+    background: #ffffff;
+    padding: 6px 8px;
+    font-size: 0.78rem;
+    color: #023653;
+    outline: none;
+  }
+
+  .modal-body input:focus,
+  .modal-body textarea:focus,
+  .modal-body select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(5,108,137,0.4);
+    background: #ffffff;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .profile-modal-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+    gap: 12px;
+  }
+  @media (max-width: 640px) {
+    .profile-modal-layout { grid-template-columns: minmax(0,1fr); }
+  }
+
+  .profile-card {
+    border-radius: 16px;
+    border: 1px solid #C3E4E9;
+    background: #f9fafb;
+    padding: 10px 12px 12px;
+  }
+
+  .profile-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .profile-tagline {
+    margin: 0;
+    font-size: 0.78rem;
+    color: #6b7280;
+  }
+
+  .profile-avatar-shell {
+    width: 64px;
+    height: 64px;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 2px solid var(--accent);
+    margin-top: 6px;
+  }
+
+  .profile-avatar-shell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .p-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    border: 1px solid #C3E4E9;
+    background: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  }
+  .p-btn:hover {
+    background: #f3f4f6;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+  }
+
+  .p-btn-primary {
+    border-color: transparent;
+    background: var(--accent);
+    color: #EEEEEE;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+  }
+  .p-btn-primary:hover { background: var(--accent-strong); }
+
+  .p-btn-ghost { color: #4b5563; }
+
+  .p-btn-logout {
+    background: #FEF2F2;
+    border-color: #fecaca;
+    color: #b91c1c;
+  }
+
+  .profile-quick-links {
+    border-radius: 14px;
+    border: 1px dashed #C3E4E9;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    background: #f9fafb;
+  }
+
+  .profile-quick-links h4 {
+    margin: 0 0 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #023653;
+  }
+
+  .profile-quick-links ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #6b7280;
+  }
+
+  .profile-quick-links li { margin-bottom: 2px; }
+
+  /* DASHBOARD PROFILE STYLES (override to match Dashboard) */
+    .profile-button {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      z-index: 120;
-      backdrop-filter: blur(6px);
-    }
-    .modal-overlay.is-open { display: flex; }
-    .modal {
-      width: 100%;
-      max-width: 720px;
-      max-height: 90vh;
-      overflow-y: auto;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
       background: #FFFFFF;
-      border-radius: 18px;
-      padding: 22px 22px 20px;
-      box-shadow: 0 24px 50px rgba(2, 54, 83, 0.5);
       border: 1px solid var(--border-subtle);
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .modal-header h3 {
-      margin: 0;
-      font-size: 0.95rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent-strong);
-    }
-    .modal-close {
-      font-size: 1.4rem;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      color: var(--text-muted);
-    }
-    .modal-body label {
-      display: block;
-      margin-top: 10px;
-      font-size: 0.84rem;
-      color: var(--accent-strong);
-    }
-    .modal-body input,
-    .modal-body select,
-    .modal-body textarea {
-      width: 100%;
-      margin-top: 4px;
-      padding: 9px 10px;
-      border-radius: 10px;
-      border: 1px solid var(--border-subtle);
-      background: #FFFFFF;
-      font-size: 0.9rem;
-      color: var(--text-main);
-    }
-    .modal-footer {
-      margin-top: 14px;
-      text-align: right;
-    }
+      box-shadow: 0 6px 16px rgba(2, 54, 83, 0.08);
+    transition:
+      background 0.16s ease,
+      box-shadow 0.16s ease,
+      transform 0.12s ease,
+      border-color 0.12s ease;
+  }
+
+  .profile-button:hover {
+    background: var(--card-soft);
+    border-color: var(--accent-soft);
+    box-shadow: 0 10px 22px rgba(2, 54, 83, 0.16);
+    transform: translateY(-1px);
+  }
+
+  .avatar-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: #D1D5DB;
+    flex-shrink: 0;
+  }
+
+  .avatar-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gear-icon {
+    font-size: 18px;
+    color: var(--accent);
+  }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.38);
+    display: none;
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    backdrop-filter: blur(6px);
+  }
+
+  .modal-overlay.is-open {
+    display: flex;
+  }
+
+  .modal {
+    width: 380px;
+    max-width: 100%;
+    background: #FFFFFF;
+    border-radius: 18px;
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
+    border: 1px solid #D3DFE8;
+    overflow: hidden;
+    animation: fadeInUp 0.22s ease-out forwards;
+    color: var(--text-main);
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .modal-header {
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+    color: #FFFFFF;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    font-size: 0.96rem;
+  }
+
+  .modal-close {
+    font-size: 1.4rem;
+    line-height: 1;
+    background: transparent;
+    color: #E5E7EB;
+    border: none;
+    cursor: pointer;
+  }
+
+  .modal-body {
+    padding: 12px 16px 16px;
+    font-size: 0.9rem;
+    background: #F5FAFC;
+  }
+
+  .profile-modal-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .profile-card {
+    border-radius: 14px;
+    border: 1px solid #D3DFE8;
+    background: #FFFFFF;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+  }
+
+  .profile-card-header {
+    position: relative;
+    padding: 24px 18px 40px;
+    text-align: center;
+    color: var(--text-main);
+    background: linear-gradient(
+      135deg,
+      var(--card-soft) 0%,
+      #FFFFFF 60%
+    );
+  }
+
+  .profile-card-header p {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .profile-card-header h4 {
+    margin: 6px 0 0;
+    font-size: 1.05rem;
+    color: var(--accent-strong);
+  }
+
+  .profile-tagline {
+    margin-top: 3px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .profile-avatar-shell {
+    position: absolute;
+    left: 50%;
+    bottom: -28px;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 999px;
+    border: 3px solid #FFFFFF;
+    overflow: hidden;
+    background: #D1D5DB;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .profile-avatar-shell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .profile-card-main {
+    padding: 40px 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #FFFFFF;
+  }
+
+  .profile-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    font-size: 0.8rem;
+  }
+
+  .profile-detail-item {
+    background: #F5FAFC;
+    border-radius: 10px;
+    padding: 6px 8px;
+    border: 1px solid #D3DFE8;
+  }
+
+  .profile-detail-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 1px;
+  }
+
+  .profile-detail-value {
+    font-size: 0.86rem;
+    color: var(--text-main);
+  }
+
+  .profile-quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .p-btn {
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid #D3DFE8;
+    background: #FFFFFF;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-main);
+    transition:
+      background 0.14s ease,
+      border-color 0.14s ease,
+      box-shadow 0.14s ease,
+      transform 0.14s ease;
+  }
+
+  .p-btn-primary {
+    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+    color: #FFFFFF;
+    border-color: transparent;
+    box-shadow: 0 8px 18px rgba(2, 54, 83, 0.5);
+  }
+
+  .p-btn-primary:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+
+  .p-btn-ghost {
+    background: #F5FAFC;
+  }
+
+  .p-btn-ghost:hover {
+    background: var(--card-soft);
+  }
+
+  .p-btn-logout {
+    background: #FEE2E2;
+    border-color: #FECACA;
+    color: #B91C1C;
+  }
+
+  .p-btn-logout:hover {
+    background: #FECACA;
+  }
+
+  .profile-quick-links {
+    border-radius: 14px;
+    border: 1px solid #D3DFE8;
+    background: #FFFFFF;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    color: var(--text-main);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+  }
+
+  .profile-quick-links h4 {
+    margin: 0 0 4px;
+    font-size: 0.84rem;
+    color: var(--accent-strong);
+  }
+
+  .profile-quick-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .profile-quick-links li + li {
+    margin-top: 3px;
+  }
+
+  .profile-quick-links a {
+    color: var(--accent);
+  }
+
+  .profile-quick-links a:hover {
+    color: var(--accent-strong);
+    text-decoration: underline;
+  }
+
+  .profile-footnote {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
   </style>
 </head>
 <body>
@@ -854,17 +1303,109 @@
       <a href="{% url 'disciplinebuilder' %}" class="nav-link"><span>Discipline Builder</span></a>
       <a href="{% url 'progresstracker' %}" class="nav-link"><span>Progress Tracker</span></a>
       <a href="{% url 'rewards' %}" class="nav-link"><span>Rewards</span></a>
-      <a href="{% url 'coaching' %}" class="nav-link"><span>Coaching</span></a>
       <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}"><span>Messages</span></a>
       <a href="{% url 'user_profile' %}" class="nav-link"><span>Profile</span></a>
       <a href="{% url 'community' %}" class="nav-link active"><span>Community</span></a>
       <a href="{% url 'groups' %}" class="nav-link"><span>Groups</span></a>
+      <a href="{% url 'buddies' %}" class="nav-link"><span>Buddies</span></a>
     </div>
   </nav>
 
   <!-- MAIN -->
-  <div class="community-shell">
+  <main class="main-content" role="main">
+   <header class="site-header fade-in">
+      <div class="site-header-title">
+        <h1>Community Hub</h1>
+        <span>Connect &amp; Collaborate</span>
+      </div>
+         <div class="header-actions">
+        <div class="toolbar">
+          <button class="profile-button" id="profile-button">
+            <span class="avatar-wrap">
+              <img src="https://via.placeholder.com/40x40.png" alt="User avatar">
+            </span>
+            <span class="gear-icon">⚙️</span>
+          </button>
+          <a class="btn btn-primary" href="/accounts/logout/">Log out</a>
+        </div>
+      </div>
+    </header>
 
+
+  <div class="community-shell">
+    
+       <div class="modal-overlay" id="profile-modal" aria-hidden="true">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>Profile & Account</h3>
+          <button type="button" class="modal-close" id="modal-close">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="profile-modal-layout">
+            <article class="profile-card">
+              <div class="profile-card-header">
+                <p>Welcome back</p>
+                <h4>{{ user.username }}</h4>
+                <p class="profile-tagline">Manage your Calibration account and shortcuts.</p>
+                <div class="profile-avatar-shell">
+                  <img src="https://via.placeholder.com/80"
+                       alt="Avatar for {{ user.username }}">
+                </div>
+              </div>
+              <div class="profile-card-main">
+                <div class="profile-detail-grid">
+                  <div class="profile-detail-item">
+                    <div class="profile-detail-label">Account</div>
+                    <div class="profile-detail-value">Calibration Basic</div>
+                  </div>
+                  <div class="profile-detail-item">
+                    <div class="profile-detail-label">Email</div>
+                    <div class="profile-detail-value">
+                      {{ user.email|default:"Not set" }}
+                    </div>
+                  </div>
+                  <div class="profile-detail-item">
+                    <div class="profile-detail-label">Member since</div>
+                    <div class="profile-detail-value">
+                      {{ user.date_joined|date:"M j, Y" }}
+                    </div>
+                  </div>
+                  <div class="profile-detail-item">
+                    <div class="profile-detail-label">Last login</div>
+                    <div class="profile-detail-value">
+                      {{ user.last_login|date:"M j, Y" }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="profile-quick-actions">
+                  <a href="{% url 'user_profile' %}" class="p-btn p-btn-primary">View profile</a>
+                  <a href="{% url 'user_settings' %}" class="p-btn p-btn-ghost">Account settings</a>
+                  <a href="/accounts/logout/" class="p-btn p-btn-logout">Log out</a>
+                </div>
+              </div>
+            </article>
+
+            <section class="profile-quick-links">
+              <h4>Shortcuts</h4>
+              <ul>
+                <li><a href="{% url 'skill_create' %}">Add a new skill</a></li>
+                <li><a href="{% url 'habit_create' %}">Create a new habit</a></li>
+                <li><a href="{% url 'rewards' %}">View your rewards</a></li>
+              </ul>
+              <p class="profile-footnote">
+                Use the dashboard for day-to-day tracking; this space is for account details.
+              </p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+     
     <!-- HERO / COMMUNITY HUB -->
     <section class="hero">
       <div class="hero-inner">
@@ -1003,9 +1544,10 @@
                 <h5 style="margin:0 0 4px; font-size:0.85rem; color:var(--accent-strong);">Buddies</h5>
                 {% if buddies %}
                   {% for b in buddies %}
-                    <div style="font-size:0.9rem; padding:4px 0; border-bottom:1px solid var(--border-subtle);">
-                      {{ b.user.username }}
-                    </div>
+                    <a href="{% url 'visitor_profile' b.user.id %}" style="display:flex; align-items:center; gap:8px; font-size:0.9rem; padding:4px 0; border-bottom:1px solid var(--border-subtle); color:inherit; text-decoration:none;">
+                      <span style="width:28px; height:28px; border-radius:999px; background:rgba(5,108,137,0.14); display:inline-flex; align-items:center; justify-content:center; font-weight:600; font-size:0.78rem;">{{ b.user.username|slice:":2"|upper }}</span>
+                      <span>{{ b.user.username }}</span>
+                    </a>
                   {% endfor %}
                 {% else %}
                   <p style="margin:0; color:var(--text-muted); font-size:0.85rem;">No buddies yet.</p>
@@ -1155,12 +1697,13 @@
           <ul class="groups-list">
             {% if groups %}
               {% for g in groups %}
-                <li class="group-item">
+                <li class="group-item" data-href="{% url 'group_detail' g.obj.id %}">
                   <div class="group-main">
                     <span class="group-name">{{ g.obj.name }}</span>
-                    <span class="group-meta">{{ g.member_count }} members · {{ g.obj.tagline|default:"" }}</span>
+                    <span class="group-meta">{{ g.member_count }} members ? {{ g.obj.tagline|default:"" }}</span>
                   </div>
-                  {% if g.is_member %}
+                  
+{% if g.is_member %}
                     <form method="post" action="{% url 'group_leave' g.obj.id %}">
                       {% csrf_token %}
                       <button type="submit" class="group-pill" style="background:#fee2e2; border-color:#fecdd3; color:#b91c1c;">Leave</button>
@@ -1340,7 +1883,55 @@
           if (upEl) upEl.textContent = data.up;
           if (downEl) downEl.textContent = data.down;
         }
-      });
+    });
+  });
+
+  // Make each group item clickable to its detail page unless a form/button is clicked
+  document.querySelectorAll(".group-item[data-href]").forEach((item) => {
+    item.style.cursor = "pointer";
+    item.addEventListener("click", (e) => {
+      const tag = e.target.tagName.toLowerCase();
+      if (tag === "button" || tag === "form" || e.target.closest("form")) {
+        return;
+      }
+      const href = item.getAttribute("data-href");
+      if (href) {
+        window.location.href = href;
+      }
+    });
+  });
+});
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const profilePill = document.getElementById("profile-button");
+    const modal = document.getElementById("profile-modal");
+    const closeBtn = document.getElementById("modal-close");
+
+    if (!profilePill || !modal || !closeBtn) return;
+
+    function openModal() {
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    profilePill.addEventListener("click", openModal);
+    closeBtn.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && modal.classList.contains("is-open")) {
+        closeModal();
+      }
     });
   });
 </script>

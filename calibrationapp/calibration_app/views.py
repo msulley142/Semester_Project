@@ -2,19 +2,19 @@ from django.db.models import Count, Max, Sum, Q
 from django.db.models.functions import TruncDate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views import View
 from django.contrib.auth.models import User
 
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import login
-from .models import Skill,  Habit, Reward, Journal, Badge, User_Badge,Task, Profile, Goals, Mood, Topics, Post, Forum, BuddyRequest, Friendship, ChatMessage, ForumVote, CommunityGroup
-from .forms import SkillForm, HabitForm, JournalForm, RewardForm, TaskForm, ProfileForm, UserForm, GoalForm, MoodForm, TopicsForm, PostForm, ForumForm, BuddyRequestForm, BuddyRespondForm, CommunityGroupForm
+from .models import Skill,  Habit, Reward, Journal, Badge, User_Badge,Task, Profile, Goals, Mood, Topics, Post, Forum, BuddyRequest, Friendship, ChatMessage, ForumVote, CommunityGroup, UserBlock
+from .forms import SkillForm, HabitForm, JournalForm,  TaskForm, ProfileForm, UserForm, GoalForm, MoodForm,  PostForm, ForumForm, BuddyRequestForm, BuddyRespondForm, CommunityGroupForm
 from django.contrib import messages
 from django.http import JsonResponse
-from django.utils.timezone import make_aware
-from datetime import datetime
+
+
 from calibration_app.progress_tracker import task_completion_badge, award_badge, journal_entry_create,  streak_notify, abst_badge, goal_date_tracker, goal_award_updater
 from calibration_app.analytics import tasks_summary, goals_summary, habits_skills_summary, streak_analytics, mood_analytics, mood_productivity_correlation, week_behavior_points, xp_activity_summary
 from calibration_app.mood_tracker import create_mood_entry
@@ -29,21 +29,6 @@ from datetime import timedelta
 #----Landing View---#
 
 
-
-class LoginView(FormView):
-    template_name = 'auth/login.html'
-    success_url = reverse_lazy('dashboard')
-
-    def form_valid(self, form):
-        user = form.get_user()
-        login(self.request, user)
-        # Update streak/badges on each successful login
-        try:
-            streak_notify(user)
-        except Exception:
-            # don't block login on streak side-effects
-            pass
-        return super().form_valid(form)
 
 
 #----Signup View----#
@@ -119,6 +104,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         # friends list for dashboard (buddies only)
         profile, _ = Profile.objects.get_or_create(user=self.request.user)
         friends_qs = profile.buddies_list().select_related("user")
+       
         now = timezone.now()
         friends_payload = []
         for buddy in friends_qs:
@@ -128,6 +114,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 # simple heuristic: seen within last 10 minutes counts as online
                 is_online = (now - last_login) <= timedelta(minutes=10)
             friends_payload.append({
+                "id": buddy.user.id,
                 "username": buddy.user.username,
                 "is_online": is_online,
             })
@@ -224,79 +211,11 @@ class DisciplineBuilderView(LoginRequiredMixin, TemplateView):
         return context
      #allows user to log skill and habit updates on thw webpage.
      #This function is mostly AI generated. The same method was use for the function below this one.
-     def post_to_journal(self, request):
-         
-         entry_type = request.POST.get("entry_type")
-         skill_user = request.POST.get("skill") or None
-         habit_user = request.POST.get("habit") or None
-         trigger = request.POST.get("trigger") or None
-         note = request.POST.get("note") or None
-         date_added = request.POST.get("date")
-          
-        #  default_date = None 
-        #  if date_added:
-        #      try:
-        #          date_added = make_aware(datetime.fromisoformat(date_added))
-        #      except Exception:
-        #           default_date = None
-
-         user_entry = Journal(account_user=request.user, entry_type=entry_type, trigger=trigger, note=note)
-         
-         #needed because I haven't seperated the skill and habit feilds for user input yet.  
-         if skill_user:
-             try: user_entry.skill = Skill.objects.get(id=skill_user, account_user=request.user)
-             except Skill.DoesNotExist: pass
-         if habit_user:
-             try: user_entry.habit = Habit.objects.get(id=habit_user, account_user=request.user)
-             except Habit.DoesNotExist: pass
-
-         if skill_user and habit_user:
-             messages.error(request, "Only one option is allowed.")
-             return redirect('disciplinebuilder')
-
-         user_entry.save()
-         messages.success(request, "Journal entry saved")
-         journal_entry_create(user_entry)
-
-        
-         return redirect('disciplinebuilder')
-
+    
        
      #allows users to log tasks through the on the progress tracker/ discipline builder webpage.
 
-     def post_to_task(self, request):
-         
-         title = request.POST.get("title")
-         points = request.POST.get("points") or None
-         user_skill = request.POST.get("skill") or None
-         habit_user1 = request.POST.get('habit') or None
-         status = request.POST.get("status") or None
-         description = request.POST.get("description") or None
-         date_user = request.POST.get("date")
-
-         default_date1 = None 
-         if date_user:
-             try:
-                 date_user = make_aware(datetime.fromisoformat(date_user))
-             except Exception:
-                  default_date1 = None
-
-         user_task = Task(account_user=request.user, title=title, points=points, status=status, description=description)
-         
-         if user_skill:
-             try: user_task.skill = Skill.objects.get(id=user_skill, account_user=request.user)
-             except Skill.DoesNotExist: pass
-         if habit_user1:
-             try: user_task.habit = Habit.objects.get(id=habit_user1, account_user=request.user)
-             except Habit.DoesNotExist: pass
-
-         if user_skill and habit_user1:
-             messages.error(request, "Only one option is allowed.")
-             return redirect('disciplinebuilder')
-
-         user_task.save()
-         messages.success(request, "Task entry saved")
-         return redirect('disciplinebuilder')
+    
                                                   
          
      
@@ -582,6 +501,7 @@ class CommunityView(LoginRequiredMixin, TemplateView):
                 up_count=Count("votes", filter=Q(votes__value=ForumVote.UP)),
                 down_count=Count("votes", filter=Q(votes__value=ForumVote.DOWN)),
             )
+            .filter(group__isnull=True)
             .order_by("-created_at")
         )
         if selected_topic:
@@ -648,6 +568,13 @@ def forum_vote(request, pk):
     if not request.user.is_authenticated:
         return redirect("login")
     forum = get_object_or_404(Forum, pk=pk)
+
+    if forum.group_id:
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        if not forum.group.members.filter(pk=profile.pk).exists():
+            messages.error(request, "Join the group to vote on this thread.")
+            return redirect("group_detail", pk=forum.group_id)
+
     value = request.POST.get("vote")
     if value == "up":
         vote_val = ForumVote.UP
@@ -714,6 +641,46 @@ class GroupCreateView(LoginRequiredMixin, View):
         return redirect(request.META.get("HTTP_REFERER", "community"))
 
 
+def build_group_context_payload(group, user):
+    """
+    Shared helper to load group detail/chat/thread data.
+    """
+    profile, _ = Profile.objects.get_or_create(user=user)
+    is_member = group.members.filter(pk=profile.pk).exists()
+
+    room_name = f"group-{group.pk}"
+    chat_messages = (
+        ChatMessage.objects.filter(room=room_name)
+        .select_related("sender")
+        .order_by("created_at")[:200]
+    )
+
+    threads = (
+        Forum.objects.filter(group=group)
+        .select_related("author", "topic")
+        .annotate(comment_count=Count("post"))
+        .order_by("-created_at")
+    )
+
+    members = group.members.select_related("user").all()
+    payload = {
+        "group": group,
+        "group_is_member": is_member,
+        "group_is_owner": False,
+        "group_members": members,
+        "member_count": members.count(),
+        "group_threads": threads,
+        "group_activity": [],
+        "chat_messages": chat_messages,
+        "group_messages": chat_messages,  # alias for templates expecting this name
+        "group_chat_room": room_name,
+    }
+    # convenience attribute on the object for templates
+    group.chat_room_name = room_name
+    group.is_member = is_member
+    return payload
+
+
 class GroupDetailView(LoginRequiredMixin, DetailView):
     model = CommunityGroup
     template_name = "group_detail.html"
@@ -721,11 +688,8 @@ class GroupDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        profile, _ = Profile.objects.get_or_create(user=self.request.user)
         group = self.object
-        ctx["is_member"] = group.members.filter(pk=profile.pk).exists()
-        ctx["members"] = group.members.select_related("user").all()
-        ctx["member_count"] = ctx["members"].count()
+        ctx.update(build_group_context_payload(group, self.request.user))
         return ctx
 
 
@@ -735,20 +699,127 @@ class GroupsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         profile, _ = Profile.objects.get_or_create(user=self.request.user)
-        groups = list(CommunityGroup.objects.all().order_by("name"))
-        for g in groups:
+        all_groups = list(CommunityGroup.objects.all().prefetch_related("members").order_by("name"))
+        my_groups = list(profile.community_groups.all().prefetch_related("members").order_by("name"))
+        for g in all_groups:
             g.is_member = g.members.filter(pk=profile.pk).exists()
-        ctx["groups"] = groups
-        ctx["my_groups"] = profile.community_groups.all()
+        suggested = [g for g in all_groups if not g.is_member][:6]
+
+        ctx["all_groups"] = all_groups
+        ctx["my_groups"] = my_groups
+        ctx["suggested_groups"] = suggested
         ctx["group_form"] = CommunityGroupForm()
         return ctx
 
 
+class GroupThreadCreateView(LoginRequiredMixin, View):
+    def post(self, request, group_id, *args, **kwargs):
+        group = get_object_or_404(CommunityGroup, pk=group_id)
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        if not group.members.filter(pk=profile.pk).exists():
+            messages.error(request, "Join this group to start a thread.")
+            return redirect("group_detail", pk=group.id)
+
+        title = (request.POST.get("title") or "").strip()
+        body = (request.POST.get("body") or "").strip()
+        if not title or not body:
+            messages.error(request, "Title and body are required.")
+            return redirect("group_detail", pk=group.id)
+
+        topic, _ = Topics.objects.get_or_create(name="General")
+        forum = Forum.objects.create(
+            topic=topic,
+            group=group,
+            author=request.user,
+            title=title,
+            body=body,
+        )
+        messages.success(request, "Group discussion created.")
+        return redirect("group_thread_detail", group_id=group.id, pk=forum.id)
+
+
+class GroupThreadDetailView(LoginRequiredMixin, DetailView):
+    model = Forum
+    template_name = "forum/forum_detail.html"
+    context_object_name = "forum"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.group = get_object_or_404(CommunityGroup, pk=kwargs.get("group_id"))
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        if not self.group.members.filter(pk=profile.pk).exists():
+            messages.error(request, "Join this group to view this thread.")
+            return redirect("group_detail", pk=self.group.pk)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return Forum.objects.filter(group=self.group)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        forum = self.object
+        context["group"] = self.group
+        context["posts"] = forum.post_set.select_related("author").order_by("created_at")
+        context["form"] = PostForm()
+        context["locked"] = forum.locked_forum
+        context["up_count"] = ForumVote.objects.filter(forum=forum, value=ForumVote.UP).count()
+        context["down_count"] = ForumVote.objects.filter(forum=forum, value=ForumVote.DOWN).count()
+        context["user_vote"] = ForumVote.objects.filter(forum=forum, user=self.request.user).values_list("value", flat=True).first()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.locked_forum:
+            messages.error(request, "This thread is locked.")
+            return redirect("group_thread_detail", group_id=self.group.pk, pk=self.object.pk)
+
+        body = (request.POST.get("body") or "").strip()
+        if not body:
+            messages.error(request, "Reply cannot be empty.")
+            return redirect("group_thread_detail", group_id=self.group.pk, pk=self.object.pk)
+
+        Post.objects.create(
+            forum=self.object,
+            author=request.user,
+            body=body,
+        )
+
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            comment_count = Post.objects.filter(forum=self.object).count()
+            return JsonResponse({"ok": True, "comment_count": comment_count})
+
+        messages.success(request, "Reply posted.")
+        return redirect("group_thread_detail", group_id=self.group.pk, pk=self.object.pk)
+
+
+class GroupThreadReplyView(LoginRequiredMixin, View):
+    def post(self, request, group_id, thread_id, *args, **kwargs):
+        group = get_object_or_404(CommunityGroup, pk=group_id)
+        forum = get_object_or_404(Forum, pk=thread_id, group=group)
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        if not group.members.filter(pk=profile.pk).exists():
+            messages.error(request, "Join this group to reply.")
+            return redirect("group_detail", pk=group.id)
+
+        if forum.locked_forum:
+            messages.error(request, "This thread is locked.")
+            return redirect("group_thread_detail", group_id=group.id, pk=forum.id)
+
+        body = (request.POST.get("body") or "").strip()
+        if not body:
+            messages.error(request, "Reply cannot be empty.")
+            return redirect("group_detail", pk=group.id)
+
+        Post.objects.create(forum=forum, author=request.user, body=body)
+        comment_count = Post.objects.filter(forum=forum).count()
+
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse({"ok": True, "comment_count": comment_count})
+
+        messages.success(request, "Reply posted.")
+        return redirect("group_detail", pk=group.id)
 
 
 
-class CoachingView(LoginRequiredMixin, TemplateView):
-    template_name = 'coaching.html'
 
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
@@ -790,6 +861,7 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
         badges = User_Badge.objects.filter(account_user=user).select_related("badge").order_by('-awarded_at')[:6]
         friends = profile.buddies_list().select_related("user")
         token_balance = Reward.objects.filter(account_user=user).aggregate(total=Sum("tokens"))["total"] or 0
+        my_groups = profile.community_groups.all().prefetch_related("members").order_by("name")
 
         latest_journal = Journal.objects.filter(account_user=user).order_by('-date').first()
         mood_recent = Mood.objects.filter(user=user).order_by('-timestamp')[:5]
@@ -831,6 +903,7 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
             "outgoing": BuddyRequest.objects.filter(sender=profile, status=BuddyRequest.PENDING),
             "buddy_form": BuddyRequestForm(),
             "respond_form": BuddyRespondForm(),
+            "my_groups": my_groups,
         })
         return ctx
 
@@ -872,6 +945,37 @@ class VisitorProfileView(LoginRequiredMixin, TemplateView):
         streak_info = streak_analytics(target_user)
         tasks_qs = Task.objects.filter(account_user=target_user)
         total_xp = (tasks_qs.filter(status=Task.COMPLETED).aggregate(total=Sum("points"))["total"] or 0) + (skills_qs.aggregate(total=Sum("xp"))["total"] or 0)
+        # Recent public-ish activity stream
+        activity_items = []
+        for s in skills_qs.order_by("-created_at")[:5]:
+            activity_items.append({
+                "title": f"New skill: {s.name}",
+                "meta": s.created_at.strftime("%b %d, %Y"),
+                "type": "Skill",
+                "body": f"Level {s.level} · {s.xp} XP"
+            })
+        for h in habits_qs.order_by("-created_at")[:5]:
+            activity_items.append({
+                "title": f"Habit started: {h.name}",
+                "meta": h.created_at.strftime("%b %d, %Y"),
+                "type": "Habit",
+                "body": f"Goal {h.goal_percentage or 0}%"
+            })
+        for g in goals_qs.order_by("-due_date")[:5]:
+            activity_items.append({
+                "title": f"Goal: {g.title}",
+                "meta": g.due_date.strftime("%b %d, %Y") if g.due_date else "Goal set",
+                "type": "Goal",
+                "body": g.status
+            })
+        for b in badges:
+            activity_items.append({
+                "title": f"Badge earned: {b.badge.title}",
+                "meta": b.awarded_at.strftime("%b %d, %Y") if hasattr(b, "awarded_at") and b.awarded_at else "",
+                "type": "Badge",
+                "body": getattr(b.badge, "description", "") or ""
+            })
+        activity_items = sorted(activity_items, key=lambda x: x.get("meta", ""), reverse=True)[:12]
 
         ctx.update({
             "profile": profile,
@@ -881,6 +985,7 @@ class VisitorProfileView(LoginRequiredMixin, TemplateView):
             "habits": habits_qs.order_by("-created_at")[:5],
             "goals": goals_qs.order_by("due_date")[:5],
             "badges": badges,
+            "groups": profile.community_groups.all(),
             "buddy_form": BuddyRequestForm(),
             "skills_data": skills_data,
             "habits_data": habits_data,
@@ -888,7 +993,7 @@ class VisitorProfileView(LoginRequiredMixin, TemplateView):
             "skills_count": skills_qs.count(),
             "friends": friends,
             "total_xp": total_xp,
-            "recent_activity": [],
+            "recent_activity": activity_items,
         })
         return ctx
 
@@ -922,6 +1027,17 @@ def dm_room_name(user_a_id: int, user_b_id: int) -> str:
     """
     a, b = sorted([int(user_a_id), int(user_b_id)])
     return f"dm-{a}-{b}"
+
+
+def users_blocked(user_a_id: int, user_b_id: int) -> bool:
+    """
+    Returns True if either user has blocked the other.
+    """
+    return UserBlock.objects.filter(
+        Q(blocker_id=user_a_id, blocked_id=user_b_id)
+        | Q(blocker_id=user_b_id, blocked_id=user_a_id)
+    ).exists()
+
 class MessageView(LoginRequiredMixin, TemplateView):
     template_name = "messages.html"
 
@@ -943,21 +1059,22 @@ class MessageView(LoginRequiredMixin, TemplateView):
             except (User.DoesNotExist, ValueError):
                 other_user = None
 
-        # b) Fallback – first buddy if none selected
+        # b) Fallback - first buddy if none selected
         profile = Profile.objects.filter(user=user).first()
         buddies = profile.buddies_list() if profile else []
+        safe_buddies = [b for b in buddies if not users_blocked(user.id, b.user_id)]
 
-        if other_user is None and buddies:
-            other_user = buddies[0].user
+        if other_user is None and safe_buddies:
+            other_user = safe_buddies[0].user
 
-        # c) Final fallback – any other profile
+        # c) Final fallback - any other profile
         if other_user is None:
             other_profile = Profile.objects.exclude(user=user).first()
             if other_profile:
                 other_user = other_profile.user
 
         # ---- 2) Compute room name & load messages ----
-        if other_user:
+        if other_user and not users_blocked(user.id, other_user.id):
             room_name = dm_room_name(user.id, other_user.id)
             messages_qs = (
                 ChatMessage.objects
@@ -968,12 +1085,13 @@ class MessageView(LoginRequiredMixin, TemplateView):
         else:
             room_name = "dm-demo"
             messages_qs = ChatMessage.objects.none()
+            other_user = None
 
         # ---- 3) Attach to context for template/JS ----
         ctx["other_user"] = other_user
         ctx["room_name"] = room_name
         ctx["chat_messages"] = messages_qs
-        ctx["buddies"] = buddies
+        ctx["buddies"] = safe_buddies
 
         # Mark messages as seen now so we can show an unread dot elsewhere
         self.request.session["messages_last_seen_at"] = timezone.now().isoformat()
@@ -1125,34 +1243,11 @@ class JournalDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('disciplinebuilder')
 #----Reward Views----#                          
 
-class RewardList(LoginRequiredMixin, ListView):
-    model = Reward
-    template_name = 'rewards/reward_list.html'
+
 
    
 
-class RewardCreate(LoginRequiredMixin, CreateView):
-    model = Reward
-    form_class = RewardForm
-    template_name = 'rewards/form.html'
-    success_url = reverse_lazy('reward-list')
 
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.account_user = self.request.user
-        obj.save()
-        return redirect(self.success_url)
-
-class RewardUpdate(LoginRequiredMixin, UpdateView):
-    model = Reward
-    form_class = RewardForm
-    template_name = 'rewards/form.html'
-    success_url = reverse_lazy('reward-list')
-
-class RewardDelete(LoginRequiredMixin, DeleteView):
-    model = Reward
-    template_name = 'rewards/confirm_delete.html'
-    success_url = reverse_lazy('reward-list')
 
 #----Task Views----#   
 class TaskList(LoginRequiredMixin, ListView):
@@ -1400,7 +1495,10 @@ class ForumDetailView(LoginRequiredMixin, DetailView):
     model= Forum
     template_name = "forum/forum_detail.html"
     context_object_name = "forum"
-    
+
+    def get_queryset(self):
+        return Forum.objects.filter(group__isnull=True)
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1464,6 +1562,9 @@ class BuddiesView(LoginRequiredMixin, TemplateView):
         ctx["outgoing"] = BuddyRequest.objects.filter(sender=profile, status=BuddyRequest.PENDING)
         ctx["form"] = BuddyRequestForm()
         ctx["respond_form"] = BuddyRespondForm()
+        ctx["blocked_users"] = set(
+            UserBlock.objects.filter(blocker=self.request.user).values_list("blocked_id", flat=True)
+        )
         return ctx
 
 class BuddySendView(LoginRequiredMixin, View):
@@ -1474,6 +1575,9 @@ class BuddySendView(LoginRequiredMixin, View):
         if form.is_valid():
             receiver = form.cleaned_data["receiver"]
             sender_profile, _ = Profile.objects.get_or_create(user=request.user)
+            if users_blocked(request.user.id, receiver.user_id):
+                messages.error(request, "You cannot send a buddy request to this user.")
+                return redirect("buddies")
             if receiver == sender_profile:
                 messages.error(request, "You cannot buddy yourself.")
             else:
@@ -1500,6 +1604,10 @@ class BuddyRespondView(LoginRequiredMixin, View):
         action = form.cleaned_data["action"]
         profile, _ = Profile.objects.get_or_create(user=request.user)
 
+        if users_blocked(request.user.id, buddy_req.sender.user_id) or users_blocked(request.user.id, buddy_req.receiver.user_id):
+            messages.error(request, "Action blocked by user preferences.")
+            return redirect("buddies")
+
         if action == BuddyRespondForm.ACTION_ACCEPT and buddy_req.receiver == profile:
             buddy_req.accept()
             messages.success(request, f"You are now buddies with {buddy_req.sender.user.username}.")
@@ -1523,4 +1631,31 @@ class BuddyRemoveView(LoginRequiredMixin, View):
         Friendship.objects.filter(requester=buddy_profile, buddy=profile).delete()
         messages.info(request, f"Removed {buddy_profile.user.username} from buddies.")
         return redirect("buddies")
+
+
+class BlockUserView(LoginRequiredMixin, View):
+    def post(self, request, user_id, *args, **kwargs):
+        target = get_object_or_404(User, pk=user_id)
+        if target == request.user:
+            messages.error(request, "You cannot block yourself.")
+            return redirect(request.META.get("HTTP_REFERER", "buddies"))
+
+        UserBlock.objects.get_or_create(blocker=request.user, blocked=target)
+
+        # remove buddy relationship if exists
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        target_profile = Profile.objects.filter(user=target).first()
+        if target_profile:
+            Friendship.objects.filter(requester=profile, buddy=target_profile).delete()
+            Friendship.objects.filter(requester=target_profile, buddy=profile).delete()
+
+        messages.info(request, f"Blocked {target.username}.")
+        return redirect(request.META.get("HTTP_REFERER", "buddies"))
+
+
+class UnblockUserView(LoginRequiredMixin, View):
+    def post(self, request, user_id, *args, **kwargs):
+        UserBlock.objects.filter(blocker=request.user, blocked_id=user_id).delete()
+        messages.success(request, "User unblocked.")
+        return redirect(request.META.get("HTTP_REFERER", "buddies"))
 

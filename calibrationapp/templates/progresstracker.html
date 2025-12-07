@@ -8,10 +8,10 @@
 
   <style>
     :root {
-      /* ---- OCEAN TEAL CALIBRATION THEME (same as Discipline Builder) ---- */
+    
       --bg-main: #EEEEEE;
       --bg-soft: #C3E4E9;
-      --bg-sidebar: #023653;
+    
 
       --card: #FFFFFF;
       --card-soft: #C3E4E9;
@@ -22,10 +22,10 @@
 
       --text-main: #02212B;
       --text-muted: #5B7580;
-      --border-subtle: #88B4BE;
+      --border-subtle: #C5D4D8;
 
       --radius-lg: 16px;
-      --radius-md: 10px;
+
       --radius-pill: 999px;
 
       --shadow-soft: 0 12px 30px rgba(2, 54, 83, 0.16);
@@ -61,20 +61,20 @@
 
     /* === SIDEBAR === */
     .sidebar {
-      background: linear-gradient(180deg, var(--bg-sidebar) 0%, #045272 40%, #023653 100%);
-      color: #E6F4F7;
-      border-right: 1px solid rgba(136, 180, 190, 0.6);
-      padding: 14px 16px 16px;
+      background: linear-gradient(180deg, #023653 0%, #000000 100%);
+      color: #e5e7eb;
+      border-right: 1px solid #000000;
+      padding: 18px 18px 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
 
       position: sticky;
       top: 0;
       height: 100vh;
       align-self: start;
       z-index: 40;
-      box-shadow: 10px 0 28px rgba(2, 36, 56, 0.5);
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
     }
 
     @media (max-width: 900px) {
@@ -90,104 +90,88 @@
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .brand-mark {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 0%, #88B4BE 0, #056C89 50%, #023653 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #F4FBFD;
-      font-weight: 800;
-      font-size: 0.85rem;
-      box-shadow: 0 0 0 2px #012032;
-    }
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f9fafb;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 0 0 2px #000000;
+  }
 
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #F9FAFB;
+  }
+  .brand-subtitle {
+    font-size: 0.72rem;
+    color: #D1E2F2;
+  }
 
-    .brand-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .brand-subtitle {
-      font-size: 0.7rem;
-      color: rgba(213, 231, 236, 0.9);
-    }
-
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 4px;
-    }
-
-    @media (max-width: 900px) {
-      .nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 6px;
-        justify-content: flex-end;
-      }
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 7px 9px;
-      position: relative;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      color: #EAF7FA;
-      background: rgba(1, 32, 50, 0.92);
-      border: 1px solid transparent;
-      transition:
-        background 0.16s ease, border-color 0.16s ease,
-        box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
-    }
-
-    .nav-link:hover {
-      background: rgba(7, 70, 98, 0.95);
-      border-color: rgba(136, 180, 190, 0.7);
-      color: #FFFFFF;
-      box-shadow: 0 8px 18px rgba(3, 52, 76, 0.7);
-      transform: translateY(-1px);
-    }
-
-    .nav-link.active {
-      background: linear-gradient(120deg, var(--accent) 0%, var(--accent-soft) 70%);
-      color: #012032;
-      font-weight: 600;
-      box-shadow: 0 9px 22px rgba(5, 108, 137, 0.6);
-      border-color: transparent;
-    }
-
-    .nav-link.has-unread::after {
-      content: "";
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #ef4444;
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
-    }
-
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    position: relative;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    color: #e5e7eb;
+    background: rgba(2, 16, 32, 0.8);
+    border: 1px solid transparent;
+    transition: background 0.16s ease, border-color 0.16s ease,
+                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
+  }
+  .nav-link:hover {
+    background: #011524;
+    border-color: #056C89;
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+    transform: translateY(-1px);
+  }
+  .nav-link.active {
+    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+    border-color: transparent;
+  }
+  .nav-link.has-unread::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+  }
     /* === MAIN AREA === */
     .site-main {
       padding: 0;
@@ -306,33 +290,45 @@
       font-size: 0.76rem;
     }
 
-    /* profile pill */
-    .profile-button {
-      display: inline-flex;
+
+   .toolbar {
+      display: flex;
       align-items: center;
       gap: 10px;
-      padding: 6px 12px;
+    }
+
+
+    /* profile pill */
+    .profile-button {
+       display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(136, 180, 190, 0.22);
-      box-shadow: 0 9px 20px rgba(2, 54, 83, 0.15);
-      border: 1px solid rgba(168, 203, 212, 0.9);
-      cursor: pointer;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 6px 16px rgba(2, 54, 83, 0.08);
+      transition:
+        background 0.16s ease,
+        box-shadow 0.16s ease,
+        transform 0.12s ease,
+        border-color 0.12s ease;
     }
 
     .profile-button:hover {
-      filter: brightness(1.03);
-      box-shadow: 0 12px 26px rgba(2, 54, 83, 0.24);
+      background: var(--card-soft);
+      border-color: var(--accent-soft);
+      box-shadow: 0 10px 22px rgba(2, 54, 83, 0.16);
+      transform: translateY(-1px);
     }
 
     .avatar-wrap {
-      width: 32px;
+       width: 32px;
       height: 32px;
       border-radius: 999px;
-      background: #F1D68C;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
+      background: #D1D5DB;
+      flex-shrink: 0;
     }
 
     .avatar-wrap img {
@@ -351,17 +347,6 @@
       width: 100%;
     }
 
-    .section-block {
-      margin-bottom: 24px;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 8px;
-      margin: 0 0 10px;
-    }
 
     .section-title {
       margin: 0 0 4px;
@@ -904,106 +889,125 @@
     .muted { color: var(--text-muted); }
 
     /* === PROFILE MODAL === */
+/* MODALS */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.18);
+      background: rgba(0, 0, 0, 0.38);
       display: none;
       z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      backdrop-filter: blur(6px);
     }
 
-    .modal-overlay.is-open { display: block; }
+    .modal-overlay.is-open {
+      display: flex;
+    }
 
     .modal {
-      position: fixed;
-      top: 80px;
-      right: 24px;
-      width: 320px;
-      max-width: 90vw;
+      width: 380px;
+      max-width: 100%;
       background: #FFFFFF;
       border-radius: 18px;
-      box-shadow: 0 10px 40px rgba(1, 32, 50, 0.45);
-      border: 1px solid var(--border-subtle);
-      padding: 16px 18px;
-      animation: slideIn 0.25s ease forwards;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
+      border: 1px solid #D3DFE8;
+      overflow: hidden;
+      animation: fadeInUp 0.22s ease-out forwards;
+      color: var(--text-main);
     }
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to   { opacity: 1; transform: translateY(0); }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .modal-header {
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+      color: #FFFFFF;
     }
 
     .modal-header h3 {
       margin: 0;
-      font-size: 0.98rem;
-      color: var(--accent-strong);
+      font-size: 0.96rem;
     }
 
     .modal-close {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       line-height: 1;
       background: transparent;
-      color: var(--text-muted);
+      color: #E5E7EB;
       border: none;
       cursor: pointer;
     }
 
-    .modal-close:hover { color: var(--accent-strong); }
+    .modal-body {
+      padding: 12px 16px 16px;
+      font-size: 0.9rem;
+      background: #F5FAFC;
+    }
+
+    .profile-modal-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
     .profile-card {
-      background: var(--card-soft);
-      border-radius: 18px;
+      border-radius: 14px;
+      border: 1px solid #D3DFE8;
+      background: #FFFFFF;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
       overflow: hidden;
-      border: 1px solid var(--border-subtle);
-      box-shadow: 0 10px 24px rgba(2, 54, 83, 0.18);
     }
 
     .profile-card-header {
-      background:
-        radial-gradient(circle at 15% 0, #88B4BE 0, #056C89 35%, #023653 90%);
-      padding: 28px 18px 44px;
       position: relative;
-      color: #E4F6F9;
+      padding: 24px 18px 40px;
       text-align: center;
+      color: var(--text-main);
+      background: linear-gradient(
+        135deg,
+        var(--card-soft) 0%,
+        #FFFFFF 60%
+      );
     }
 
-    .profile-greeting {
-      margin: 0 0 4px;
-      font-size: 0.76rem;
-      opacity: 0.92;
-    }
-
-    .profile-display-name-modal {
+    .profile-card-header p {
       margin: 0;
-      font-size: 1.08rem;
-      font-weight: 600;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .profile-card-header h4 {
+      margin: 6px 0 0;
+      font-size: 1.05rem;
+      color: var(--accent-strong);
     }
 
     .profile-tagline {
-      margin: 4px 0 0;
-      font-size: 0.78rem;
-      opacity: 0.9;
+      margin-top: 3px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
     .profile-avatar-shell {
       position: absolute;
       left: 50%;
-      bottom: -26px;
+      bottom: -28px;
       transform: translateX(-50%);
-      width: 64px;
-      height: 64px;
+      width: 70px;
+      height: 70px;
       border-radius: 999px;
-      border: 3px solid #ffffff;
+      border: 3px solid #FFFFFF;
       overflow: hidden;
-      background: #F1D68C;
-      box-shadow: 0 10px 20px rgba(1, 33, 50, 0.6);
+      background: #D1D5DB;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
     }
 
     .profile-avatar-shell img {
@@ -1013,45 +1017,85 @@
     }
 
     .profile-card-main {
-      padding: 36px 16px 14px;
+      padding: 40px 16px 14px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 10px;
+      gap: 12px;
+      background: #FFFFFF;
     }
 
-    .profile-actions-row {
+    .profile-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+
+    .profile-detail-item {
+      background: #F5FAFC;
+      border-radius: 10px;
+      padding: 6px 8px;
+      border: 1px solid #D3DFE8;
+    }
+
+    .profile-detail-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 1px;
+    }
+
+    .profile-detail-value {
+      font-size: 0.86rem;
+      color: var(--text-main);
+    }
+
+    .profile-quick-actions {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: 8px;
+      margin-top: 4px;
     }
 
     .p-btn {
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid #A0C4CF;
-      background: #ffffff;
-      font-size: 0.78rem;
+      border: 1px solid #D3DFE8;
+      background: #FFFFFF;
+      font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      color: var(--accent-strong);
-      text-decoration: none;
+      color: var(--text-main);
+      transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease,
+        transform 0.14s ease;
     }
 
     .p-btn-primary {
-      background: var(--accent);
-      color: #E7F4F7;
+      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+      color: #FFFFFF;
       border-color: transparent;
-      box-shadow: 0 8px 18px rgba(5, 108, 137, 0.35);
+      box-shadow: 0 8px 18px rgba(2, 54, 83, 0.5);
     }
 
-    .p-btn-ghost { background: transparent; }
+    .p-btn-primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
 
-    .p-btn-ghost:hover { background: #EDF4F6; }
+    .p-btn-ghost {
+      background: #F5FAFC;
+    }
+
+    .p-btn-ghost:hover {
+      background: var(--card-soft);
+    }
 
     .p-btn-logout {
       background: #FEE2E2;
@@ -1059,21 +1103,23 @@
       color: #B91C1C;
     }
 
-    .p-btn-logout:hover { background: #FECACA; }
+    .p-btn-logout:hover {
+      background: #FECACA;
+    }
 
     .profile-quick-links {
       border-radius: 14px;
-      border: 1px solid var(--border-subtle);
-      background: #ffffff;
-      padding: 8px 10px;
-      font-size: 0.78rem;
-      margin-top: 8px;
+      border: 1px solid #D3DFE8;
+      background: #FFFFFF;
+      padding: 10px 12px;
+      font-size: 0.8rem;
       color: var(--text-main);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
     }
 
     .profile-quick-links h4 {
       margin: 0 0 4px;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       color: var(--accent-strong);
     }
 
@@ -1083,7 +1129,31 @@
       margin: 0;
     }
 
-    .profile-quick-links li + li { margin-top: 3px; }
+    .profile-quick-links li + li {
+      margin-top: 3px;
+    }
+
+    .profile-quick-links a {
+      color: var(--accent);
+    }
+
+    .profile-quick-links a:hover {
+      color: var(--accent-strong);
+      text-decoration: underline;
+    }
+
+    .profile-footnote {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ENTRANCE ANIMATIONS */
+    @keyframes fadeInSoft {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
 
   </style>
 </head>
@@ -1105,11 +1175,11 @@
       <a href="{% url 'disciplinebuilder' %}" class="nav-link"><span>Discipline Builder</span></a>
       <a href="{% url 'progresstracker' %}" class="nav-link active"><span>Progress Tracker</span></a>
       <a href="{% url 'rewards' %}" class="nav-link"><span>Rewards</span></a>
-      <a href="{% url 'coaching' %}" class="nav-link"><span>Coaching</span></a>
       <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}"><span>Messages</span></a>
       <a href="{% url 'user_profile' %}" class="nav-link"><span>Profile</span></a>
       <a href="{% url 'community' %}" class="nav-link"><span>Community</span></a>
       <a href="{% url 'groups' %}" class="nav-link"><span>Groups</span></a>
+      <a href="{% url 'buddies' %}" class="nav-link"><span>Buddies</span></a>
     </div>
   </nav>
 
@@ -1141,23 +1211,51 @@
      
         <!-- PROFILE MODAL -->
         <div class="modal-overlay" id="profile-modal" aria-hidden="true">
-          <div class="modal">
-            <div class="modal-header">
-              <h3>Profile</h3>
-              <button type="button" class="modal-close" id="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Profile & Account</h3>
+            <button type="button" class="modal-close" id="modal-close">&times;</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="profile-modal-layout">
               <article class="profile-card">
                 <div class="profile-card-header">
-                  <p class="profile-greeting">Welcome back</p>
-                  <h4 class="profile-display-name-modal">{{ user.username }}</h4>
-                  <p class="profile-tagline">Adjust your account and settings here.</p>
+                  <p>Welcome back</p>
+                  <h4>{{ user.username }}</h4>
+                  <p class="profile-tagline">Manage your Calibration account and shortcuts.</p>
                   <div class="profile-avatar-shell">
-                    <img src="https://via.placeholder.com/80" alt="Avatar for {{ user.username }}">
+                    <img src="https://via.placeholder.com/80"
+                         alt="Avatar for {{ user.username }}">
                   </div>
                 </div>
                 <div class="profile-card-main">
-                  <div class="profile-actions-row">
+                  <div class="profile-detail-grid">
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Account</div>
+                      <div class="profile-detail-value">Calibration Basic</div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Email</div>
+                      <div class="profile-detail-value">
+                        {{ user.email|default:"Not set" }}
+                      </div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Member since</div>
+                      <div class="profile-detail-value">
+                        {{ user.date_joined|date:"M j, Y" }}
+                      </div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Last login</div>
+                      <div class="profile-detail-value">
+                        {{ user.last_login|date:"M j, Y" }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="profile-quick-actions">
                     <a href="{% url 'user_profile' %}" class="p-btn p-btn-primary">View profile</a>
                     <a href="{% url 'user_settings' %}" class="p-btn p-btn-ghost">Account settings</a>
                     <a href="/accounts/logout/" class="p-btn p-btn-logout">Log out</a>
@@ -1165,16 +1263,22 @@
                 </div>
               </article>
 
-              <div class="profile-quick-links">
-                <h4>Quick tips</h4>
+              <section class="profile-quick-links">
+                <h4>Shortcuts</h4>
                 <ul>
-                  <li>Use Progress Tracker to spot patterns in your consistency.</li>
-                  <li>Add one small habit at a time to keep momentum.</li>
+                  <li><a href="{% url 'skill_create' %}">Add a new skill</a></li>
+                  <li><a href="{% url 'habit_create' %}">Create a new habit</a></li>
+                  <li><a href="{% url 'rewards' %}">View your rewards</a></li>
                 </ul>
-              </div>
+                <p class="profile-footnote">
+                  Use the dashboard for day-to-day tracking; this space is for account details.
+                </p>
+              </section>
             </div>
           </div>
         </div>
+      </div>
+
 
         <!-- SUMMARY BANNER -->
         <section class="section-shell">

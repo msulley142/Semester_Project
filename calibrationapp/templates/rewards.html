@@ -10,8 +10,7 @@
     :root {
       /* ---- OCEAN CALIBRATION THEME ---- */
       --bg-main: #EEEEEE;
-      --bg-soft: #C3E4E9;
-      --bg-sidebar: #023653;
+     
 
       --card: #FFFFFF;
       --card-soft: #C3E4E9;
@@ -30,8 +29,6 @@
       --shadow-soft: 0 12px 30px rgba(2, 54, 83, 0.18);
       --sidebar-w: 260px;
 
-      --gold: #facc15;
-      --bronze: #b45309;
 
       /* backwards-compat alias */
       --bg: var(--bg-main);
@@ -65,9 +62,9 @@
 
     /* SIDEBAR */
     .sidebar {
-      background: linear-gradient(180deg, var(--accent-strong) 0%, #011520 100%);
+      background: linear-gradient(180deg, #023653 0%, #000000 100%);
       color: #e5e7eb;
-      border-right: 1px solid #011520;
+      border-right: 1px solid #000000;
       padding: 16px 18px 18px;
       display: flex;
       flex-direction: column;
@@ -78,7 +75,7 @@
       height: 100vh;
       align-self: start;
       z-index: 40;
-      box-shadow: 10px 0 30px rgba(1, 21, 32, 0.45);
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
     }
 
     @media (max-width: 900px) {
@@ -93,100 +90,88 @@
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #f9fafb;
-      font-weight: 800;
-      font-size: 0.9rem;
-      box-shadow: 0 0 0 2px #011520;
-    }
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f9fafb;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 0 0 2px #000000;
+  }
 
-    .brand-text { display: flex; flex-direction: column; gap: 2px; }
-    .brand-title {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-    .brand-subtitle {
-      font-size: 0.72rem;
-      color: #d1e5ec;
-    }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #F9FAFB;
+  }
+  .brand-subtitle {
+    font-size: 0.72rem;
+    color: #D1E2F2;
+  }
 
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 4px;
-    }
-
-    @media (max-width: 900px) {
-      .nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 6px;
-        justify-content: flex-end;
-      }
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px 10px;
-      position: relative;
-      border-radius: 10px;
-      font-size: 0.86rem;
-      color: #e5e7eb;
-      background: rgba(0, 15, 24, 0.92);
-      border: 1px solid transparent;
-      transition:
-        background 0.16s ease,
-        border-color 0.16s ease,
-        box-shadow 0.16s ease,
-        transform 0.12s ease,
-        color 0.16s ease;
-    }
-
-    .nav-link:hover {
-      background: #022335;
-      border-color: #064663;
-      color: #f9fafb;
-      box-shadow: 0 8px 18px rgba(1, 21, 32, 0.55);
-      transform: translateY(-1px);
-    }
-
-    .nav-link.active {
-      background: linear-gradient(120deg, #088AB3, var(--accent));
-      color: #f9fafb;
-      font-weight: 600;
-      box-shadow: 0 10px 26px rgba(5, 108, 137, 0.7);
-      border-color: transparent;
-    }
-
-    .nav-link.has-unread::after {
-      content: "";
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #ef4444;
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
-    }
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    position: relative;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    color: #e5e7eb;
+    background: rgba(2, 16, 32, 0.8);
+    border: 1px solid transparent;
+    transition: background 0.16s ease, border-color 0.16s ease,
+                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
+  }
+  .nav-link:hover {
+    background: #011524;
+    border-color: #056C89;
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+    transform: translateY(-1px);
+  }
+  .nav-link.active {
+    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+    border-color: transparent;
+  }
+  .nav-link.has-unread::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+  }
 
     /* MAIN AREA */
     .site-main {
@@ -205,9 +190,6 @@
       padding: 0 24px 40px;
     }
 
-    @media (max-width: 900px) {
-      .page-inner { padding: 0 18px 32px; }
-    }
 
     @media (max-width: 640px) {
       .page-inner { padding: 0 12px 24px; }
@@ -230,13 +212,7 @@
       box-shadow: 0 6px 16px rgba(2, 54, 83, 0.08);
     }
 
-    @media (max-width: 900px) {
-      .site-header {
-        margin: 0 -18px 16px;
-        padding: 12px 18px 10px;
-      }
-    }
-
+  
     @media (max-width: 640px) {
       .site-header {
         flex-wrap: wrap;
@@ -1283,15 +1259,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .fade-in {
-      animation: fadeInSoft 0.35s ease-out forwards;
-      opacity: 0;
-    }
-
-    .delay-1 { animation-delay: .06s; }
-    .delay-2 { animation-delay: .12s; }
-    .delay-3 { animation-delay: .18s; }
-    .delay-4 { animation-delay: .24s; }
+   
   </style>
 </head>
 <body>
@@ -1319,9 +1287,6 @@
       <a href="{% url 'rewards' %}" class="nav-link active">
         <span>Rewards</span>
       </a>
-      <a href="{% url 'coaching' %}" class="nav-link">
-        <span>Coaching</span>
-      </a>
       <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}">
         <span>Messages</span>
       </a>
@@ -1333,6 +1298,9 @@
       </a>
       <a href="{% url 'groups' %}" class="nav-link">
         <span>Groups</span>
+      </a>
+      <a href="{% url 'buddies' %}" class="nav-link">
+        <span>Buddies</span>
       </a>
     </div>
   </nav>
@@ -1361,44 +1329,75 @@
         </header>
 
         <!-- PROFILE MODAL -->
-        <div class="modal-overlay" id="profile-modal" aria-hidden="true">
-          <div class="modal">
-            <div class="modal-header">
-              <h3>Profile</h3>
-              <button type="button" class="modal-close" id="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-              <div class="profile-modal-layout">
-                <article class="profile-card">
-                  <div class="profile-card-header">
-                    <p class="profile-greeting">Welcome back</p>
-                    <h4 class="profile-display-name">{{ user.username }}</h4>
-                    <p class="profile-tagline">Manage your account and settings.</p>
-                    <div class="profile-avatar-shell">
-                      <img src="https://via.placeholder.com/80"
-                           alt="Avatar for {{ user.username }}">
-                    </div>
-                  </div>
-                  <div class="profile-card-main">
-                    <div class="profile-actions-row">
-                      <a href="{% url 'user_profile' %}" class="p-btn p-btn-primary">View profile</a>
-                      <a href="{% url 'user_settings' %}" class="p-btn p-btn-ghost">Account settings</a>
-                      <a href="/accounts/logout/" class="p-btn p-btn-logout">Log out</a>
-                    </div>
-                  </div>
-                </article>
+       <div class="modal-overlay" id="profile-modal" aria-hidden="true">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Profile & Account</h3>
+            <button type="button" class="modal-close" id="modal-close">&times;</button>
+          </div>
 
-                <div class="profile-quick-links">
-                  <h4>Quick tips</h4>
-                  <ul>
-                    <li>Earn tokens by completing tasks, habits, and skills.</li>
-                    <li>Badges unlock cosmetic perks in future updates.</li>
-                  </ul>
+          <div class="modal-body">
+            <div class="profile-modal-layout">
+              <article class="profile-card">
+                <div class="profile-card-header">
+                  <p>Welcome back</p>
+                  <h4>{{ user.username }}</h4>
+                  <p class="profile-tagline">Manage your Calibration account and shortcuts.</p>
+                  <div class="profile-avatar-shell">
+                    <img src="https://via.placeholder.com/80"
+                         alt="Avatar for {{ user.username }}">
+                  </div>
                 </div>
-              </div>
+                <div class="profile-card-main">
+                  <div class="profile-detail-grid">
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Account</div>
+                      <div class="profile-detail-value">Calibration Basic</div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Email</div>
+                      <div class="profile-detail-value">
+                        {{ user.email|default:"Not set" }}
+                      </div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Member since</div>
+                      <div class="profile-detail-value">
+                        {{ user.date_joined|date:"M j, Y" }}
+                      </div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Last login</div>
+                      <div class="profile-detail-value">
+                        {{ user.last_login|date:"M j, Y" }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="profile-quick-actions">
+                    <a href="{% url 'user_profile' %}" class="p-btn p-btn-primary">View profile</a>
+                    <a href="{% url 'user_settings' %}" class="p-btn p-btn-ghost">Account settings</a>
+                    <a href="/accounts/logout/" class="p-btn p-btn-logout">Log out</a>
+                  </div>
+                </div>
+              </article>
+
+              <section class="profile-quick-links">
+                <h4>Shortcuts</h4>
+                <ul>
+                  <li><a href="{% url 'skill_create' %}">Add a new skill</a></li>
+                  <li><a href="{% url 'habit_create' %}">Create a new habit</a></li>
+                  <li><a href="{% url 'rewards' %}">View your rewards</a></li>
+                </ul>
+                <p class="profile-footnote">
+                  Use the dashboard for day-to-day tracking; this space is for account details.
+                </p>
+              </section>
             </div>
           </div>
         </div>
+      </div>
+
 
         <!-- HERO: DARK REWARD BANNER + WALLET -->
         <section class="hero-row">
@@ -1751,24 +1750,8 @@
     // animate hero numbers
     document.querySelectorAll('[data-count-to]').forEach(animateCount);
 
-    // wallet progress fill based on tokens (fake thresholds)
-    const walletFill = document.getElementById('wallet-progress-fill');
-    const walletTokensEl = document.getElementById('wallet-tokens');
-    const tierLabel = document.getElementById('tier-label');
-    if (walletFill && walletTokensEl) {
-      const tokens = parseInt(walletTokensEl.getAttribute('data-count-to') || '0', 10);
-      let pct = 0;
-      let tier = 'Tier 1';
-      if (tokens >= 500 && tokens < 1500) { pct = (tokens - 500) / 10; tier = 'Tier 2'; }
-      else if (tokens >= 1500) { pct = 100; tier = 'Tier 3'; }
-      else { pct = tokens / 5; }
+    
 
-      pct = Math.max(8, Math.min(100, pct)); // always show a little
-      tierLabel.textContent = tier;
-      requestAnimationFrame(() => {
-        walletFill.style.width = pct + '%';
-      });
-    }
 
     // leaderboard rows animation + progress bars
     const rows = Array.from(document.querySelectorAll('.lb-row'));
@@ -1873,7 +1856,7 @@
       champStatEl.textContent = `Top of the board with ${parseInt(xp, 10).toLocaleString()} XP`;
     }
 
-    // profile modal open/close
+
    
   });
 </script>

@@ -56,10 +56,7 @@ def award_badge(account_user, code, title, description=''):
     User_Badge.objects.get_or_create(account_user=account_user, badge=badge)
 
 
-#ensure user has a wallet 
-def token_wallet(account_user):
-    wallet,_ = Reward.objects.get_or_create(account_user=account_user)
-    return wallet
+
 
 
 def skill_level_badges(account_user, skill: Skill, previous_level: int):

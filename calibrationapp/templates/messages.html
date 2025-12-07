@@ -11,9 +11,6 @@
       /* --- OCEAN TEAL CALIBRATION THEME --- */
       --bg-main: #EEEEEE;
       --bg-soft: #C3E4E9;
-      --bg-sidebar: #023653;
-
-      --card: #FFFFFF;
       --card-soft: #EAF3F6;
 
       --accent: #056C89;
@@ -26,7 +23,6 @@
       --border-subtle: #C5D4D8;
 
       --radius-lg: 18px;
-      --radius-md: 12px;
       --radius-pill: 999px;
 
       --shadow-soft: 0 16px 40px rgba(2, 54, 83, 0.18);
@@ -63,10 +59,10 @@
 
     /* === SIDEBAR (sticky, shared style) === */
     .sidebar {
-      background: linear-gradient(180deg, var(--bg-sidebar) 0%, #011823 100%);
+      background: linear-gradient(180deg, #023653 0%, #000000 100%);
       color: #E5E7EB;
-      border-right: 1px solid #011824;
-      padding: 16px 18px 18px;
+      border-right: 1px solid #000000;
+      padding: 18px 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 18px;
@@ -76,7 +72,7 @@
       height: 100vh;
       align-self: start;
       z-index: 40;
-      box-shadow: 10px 0 30px rgba(2, 20, 32, 0.55);
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
     }
 
     @media (max-width: 900px) {
@@ -91,100 +87,88 @@
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #27B0C7, #58D58F);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #F9FAFB;
-      font-weight: 800;
-      font-size: 0.9rem;
-      box-shadow: 0 0 0 2px #011627;
-    }
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f9fafb;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 0 0 2px #000000;
+  }
 
-    .brand-text { display: flex; flex-direction: column; gap: 2px; }
-    .brand-title {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-    .brand-subtitle {
-      font-size: 0.72rem;
-      color: #9CA3AF;
-    }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand-title {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #F9FAFB;
+  }
+  .brand-subtitle {
+    font-size: 0.72rem;
+    color: #D1E2F2;
+  }
 
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 4px;
-    }
-
-    @media (max-width: 900px) {
-      .nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 6px;
-        justify-content: flex-end;
-      }
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px 10px;
-      position: relative;
-      border-radius: 10px;
-      font-size: 0.86rem;
-      color: #E5E7EB;
-      background: rgba(1, 16, 28, 0.92);
-      border: 1px solid transparent;
-      transition:
-        background 0.16s ease,
-        border-color 0.16s ease,
-        box-shadow 0.16s ease,
-        transform 0.12s ease,
-        color 0.16s ease;
-    }
-
-    .nav-link:hover {
-      background: rgba(2, 31, 47, 1);
-      border-color: rgba(148, 163, 184, 0.6);
-      color: #F9FAFB;
-      box-shadow: 0 8px 18px rgba(1, 20, 33, 0.7);
-      transform: translateY(-1px);
-    }
-
-    .nav-link.active {
-      background: linear-gradient(120deg, #27B0C7, #056C89);
-      color: #F9FAFB;
-      font-weight: 600;
-      box-shadow: 0 10px 26px rgba(4, 120, 132, 0.75);
-      border-color: transparent;
-    }
-
-    .nav-link.has-unread::after {
-      content: "";
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #F97373;
-      box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.22);
-    }
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    position: relative;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    color: #e5e7eb;
+    background: rgba(2, 16, 32, 0.8);
+    border: 1px solid transparent;
+    transition: background 0.16s ease, border-color 0.16s ease,
+                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
+  }
+  .nav-link:hover {
+    background: #011524;
+    border-color: #056C89;
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+    transform: translateY(-1px);
+  }
+  .nav-link.active {
+    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+    border-color: transparent;
+  }
+  .nav-link.has-unread::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+  }
 
 
 
@@ -209,45 +193,6 @@
 
     @media (max-width: 900px) {
       .site-main { padding: 0 14px 22px; }
-    }
-
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    @media (max-width: 640px) {
-      .page-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    .page-title {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .page-title h1 {
-      margin: 0;
-      font-size: 0.98rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-    }
-
-    .page-title span {
-      font-size: 0.84rem;
-      color: var(--text-muted);
-    }
-
-    .page-actions {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
     }
 
     .btn {
@@ -283,31 +228,6 @@
       background: var(--accent);
       color: #F2FBFF;
       box-shadow: 0 10px 26px rgba(5, 108, 137, 0.4);
-    }
-
-    .user-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 5px 10px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-subtle);
-      background: rgba(250, 253, 255, 0.96);
-      font-size: 0.8rem;
-      box-shadow: 0 8px 20px rgba(2, 54, 83, 0.12);
-    }
-
-    .user-avatar {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #27B0C7, #58D58F);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #F9FAFB;
     }
 
 
@@ -371,7 +291,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 10px;
+      padding: 7px 12px;
       border-radius: 999px;
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
@@ -669,22 +589,6 @@
       color: var(--text-muted);
       margin-top: 6px;
     }
-
-    /* ENTRANCE ANIMATIONS */
-    @keyframes fadeInSoft {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in {
-      animation: fadeInSoft 0.35s ease-out forwards;
-      opacity: 0;
-    }
-
-    .delay-1 { animation-delay: .06s; }
-    .delay-2 { animation-delay: .12s; }
-    .delay-3 { animation-delay: .18s; }
-    .delay-4 { animation-delay: .24s; }
 
     /* === MESSAGES SHELL === */
     .messages-shell {
@@ -1227,11 +1131,11 @@
       <a href="{% url 'disciplinebuilder' %}" class="nav-link">Discipline Builder</a>
       <a href="{% url 'progresstracker' %}" class="nav-link">Progress Tracker</a>
       <a href="{% url 'rewards' %}" class="nav-link">Rewards</a>
-      <a href="{% url 'coaching' %}" class="nav-link">Coaching</a>
       <a href="{% url 'messages' %}" class="nav-link active{% if has_unread_messages %} has-unread{% endif %}">Messages</a>
       <a href="{% url 'user_profile' %}" class="nav-link">Profile</a>
       <a href="{% url 'community' %}" class="nav-link">Community</a>
       <a href="{% url 'groups' %}" class="nav-link">Groups</a>
+      <a href="{% url 'buddies' %}" class="nav-link">Buddies</a>
     </div>
   </nav>
 
@@ -1353,9 +1257,9 @@
           <ul class="conversation-list">
             {% if other_user %}
             <li class="conversation-item active">
-              <div class="conv-avatar">
+              <a class="conv-avatar" href="{% url 'visitor_profile' other_user.id %}">
                 {{ other_user.username|slice:":2"|upper }}
-              </div>
+              </a>
               <div class="conv-main">
                 <div class="conv-top">
                   <span class="conv-name">{{ other_user.username }}</span>
@@ -1385,13 +1289,13 @@
         <section class="pane pane-chat">
           <div class="pane-chat-header">
             <div class="chat-user">
-              <div class="chat-avatar">
-                {% if other_user %}
-                  {{ other_user.username|slice:":2"|upper }}
-                {% else %}
-                  ??
-                {% endif %}
-              </div>
+              {% if other_user %}
+              <a class="chat-avatar" href="{% url 'visitor_profile' other_user.id %}">
+                {{ other_user.username|slice:":2"|upper }}
+              </a>
+              {% else %}
+              <div class="chat-avatar">??</div>
+              {% endif %}
               <div class="chat-user-text">
                 <div class="chat-user-name">
                   {% if other_user %}
@@ -1473,9 +1377,9 @@
           <ul class="buddies-list">
             {% for buddy in buddies %}
             <li class="buddy-item">
-              <div class="buddy-avatar">
+              <a class="buddy-avatar" href="{% url 'visitor_profile' buddy.user.id %}">
                 {{ buddy.user.username|slice:":2"|upper }}
-              </div>
+              </a>
               <div class="buddy-main">
                 <div class="buddy-name">{{ buddy.user.username }}</div>
                 <div class="buddy-note">Chat & accountability</div>

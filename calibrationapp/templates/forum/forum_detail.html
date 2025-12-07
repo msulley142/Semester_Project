@@ -281,10 +281,6 @@
       <span>Rewards</span>
       <span class="nav-indicator"></span>
     </a>
-    <a href="{% url 'coaching' %}" class="nav-link">
-      <span>Coaching</span>
-      <span class="nav-indicator"></span>
-    </a>
     <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}">
       <span>Messages</span>
       <span class="nav-indicator"></span>
@@ -297,16 +293,29 @@
       <span>Community</span>
       <span class="nav-indicator"></span>
     </a>
+    <a href="{% url 'groups' %}" class="nav-link">
+      <span>Groups</span>
+      <span class="nav-indicator"></span>
+    </a>
+    <a href="{% url 'buddies' %}" class="nav-link">
+      <span>Buddies</span>
+      <span class="nav-indicator"></span>
+    </a>
   </div>
 </nav>
 
 <div class="page">
   <div class="header">
     <div>
-      <a class="btn" href="{% url 'community' %}">&#8592; Back to Community</a>
+      <a class="btn" href="{% if group %}{% url 'group_detail' group.id %}{% else %}{% url 'community' %}{% endif %}">
+        &#8592; Back to {% if group %}{{ group.name }}{% else %}Community{% endif %}
+      </a>
     </div>
     <div>
       <span class="pill">Topic: {% if forum.topic %}{{ forum.topic.name }}{% else %}General{% endif %}</span>
+      {% if group %}
+        <span class="pill">Group: {{ group.name }}</span>
+      {% endif %}
     </div>
   </div>
 

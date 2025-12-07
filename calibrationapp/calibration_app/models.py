@@ -75,20 +75,8 @@ class Habit(models.Model):
 
     
 
-#NOT IN USE YET# Suggested by chatgpt. Prompt: I asked for ways to make the app more ineresting. 
-#-------Quest Model-------#
-class Quest(models.Model):
-    account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    title = models.CharField(max_length=200)
-    start_time = models.DateTimeField(default=timezone.now)
-    end_time = models.DateTimeField()
-    conditions = models.JSONField(default=dict)
-    completed = models.BooleanField(default=False)
-    reward_tokens = models.PositiveIntegerField(default=0)
 
-    def __str__(self):
-        return f"{self.title} - {'Completed' if self.completed else 'In Progress'}" 
-    
+
 
   
 class Goals(models.Model):
@@ -134,13 +122,7 @@ class Reward(models.Model):
     account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     tokens = models.PositiveIntegerField(default=0)
      #This function was edited by AI
-    def add_token(self, n: int):
-        self.tokens = models.F("tokens")+ max(0, n)
-        self.save(update_fields=["tokens"])
-     
-        self.refresh_from_db() # This and the use of .f was suggested by chatgpt to stop race conditons
-
-
+   
 
 class Badge(models.Model):
     code = models.CharField(max_length=50, unique=True)
@@ -335,6 +317,13 @@ class CommunityGroup(models.Model):
 
 class Forum(models.Model):
     topic = models.ForeignKey(Topics, on_delete=models.CASCADE)
+    group = models.ForeignKey(
+        CommunityGroup,
+        null=True,
+        blank=True,
+        related_name="forums",
+        on_delete=models.CASCADE,
+    )
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=255, blank=True)
     body = models.TextField(max_length=1000, blank=True)
@@ -442,3 +431,18 @@ class ChatMessage(models.Model):
 
     def __str__(self):
         return f"{self.sender.username}: {self.body[:30]}"
+
+
+class UserBlock(models.Model):
+    blocker = models.ForeignKey(User, related_name="blocks_made", on_delete=models.CASCADE)
+    blocked = models.ForeignKey(User, related_name="blocked_by", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("blocker", "blocked")
+        indexes = [
+            models.Index(fields=["blocker", "blocked"]),
+        ]
+
+    def __str__(self):
+        return f"{self.blocker.username} blocked {self.blocked.username}"
