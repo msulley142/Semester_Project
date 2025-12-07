@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,21 +8,30 @@
 
   <style>
     :root {
-      --bg: #f3f4f6;
-      --pane-bg: #ffffff;
+      /* --- OCEAN TEAL CALIBRATION THEME --- */
+      --bg-main: #EEEEEE;
+      --bg-soft: #C3E4E9;
+      --bg-sidebar: #023653;
 
-      --primary: #2563eb;
-      --primary-soft: #dbeafe;
-      --primary-border: #bfdbfe;
+      --card: #FFFFFF;
+      --card-soft: #EAF3F6;
 
-      --text-main: #0f172a;
-      --text-muted: #6b7280;
-      --border-subtle: #e5e7eb;
+      --accent: #056C89;
+      --accent-soft: #88B4BE;
+      --accent-strong: #023653;
 
-      --radius-md: 10px;
+      --text-main: #022432;
+      --text-muted: #4B6770;
+
+      --border-subtle: #C5D4D8;
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
       --radius-pill: 999px;
 
-      --sidebar-w: 240px;
+      --shadow-soft: 0 16px 40px rgba(2, 54, 83, 0.18);
+
+      --sidebar-w: 260px;
       --pane-h: min(78vh, 680px);
     }
 
@@ -32,14 +41,14 @@
       margin: 0;
       padding: 0;
       min-height: 100%;
-      background: var(--bg);
+      background: var(--bg-main);
       color: var(--text-main);
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
     }
 
     a { color: inherit; text-decoration: none; }
 
-    /* APP LAYOUT */
+    /* === APP LAYOUT (match Rewards / Dashboard) === */
     .app-shell {
       display: grid;
       grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
@@ -52,15 +61,22 @@
       }
     }
 
-    /* SIDEBAR */
+    /* === SIDEBAR (sticky, shared style) === */
     .sidebar {
-      background: #020617;
-      color: #e5e7eb;
-      padding: 16px 16px 20px;
-      border-right: 1px solid rgba(15, 23, 42, 0.9);
+      background: linear-gradient(180deg, var(--bg-sidebar) 0%, #011823 100%);
+      color: #E5E7EB;
+      border-right: 1px solid #011824;
+      padding: 16px 18px 18px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
+
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      align-self: start;
+      z-index: 40;
+      box-shadow: 10px 0 30px rgba(2, 20, 32, 0.55);
     }
 
     @media (max-width: 900px) {
@@ -68,6 +84,9 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        position: static;
+        height: auto;
+        box-shadow: none;
       }
     }
 
@@ -81,28 +100,33 @@
       width: 32px;
       height: 32px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #60a5fa, #0ea5e9 40%, #4f46e5 100%);
+      background: linear-gradient(135deg, #27B0C7, #58D58F);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #020617;
+      color: #F9FAFB;
       font-weight: 800;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      box-shadow: 0 0 0 2px #011627;
     }
 
     .brand-text { display: flex; flex-direction: column; gap: 2px; }
     .brand-title {
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.86rem;
+      font-size: 1rem;
       font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
     }
-    .brand-subtitle { font-size: 0.72rem; color: #9ca3af; }
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: #9CA3AF;
+    }
 
     .nav {
       display: flex;
       flex-direction: column;
       gap: 4px;
+      margin-top: 4px;
     }
 
     @media (max-width: 900px) {
@@ -110,44 +134,82 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 6px;
+        justify-content: flex-end;
       }
     }
 
     .nav-link {
-      padding: 7px 9px;
-      border-radius: var(--radius-md);
-      font-size: 0.8rem;
-      color: #cbd5f5;
-      border: 1px solid transparent;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 6px;
-      transition: background 0.12s, border-color 0.12s, transform 0.1s;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      position: relative;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      color: #E5E7EB;
+      background: rgba(1, 16, 28, 0.92);
+      border: 1px solid transparent;
+      transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        box-shadow 0.16s ease,
+        transform 0.12s ease,
+        color 0.16s ease;
     }
 
     .nav-link:hover {
-      background: rgba(15, 23, 42, 0.9);
-      border-color: rgba(148, 163, 184, 0.5);
+      background: rgba(2, 31, 47, 1);
+      border-color: rgba(148, 163, 184, 0.6);
+      color: #F9FAFB;
+      box-shadow: 0 8px 18px rgba(1, 20, 33, 0.7);
       transform: translateY(-1px);
     }
 
     .nav-link.active {
-      background: #0ea5e9;
-      color: #020617;
+      background: linear-gradient(120deg, #27B0C7, #056C89);
+      color: #F9FAFB;
       font-weight: 600;
+      box-shadow: 0 10px 26px rgba(4, 120, 132, 0.75);
+      border-color: transparent;
     }
 
-    /* MAIN */
+    .nav-link.has-unread::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #F97373;
+      box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.22);
+    }
+
+
+
+    
+    .site-main-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding-bottom: 28px;
+    }
+
+    /* === MAIN AREA (stretched) === */
     .site-main {
-      padding: 20px 24px 28px;
+      padding: 0 22px 28px;
       display: flex;
       flex-direction: column;
       gap: 16px;
-      background: #ffffff;        /* makes it feel like full page content */
+      background:
+        radial-gradient(circle at top left, rgba(136, 180, 190, 0.22), transparent 60%),
+        var(--bg-main);
     }
 
-    @media (max-width: 640px) { .site-main { padding: 14px; } }
+    @media (max-width: 900px) {
+      .site-main { padding: 0 14px 22px; }
+    }
 
     .page-header {
       display: flex;
@@ -156,17 +218,33 @@
       gap: 12px;
     }
 
-    .page-title { display: flex; flex-direction: column; gap: 3px; }
+    @media (max-width: 640px) {
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    .page-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
     .page-title h1 {
       margin: 0;
-      font-size: 1rem;
+      font-size: 0.98rem;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.16em;
     }
-    .page-title span { font-size: 0.85rem; color: var(--text-muted); }
+
+    .page-title span {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
 
     .page-actions {
-      display: flex;
+      display: inline-flex;
       gap: 8px;
       align-items: center;
       flex-wrap: wrap;
@@ -180,65 +258,456 @@
       padding: 6px 11px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--border-subtle);
-      background: #ffffff;
-      font-size: 0.78rem;
+      background: #FFFFFF;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      color: #111827;
-      transition: background 0.12s, border-color 0.12s, box-shadow 0.12s, transform 0.1s;
+      color: var(--text-main);
+      transition:
+        background 0.12s,
+        border-color 0.12s,
+        box-shadow 0.12s,
+        transform 0.1s;
     }
 
     .btn:hover {
-      background: #f9fafb;
-      border-color: #cbd5e1;
-      box-shadow: 0 10px 22px rgba(148, 163, 184, 0.25);
+      background: #F5FAFB;
+      border-color: #B4C7CD;
+      box-shadow: 0 10px 22px rgba(2, 54, 83, 0.18);
       transform: translateY(-1px);
     }
 
     .btn-primary {
       border-color: transparent;
-      background: var(--primary);
-      color: #f9fafb;
+      background: var(--accent);
+      color: #F2FBFF;
+      box-shadow: 0 10px 26px rgba(5, 108, 137, 0.4);
     }
 
     .user-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 4px 9px;
+      padding: 5px 10px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--border-subtle);
-      background: #f9fafb;
+      background: rgba(250, 253, 255, 0.96);
       font-size: 0.8rem;
+      box-shadow: 0 8px 20px rgba(2, 54, 83, 0.12);
     }
 
     .user-avatar {
       width: 26px;
       height: 26px;
       border-radius: 999px;
-      background: #e5e7eb;
+      background: linear-gradient(135deg, #27B0C7, #58D58F);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.78rem;
       font-weight: 600;
-      color: #4b5563;
+      color: #F9FAFB;
     }
 
-    /* 3-COLUMN MESSAGES AREA – this is the page, not inside a box */
+
+       .site-header {
+      margin: 0 -22px 18px;
+      padding: 14px 24px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 6px 16px rgba(2, 54, 83, 0.08);
+    }
+
+    @media (max-width: 900px) {
+      .site-header {
+        margin: 0 -14px 16px;
+        padding: 12px 18px 10px;
+      }
+    }
+
+     
+    .site-header-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .site-header-title h1 {
+      margin: 0;
+      font-size: 1.18rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+    }
+
+    .site-header-title span {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+.profile-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 6px 16px rgba(2, 54, 83, 0.08);
+      transition:
+        background 0.16s ease,
+        box-shadow 0.16s ease,
+        transform 0.12s ease,
+        border-color 0.12s ease;
+    }
+
+    .profile-button:hover {
+      background: var(--card-soft);
+      border-color: var(--accent-soft);
+      box-shadow: 0 10px 22px rgba(2, 54, 83, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .avatar-wrap {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #D1D5DB;
+      flex-shrink: 0;
+    }
+
+    .avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gear-icon {
+      font-size: 18px;
+      color: var(--accent);
+    }
+
+
+    /* MODALS */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.38);
+      display: none;
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-overlay.is-open {
+      display: flex;
+    }
+
+    .modal {
+      width: 380px;
+      max-width: 100%;
+      background: #FFFFFF;
+      border-radius: 18px;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
+      border: 1px solid #D3DFE8;
+      overflow: hidden;
+      animation: fadeInUp 0.22s ease-out forwards;
+      color: var(--text-main);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-header {
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+      color: #FFFFFF;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 0.96rem;
+    }
+
+    .modal-close {
+      font-size: 1.4rem;
+      line-height: 1;
+      background: transparent;
+      color: #E5E7EB;
+      border: none;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 12px 16px 16px;
+      font-size: 0.9rem;
+      background: #F5FAFC;
+    }
+
+    .profile-modal-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .profile-card {
+      border-radius: 14px;
+      border: 1px solid #D3DFE8;
+      background: #FFFFFF;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+    }
+
+    .profile-card-header {
+      position: relative;
+      padding: 24px 18px 40px;
+      text-align: center;
+      color: var(--text-main);
+      background: linear-gradient(
+        135deg,
+        var(--card-soft) 0%,
+        #FFFFFF 60%
+      );
+    }
+
+    .profile-card-header p {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .profile-card-header h4 {
+      margin: 6px 0 0;
+      font-size: 1.05rem;
+      color: var(--accent-strong);
+    }
+
+    .profile-tagline {
+      margin-top: 3px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .profile-avatar-shell {
+      position: absolute;
+      left: 50%;
+      bottom: -28px;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 70px;
+      border-radius: 999px;
+      border: 3px solid #FFFFFF;
+      overflow: hidden;
+      background: #D1D5DB;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-avatar-shell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-card-main {
+      padding: 40px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #FFFFFF;
+    }
+
+    .profile-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+
+    .profile-detail-item {
+      background: #F5FAFC;
+      border-radius: 10px;
+      padding: 6px 8px;
+      border: 1px solid #D3DFE8;
+    }
+
+    .profile-detail-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 1px;
+    }
+
+    .profile-detail-value {
+      font-size: 0.86rem;
+      color: var(--text-main);
+    }
+
+    .profile-quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .p-btn {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #D3DFE8;
+      background: #FFFFFF;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+      transition:
+        background 0.14s ease,
+        border-color 0.14s ease,
+        box-shadow 0.14s ease,
+        transform 0.14s ease;
+    }
+
+    .p-btn-primary {
+      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+      color: #FFFFFF;
+      border-color: transparent;
+      box-shadow: 0 8px 18px rgba(2, 54, 83, 0.5);
+    }
+
+    .p-btn-primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    .p-btn-ghost {
+      background: #F5FAFC;
+    }
+
+    .p-btn-ghost:hover {
+      background: var(--card-soft);
+    }
+
+    .p-btn-logout {
+      background: #FEE2E2;
+      border-color: #FECACA;
+      color: #B91C1C;
+    }
+
+    .p-btn-logout:hover {
+      background: #FECACA;
+    }
+
+    .profile-quick-links {
+      border-radius: 14px;
+      border: 1px solid #D3DFE8;
+      background: #FFFFFF;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      color: var(--text-main);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+    }
+
+    .profile-quick-links h4 {
+      margin: 0 0 4px;
+      font-size: 0.84rem;
+      color: var(--accent-strong);
+    }
+
+    .profile-quick-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .profile-quick-links li + li {
+      margin-top: 3px;
+    }
+
+    .profile-quick-links a {
+      color: var(--accent);
+    }
+
+    .profile-quick-links a:hover {
+      color: var(--accent-strong);
+      text-decoration: underline;
+    }
+
+    .profile-footnote {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ENTRANCE ANIMATIONS */
+    @keyframes fadeInSoft {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeInSoft 0.35s ease-out forwards;
+      opacity: 0;
+    }
+
+    .delay-1 { animation-delay: .06s; }
+    .delay-2 { animation-delay: .12s; }
+    .delay-3 { animation-delay: .18s; }
+    .delay-4 { animation-delay: .24s; }
+
+    /* === MESSAGES SHELL === */
+    .messages-shell {
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      background:
+        radial-gradient(circle at top left, rgba(136, 180, 190, 0.2), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(2, 54, 83, 0.12), transparent 55%),
+        rgba(250, 252, 255, 0.96);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(2, 54, 83, 0.18);
+    }
+
     .messages-main {
       display: grid;
-      grid-template-columns: 260px minmax(0, 1.6fr) 260px;
+      grid-template-columns: 260px minmax(0, 1.8fr) 260px;
       min-height: var(--pane-h);
-      border: 1px solid var(--border-subtle);
-      border-radius: 0;
-      background: var(--pane-bg);
+      gap: 10px;
     }
 
     @media (max-width: 1100px) {
       .messages-main {
-        grid-template-columns: 260px minmax(0, 1.5fr);
+        grid-template-columns: 240px minmax(0, 1.6fr);
         grid-template-areas:
           "list chat"
           "list details";
@@ -250,28 +719,51 @@
 
     @media (max-width: 800px) {
       .messages-main {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         grid-template-areas:
-          "list"
           "chat"
+          "list"
           "details";
       }
+    }
+
+    @media (max-width: 640px) {
+      .messages-shell { padding: 10px; }
     }
 
     .pane {
       display: flex;
       flex-direction: column;
       min-height: 0;
-      border-right: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(197, 212, 216, 0.9);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
     }
 
-    .pane:last-child { border-right: none; }
+    .pane-list {
+      background: linear-gradient(180deg, var(--card-soft) 0%, #F7FCFE 100%);
+    }
 
-    /* LEFT PANE – LIST */
+    .pane-chat {
+      background: radial-gradient(circle at top, var(--bg-soft) 0, #FFFFFF 55%, #F7FCFE 100%);
+      animation: fadeInPane 0.25s ease-out;
+    }
+
+    .pane-details {
+      background: linear-gradient(180deg, var(--card-soft) 0%, #E5F6F8 100%);
+    }
+
+    @keyframes fadeInPane {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === LEFT PANE – CONVERSATION LIST === */
     .pane-list-header {
       padding: 10px 14px;
       border-bottom: 1px solid var(--border-subtle);
-      background: #f9fafb;
       display: flex;
       flex-direction: column;
       gap: 6px;
@@ -285,7 +777,10 @@
       font-weight: 600;
     }
 
-    .pane-list-header small { font-size: 0.72rem; color: var(--text-muted); }
+    .pane-list-header small {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
 
     .pane-search {
       display: flex;
@@ -294,9 +789,10 @@
       padding: 5px 9px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--border-subtle);
-      background: #ffffff;
+      background: #FFFFFF;
       font-size: 0.78rem;
       color: var(--text-muted);
+      box-shadow: 0 6px 14px rgba(2, 54, 83, 0.12);
     }
 
     .pane-search input {
@@ -310,10 +806,9 @@
     .conversation-list {
       list-style: none;
       margin: 0;
-      padding: 6px 6px;
+      padding: 6px 6px 8px;
       flex: 1;
       overflow-y: auto;
-      background: #f9fafb;
     }
 
     .conversation-item {
@@ -322,50 +817,69 @@
       gap: 8px;
       padding: 7px 8px;
       margin-bottom: 4px;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       font-size: 0.8rem;
       align-items: center;
-      transition: background 0.12s, transform 0.1s;
+      background: rgba(248, 252, 255, 0.9);
+      transition:
+        background 0.12s,
+        transform 0.1s,
+        box-shadow 0.12s;
     }
 
     .conversation-item:hover {
-      background: #edf2ff;
+      background: rgba(136, 180, 190, 0.16);
+      box-shadow: 0 8px 18px rgba(2, 54, 83, 0.22);
       transform: translateY(-1px);
     }
 
     .conversation-item.active {
-      background: var(--primary-soft);
+      background: rgba(5, 108, 137, 0.16);
+      box-shadow: 0 10px 24px rgba(5, 108, 137, 0.28);
     }
 
     .conv-avatar {
       width: 32px;
       height: 32px;
       border-radius: 999px;
-      background: #e5edff;
+      background: rgba(5, 108, 137, 0.12);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.78rem;
       font-weight: 600;
-      color: #1d4ed8;
+      color: var(--accent-strong);
       flex-shrink: 0;
     }
 
-    .conv-main { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .conv-main {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+
     .conv-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 4px;
     }
+
     .conv-name {
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .conv-time { font-size: 0.7rem; color: #9ca3af; flex-shrink: 0; }
+
+    .conv-time {
+      font-size: 0.7rem;
+      color: #8CA1AA;
+      flex-shrink: 0;
+    }
+
     .conv-preview {
       font-size: 0.76rem;
       color: var(--text-muted);
@@ -373,16 +887,17 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     .conv-badge {
-      font-size: 0.65rem;
-      padding: 2px 6px;
+      font-size: 0.68rem;
+      padding: 2px 7px;
       border-radius: 999px;
-      background: #dcfce7;
+      background: #E1F8E6;
       color: #166534;
       flex-shrink: 0;
     }
 
-    /* MIDDLE PANE – CHAT */
+    /* === MIDDLE PANE – CHAT === */
     .pane-chat-header {
       padding: 10px 16px;
       border-bottom: 1px solid var(--border-subtle);
@@ -390,6 +905,8 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
     }
 
     .chat-user {
@@ -403,17 +920,23 @@
       width: 34px;
       height: 34px;
       border-radius: 999px;
-      background: #e5edff;
+      background: linear-gradient(135deg, #27B0C7, #58D58F);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.82rem;
       font-weight: 600;
-      color: #1d4ed8;
+      color: #F9FAFB;
       flex-shrink: 0;
     }
 
-    .chat-user-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .chat-user-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
     .chat-user-name {
       font-size: 0.9rem;
       font-weight: 600;
@@ -421,27 +944,61 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .chat-user-sub { font-size: 0.72rem; color: var(--text-muted); }
-    .chat-meta { font-size: 0.72rem; color: var(--text-muted); text-align: right; }
+
+    .chat-user-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .chat-meta {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
 
     .chat-thread {
       flex: 1;
-      padding: 10px 16px;
+      padding: 10px 16px 12px;
       overflow-y: auto;
-      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+    }
+
+    .chat-thread::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(120deg, rgba(136, 180, 190, 0.08) 1px, transparent 0),
+        linear-gradient(210deg, rgba(136, 180, 190, 0.05) 1px, transparent 0);
+      background-size: 26px 26px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .chat-thread-inner {
+      position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .day-label-wrap { text-align: center; margin-bottom: 6px; }
+    .day-label-wrap {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
     .day-label {
       display: inline-block;
-      padding: 2px 8px;
+      padding: 2px 9px;
       border-radius: 999px;
-      background: #f3f4f6;
+      background: rgba(2, 54, 83, 0.05);
       font-size: 0.7rem;
-      color: #9ca3af;
+      color: #8CA1AA;
+      backdrop-filter: blur(4px);
     }
 
     .message-row {
@@ -454,31 +1011,46 @@
 
     .message-bubble {
       max-width: 72%;
-      border-radius: 14px;
-      padding: 6px 9px;
+      border-radius: 16px;
+      padding: 7px 10px 4px;
       font-size: 0.82rem;
       line-height: 1.4;
-      background: #f3f4f6;
+      background: rgba(248, 252, 255, 0.98);
       color: #111827;
+      box-shadow: 0 5px 14px rgba(2, 54, 83, 0.25);
+      position: relative;
+      animation: bubbleIn 0.18s ease-out;
     }
 
     .message-bubble.me {
-      background: var(--primary);
-      color: #f9fafb;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #F9FAFB;
+    }
+
+    @keyframes bubbleIn {
+      from { opacity: 0; transform: translateY(4px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .message-meta {
       display: flex;
       justify-content: flex-end;
       font-size: 0.7rem;
-      opacity: 0.8;
+      opacity: 0.9;
       margin-top: 2px;
+    }
+
+    .chat-empty {
+      font-size: 0.8rem;
+      color: #6B7280;
+      margin: 4px 0 0;
     }
 
     .chat-input-wrap {
       border-top: 1px solid var(--border-subtle);
       padding: 9px 12px;
-      background: #f9fafb;
+      background: rgba(246, 250, 252, 0.96);
+      backdrop-filter: blur(8px);
     }
 
     .chat-input-inner {
@@ -487,8 +1059,9 @@
       gap: 6px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--border-subtle);
-      background: #ffffff;
+      background: #FFFFFF;
       padding: 4px 8px;
+      box-shadow: 0 6px 16px rgba(2, 54, 83, 0.22);
     }
 
     .chat-input-inner textarea {
@@ -509,27 +1082,39 @@
       background: none;
       cursor: pointer;
       font-size: 0.9rem;
-      padding: 4px 4px;
+      padding: 4px;
+      opacity: 0.8;
+      transition: opacity 0.12s;
     }
+
+    .icon-btn:hover { opacity: 1; }
 
     .send-btn {
       border: none;
       border-radius: var(--radius-pill);
       padding: 6px 13px;
-      background: var(--primary);
-      color: #f9fafb;
+      background: var(--accent);
+      color: #F2FBFF;
       font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
       flex-shrink: 0;
+      box-shadow: 0 8px 20px rgba(5, 108, 137, 0.45);
+      transition: transform 0.1s, box-shadow 0.1s;
     }
 
-    /* RIGHT PANE – DETAILS/BUDDIES */
+    .send-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(5, 108, 137, 0.55);
+    }
+
+    /* === RIGHT PANE – DETAILS + BUDDIES === */
     .pane-details-header {
       padding: 10px 16px;
       border-bottom: 1px solid var(--border-subtle);
       font-size: 0.82rem;
       font-weight: 600;
+      background: rgba(248, 252, 255, 0.96);
     }
 
     .detail-block {
@@ -541,7 +1126,7 @@
     .detail-label {
       font-size: 0.72rem;
       color: var(--text-muted);
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .buddies-list {
@@ -559,29 +1144,46 @@
       padding: 6px 6px 6px 0;
       font-size: 0.8rem;
       align-items: center;
+      border-radius: 10px;
+      transition: background 0.12s, transform 0.1s;
+    }
+
+    .buddy-item:hover {
+      background: rgba(5, 108, 137, 0.08);
+      transform: translateY(-1px);
     }
 
     .buddy-avatar {
       width: 26px;
       height: 26px;
       border-radius: 999px;
-      background: #e5edff;
+      background: rgba(5, 108, 137, 0.12);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 0.76rem;
       font-weight: 600;
-      color: #1d4ed8;
+      color: var(--accent-strong);
     }
 
-    .buddy-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .buddy-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
     .buddy-name {
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .buddy-note { font-size: 0.72rem; color: var(--text-muted); }
+
+    .buddy-note {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
 
     .buddy-actions {
       display: flex;
@@ -594,7 +1196,7 @@
       padding: 3px 8px;
       border-radius: 999px;
       border: 1px solid var(--border-subtle);
-      background: #ffffff;
+      background: #FFFFFF;
       font-size: 0.72rem;
       cursor: pointer;
       text-decoration: none;
@@ -603,7 +1205,7 @@
 
     .status-dot {
       font-size: 0.7rem;
-      color: #10b981;
+      color: #10B981;
     }
   </style>
 </head>
@@ -629,189 +1231,276 @@
       <a href="{% url 'messages' %}" class="nav-link active{% if has_unread_messages %} has-unread{% endif %}">Messages</a>
       <a href="{% url 'user_profile' %}" class="nav-link">Profile</a>
       <a href="{% url 'community' %}" class="nav-link">Community</a>
-      <a href="{% url 'buddies' %}" class="nav-link">Buddies</a>
+      <a href="{% url 'groups' %}" class="nav-link">Groups</a>
     </div>
   </nav>
 
   <!-- MAIN -->
   <main class="site-main">
-    <div class="page-header">
-      <div class="page-title">
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="site-header-title">
         <h1>MESSAGES</h1>
         <span>Inbox-style messaging to keep your discipline on track.</span>
       </div>
-      <div class="page-actions">
+      <div class="header-actions">
+        <div class="toolbar">
+         <button class="profile-button" id="profile-button">
+            <span class="avatar-wrap">
+              <img src="https://via.placeholder.com/40x40.png" alt="User avatar">
+            </span>
+            <span class="gear-icon">⚙️</span>
+        </button> 
         <a class="btn" href="{% url 'buddies' %}">Find buddies</a>
-        <div class="user-pill">
-          <div class="user-avatar">
-            {{ request.user.username|slice:":2"|upper }}
+       
+        <a class="btn btn-primary" href="/accounts/logout/">Log out</a>
+      </div>
+      </div>
+    </header>
+
+
+  <!--Profile-->
+
+   <div class="site-main-inner">
+
+         <div class="modal-overlay" id="profile-modal" aria-hidden="true">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Profile & Account</h3>
+            <button type="button" class="modal-close" id="modal-close">&times;</button>
           </div>
-          <span>{{ request.user.username }}</span>
+
+          <div class="modal-body">
+            <div class="profile-modal-layout">
+              <article class="profile-card">
+                <div class="profile-card-header">
+                  <p>Welcome back</p>
+                  <h4>{{ user.username }}</h4>
+                  <p class="profile-tagline">Manage your Calibration account and shortcuts.</p>
+                  <div class="profile-avatar-shell">
+                    <img src="https://via.placeholder.com/80"
+                         alt="Avatar for {{ user.username }}">
+                  </div>
+                </div>
+                <div class="profile-card-main">
+                  <div class="profile-detail-grid">
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Account</div>
+                      <div class="profile-detail-value">Calibration Basic</div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Email</div>
+                      <div class="profile-detail-value">
+                        {{ user.email|default:"Not set" }}
+                      </div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Member since</div>
+                      <div class="profile-detail-value">
+                        {{ user.date_joined|date:"M j, Y" }}
+                      </div>
+                    </div>
+                    <div class="profile-detail-item">
+                      <div class="profile-detail-label">Last login</div>
+                      <div class="profile-detail-value">
+                        {{ user.last_login|date:"M j, Y" }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="profile-quick-actions">
+                    <a href="{% url 'user_profile' %}" class="p-btn p-btn-primary">View profile</a>
+                    <a href="{% url 'user_settings' %}" class="p-btn p-btn-ghost">Account settings</a>
+                    <a href="/accounts/logout/" class="p-btn p-btn-logout">Log out</a>
+                  </div>
+                </div>
+              </article>
+
+              <section class="profile-quick-links">
+                <h4>Shortcuts</h4>
+                <ul>
+                  <li><a href="{% url 'skill_create' %}">Add a new skill</a></li>
+                  <li><a href="{% url 'habit_create' %}">Create a new habit</a></li>
+                  <li><a href="{% url 'rewards' %}">View your rewards</a></li>
+                </ul>
+                <p class="profile-footnote">
+                  Use the dashboard for day-to-day tracking; this space is for account details.
+                </p>
+              </section>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- FULL-PAGE 3 COLUMN LAYOUT -->
-    <section class="messages-main">
-      <!-- LEFT: conversation list -->
-      <aside class="pane pane-list">
-        <div class="pane-list-header">
-          <div class="pane-list-header-title">
-            <span>Messages</span>
-            <small>All</small>
+
+
+    <!-- MESSAGES CARD -->
+    <section class="messages-shell">
+      <div class="messages-main">
+        <!-- LEFT: conversation list -->
+        <aside class="pane pane-list">
+          <div class="pane-list-header">
+            <div class="pane-list-header-title">
+              <span>Messages</span>
+              <small>All conversations</small>
+            </div>
+            <div class="pane-search">
+              <span>🔍</span>
+              <input type="text" id="conversation-search" placeholder="Search conversations">
+            </div>
           </div>
-          <div class="pane-search">
-            <input type="text" id="conversation-search" placeholder="Search conversations">
-          </div>
-        </div>
 
-        <ul class="conversation-list">
-          {% if other_user %}
-          <li class="conversation-item active">
-            <div class="conv-avatar">
-              {{ other_user.username|slice:":2"|upper }}
-            </div>
-            <div class="conv-main">
-              <div class="conv-top">
-                <span class="conv-name">{{ other_user.username }}</span>
-                <span class="conv-time">Now</span>
-              </div>
-              <div class="conv-preview">Direct messages with this buddy.</div>
-            </div>
-            <span class="conv-badge">Active</span>
-          </li>
-          {% else %}
-          <li class="conversation-item">
-            <div class="conv-avatar">?</div>
-            <div class="conv-main">
-              <div class="conv-top">
-                <span class="conv-name">No active chat</span>
-              </div>
-              <div class="conv-preview">
-                Select a buddy on the right to start a conversation.
-              </div>
-            </div>
-          </li>
-          {% endif %}
-        </ul>
-      </aside>
-
-      <!-- MIDDLE: chat thread -->
-      <section class="pane pane-chat">
-        <div class="pane-chat-header">
-          <div class="chat-user">
-            <div class="chat-avatar">
-              {% if other_user %}
+          <ul class="conversation-list">
+            {% if other_user %}
+            <li class="conversation-item active">
+              <div class="conv-avatar">
                 {{ other_user.username|slice:":2"|upper }}
-              {% else %}
-                ??
-              {% endif %}
-            </div>
-            <div class="chat-user-text">
-              <div class="chat-user-name">
+              </div>
+              <div class="conv-main">
+                <div class="conv-top">
+                  <span class="conv-name">{{ other_user.username }}</span>
+                  <span class="conv-time">Now</span>
+                </div>
+                <div class="conv-preview">Direct messages with this buddy.</div>
+              </div>
+              <span class="conv-badge">Active</span>
+            </li>
+            {% else %}
+            <li class="conversation-item">
+              <div class="conv-avatar">?</div>
+              <div class="conv-main">
+                <div class="conv-top">
+                  <span class="conv-name">No active chat</span>
+                </div>
+                <div class="conv-preview">
+                  Select a buddy on the right to start a conversation.
+                </div>
+              </div>
+            </li>
+            {% endif %}
+          </ul>
+        </aside>
+
+        <!-- MIDDLE: chat thread -->
+        <section class="pane pane-chat">
+          <div class="pane-chat-header">
+            <div class="chat-user">
+              <div class="chat-avatar">
                 {% if other_user %}
-                  {{ other_user.username }}
+                  {{ other_user.username|slice:":2"|upper }}
                 {% else %}
-                  Select someone to chat with
+                  ??
                 {% endif %}
               </div>
-              <div class="chat-user-sub">
-                Accountability buddy · Private chat
-              </div>
-            </div>
-          </div>
-          <div class="chat-meta">
-            <div>Today</div>
-          </div>
-        </div>
-
-        <div class="chat-thread"
-             id="chat-body"
-             data-room-name="{{ room_name }}"
-             data-username="{{ request.user.username }}">
-          <div class="day-label-wrap">
-            <span class="day-label">Today</span>
-          </div>
-
-          {% for msg in chat_messages %}
-            <div class="message-row {% if msg.sender_id == request.user.id %}me{% else %}them{% endif %}">
-              <div class="message-bubble {% if msg.sender_id == request.user.id %}me{% endif %}">
-                {{ msg.body|linebreaksbr }}
-                <div class="message-meta">
-                  <span>{{ msg.created_at|time:"g:i A" }}</span>
+              <div class="chat-user-text">
+                <div class="chat-user-name">
+                  {% if other_user %}
+                    {{ other_user.username }}
+                  {% else %}
+                    Select someone to chat with
+                  {% endif %}
+                </div>
+                <div class="chat-user-sub">
+                  Accountability buddy · Private chat
                 </div>
               </div>
             </div>
-          {% empty %}
-            <p style="font-size:0.8rem; color:#6b7280; margin:0;">
-              No messages yet. Say hi 👋
-            </p>
-          {% endfor %}
-        </div>
-
-        <div class="chat-input-wrap">
-          <form id="chat-form">
-            <div class="chat-input-inner">
-              <button type="button" class="icon-btn" title="Emoji">😊</button>
-              <textarea id="chat-input" placeholder="Type a message…" autocomplete="off"></textarea>
-              <button type="button" class="icon-btn" title="Attach">📎</button>
-              <button type="submit" class="send-btn">Send</button>
+            <div class="chat-meta">
+              <div>Today</div>
             </div>
-          </form>
-        </div>
-      </section>
+          </div>
 
-      <!-- RIGHT: details + buddies -->
-      <aside class="pane pane-details">
-        <div class="pane-details-header">Details</div>
+          <div class="chat-thread"
+               id="chat-body"
+               data-room-name="{{ room_name }}"
+               data-username="{{ request.user.username }}">
+            <div class="chat-thread-inner">
+              <div class="day-label-wrap">
+                <span class="day-label">Today</span>
+              </div>
 
-        <div class="detail-block">
-          <div class="detail-label">Active chat</div>
-          {% if other_user %}
-            <div>{{ other_user.username }}</div>
-            <div class="detail-label" style="margin-top:6px;">Relationship</div>
-            <div>Accountability buddy</div>
-          {% else %}
-            <div>No active conversation selected.</div>
-          {% endif %}
-        </div>
+              {% for msg in chat_messages %}
+                <div class="message-row {% if msg.sender_id == request.user.id %}me{% else %}them{% endif %}">
+                  <div class="message-bubble {% if msg.sender_id == request.user.id %}me{% endif %}">
+                    {{ msg.body|linebreaksbr }}
+                    <div class="message-meta">
+                      <span>{{ msg.created_at|time:"g:i A" }}</span>
+                    </div>
+                  </div>
+                </div>
+              {% empty %}
+                <p class="chat-empty">
+                  No messages yet. Say hi 👋
+                </p>
+              {% endfor %}
+            </div>
+          </div>
 
-        <div class="detail-block">
-          <div class="detail-label">Notes</div>
-          <div>Check in regularly, share progress, and keep each other accountable.</div>
-        </div>
+          <div class="chat-input-wrap">
+            <form id="chat-form">
+              <div class="chat-input-inner">
+                <button type="button" class="icon-btn" title="Emoji">😊</button>
+                <textarea id="chat-input" placeholder="Type a message…" autocomplete="off"></textarea>
+                <button type="button" class="icon-btn" title="Attach">📎</button>
+                <button type="submit" class="send-btn">Send</button>
+              </div>
+            </form>
+          </div>
+        </section>
 
-        <div class="pane-details-header" style="border-top:none;">Buddies</div>
+        <!-- RIGHT: details + buddies -->
+        <aside class="pane pane-details">
+          <div class="pane-details-header">Details</div>
 
-        <ul class="buddies-list">
-          {% for buddy in buddies %}
-          <li class="buddy-item">
-            <div class="buddy-avatar">
-              {{ buddy.user.username|slice:":2"|upper }}
-            </div>
-            <div class="buddy-main">
-              <div class="buddy-name">{{ buddy.user.username }}</div>
-              <div class="buddy-note">Chat & accountability</div>
-            </div>
-            <div class="buddy-actions">
-              <span class="status-dot">● Online</span>
-              <a class="buddy-btn" href="{% url 'messages' %}?with={{ buddy.user.id }}">Open chat</a>
-            </div>
-          </li>
-          {% empty %}
-          <li class="buddy-item">
-            <div class="buddy-main">
-              <div class="buddy-name">No buddies yet</div>
-              <div class="buddy-note">Find someone to share progress with.</div>
-            </div>
-            <div class="buddy-actions">
-              <a href="{% url 'buddies' %}" class="buddy-btn">Find buddies</a>
-            </div>
-          </li>
-          {% endfor %}
-        </ul>
-      </aside>
+          <div class="detail-block">
+            <div class="detail-label">Active chat</div>
+            {% if other_user %}
+              <div>{{ other_user.username }}</div>
+              <div class="detail-label" style="margin-top:6px;">Relationship</div>
+              <div>Accountability buddy</div>
+            {% else %}
+              <div>No active conversation selected.</div>
+            {% endif %}
+          </div>
+
+          <div class="detail-block">
+            <div class="detail-label">Notes</div>
+            <div>Check in regularly, share progress, and keep each other accountable.</div>
+          </div>
+
+          <div class="pane-details-header" style="border-top:none;">Buddies</div>
+
+          <ul class="buddies-list">
+            {% for buddy in buddies %}
+            <li class="buddy-item">
+              <div class="buddy-avatar">
+                {{ buddy.user.username|slice:":2"|upper }}
+              </div>
+              <div class="buddy-main">
+                <div class="buddy-name">{{ buddy.user.username }}</div>
+                <div class="buddy-note">Chat & accountability</div>
+              </div>
+              <div class="buddy-actions">
+                <span class="status-dot">● Online</span>
+                <a class="buddy-btn" href="{% url 'messages' %}?with={{ buddy.user.id }}">Open chat</a>
+              </div>
+            </li>
+            {% empty %}
+            <li class="buddy-item">
+              <div class="buddy-main">
+                <div class="buddy-name">No buddies yet</div>
+                <div class="buddy-note">Find someone to share progress with.</div>
+              </div>
+              <div class="buddy-actions">
+                <a href="{% url 'buddies' %}" class="buddy-btn">Find buddies</a>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </aside>
+      </div>
     </section>
+  </div>
   </main>
 </div>
 
@@ -835,6 +1524,31 @@
 
   const chatSocket = new WebSocket(socketUrl);
 
+  function appendMessage(text, fromUser, isMeOverride) {
+    const isMe = typeof isMeOverride === "boolean" ? isMeOverride : (fromUser === username);
+
+    const inner = chatBody.querySelector(".chat-thread-inner") || chatBody;
+
+    const row = document.createElement("div");
+    row.className = "message-row " + (isMe ? "me" : "them");
+
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble" + (isMe ? " me" : "");
+    bubble.textContent = text;
+
+    const meta = document.createElement("div");
+    meta.className = "message-meta";
+    const timeSpan = document.createElement("span");
+    const now = new Date();
+    timeSpan.textContent = now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    meta.appendChild(timeSpan);
+
+    bubble.appendChild(meta);
+    row.appendChild(bubble);
+    inner.appendChild(row);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
   chatSocket.onmessage = function (e) {
     let data;
     try {
@@ -848,26 +1562,7 @@
     const fromUser = data.user || "";
     if (!msgText) return;
 
-    const isMe = fromUser === username;
-
-    const row = document.createElement("div");
-    row.className = "message-row " + (isMe ? "me" : "them");
-
-    const bubble = document.createElement("div");
-    bubble.className = "message-bubble" + (isMe ? " me" : "");
-    bubble.textContent = msgText;
-
-    const meta = document.createElement("div");
-    meta.className = "message-meta";
-    const timeSpan = document.createElement("span");
-    const now = new Date();
-    timeSpan.textContent = now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-    meta.appendChild(timeSpan);
-
-    bubble.appendChild(meta);
-    row.appendChild(bubble);
-    chatBody.appendChild(row);
-    chatBody.scrollTop = chatBody.scrollHeight;
+    appendMessage(msgText, fromUser);
   };
 
   chatSocket.onclose = function (e) {
@@ -884,7 +1579,7 @@
     chatInput.focus();
   });
 
-  // ---- CONVERSATION SEARCH ----
+  // Conversation search
   if (conversationSearch && conversationList) {
     conversationSearch.addEventListener("input", function () {
       const term = (conversationSearch.value || "").toLowerCase();
@@ -899,6 +1594,41 @@
   }
 })();
 </script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const profilePill = document.getElementById("profile-button");
+    const modal = document.getElementById("profile-modal");
+    const closeBtn = document.getElementById("modal-close");
+
+    if (!profilePill || !modal || !closeBtn) return;
+
+    function openModal() {
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    profilePill.addEventListener("click", openModal);
+    closeBtn.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && modal.classList.contains("is-open")) {
+        closeModal();
+      }
+    });
+  });
+</script>
+
 
 </body>
 </html>

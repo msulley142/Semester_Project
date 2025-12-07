@@ -9,8 +9,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import login
-from .models import Skill,  Habit, Reward, Journal, Badge, User_Badge,Task, Profile, Goals, Mood, Topics, Post, Forum, BuddyRequest, Friendship, ChatMessage, ForumVote
-from .forms import SkillForm, HabitForm, JournalForm, RewardForm, TaskForm, ProfileForm, UserForm, GoalForm, MoodForm, TopicsForm, PostForm, ForumForm, BuddyRequestForm, BuddyRespondForm
+from .models import Skill,  Habit, Reward, Journal, Badge, User_Badge,Task, Profile, Goals, Mood, Topics, Post, Forum, BuddyRequest, Friendship, ChatMessage, ForumVote, CommunityGroup
+from .forms import SkillForm, HabitForm, JournalForm, RewardForm, TaskForm, ProfileForm, UserForm, GoalForm, MoodForm, TopicsForm, PostForm, ForumForm, BuddyRequestForm, BuddyRespondForm, CommunityGroupForm
 from django.contrib import messages
 from django.http import JsonResponse
 from django.utils.timezone import make_aware
@@ -132,6 +132,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 "is_online": is_online,
             })
         context["friends"] = friends_payload
+        # Current groups for dashboard quick view
+        groups_payload = []
+        for g in profile.community_groups.all().order_by("name"):
+            groups_payload.append({
+                "id": g.id,
+                "name": g.name,
+                "category": g.category,
+                "member_count": getattr(g, "member_count", g.members.count()),
+            })
+        context["my_groups"] = groups_payload
 
         # Calendar data: tasks (by date) and goals (due_date) 
         start = timezone.now().date() - timedelta(days=14)
@@ -431,6 +441,32 @@ class ProgressTrackerView(LoginRequiredMixin, TemplateView):
 
         context["skills"] = processed_skills[:6]
 
+        # === Activity heatmap data (tasks + goals over recent weeks) ===
+        start = timezone.now().date() - timedelta(days=27)
+        end = timezone.now().date()
+        events = {}
+
+        task_days = (
+            Task.objects.filter(account_user=user, date__date__range=(start, end))
+            .annotate(day=TruncDate("date"))
+        )
+        for t in task_days:
+            if t.day is None:
+                continue
+            day_key = t.day.isoformat()
+            events.setdefault(day_key, {"tasks": 0, "goals": 0})
+            events[day_key]["tasks"] += 1
+
+        goal_days = Goals.objects.filter(account_user=user, due_date__isnull=False, due_date__range=(start, end))
+        for g in goal_days:
+            if g.due_date is None:
+                continue
+            day_key = g.due_date.isoformat()
+            events.setdefault(day_key, {"tasks": 0, "goals": 0})
+            events[day_key]["goals"] += 1
+
+        context["calendar_events_json"] = json.dumps(events)
+
         return context
 
 
@@ -561,6 +597,16 @@ class CommunityView(LoginRequiredMixin, TemplateView):
         context["user_votes"] = dict(
             ForumVote.objects.filter(user=self.request.user).values_list("forum_id", "value")
         )
+        groups_payload = []
+        groups = CommunityGroup.objects.all().order_by("name")
+        for g in groups:
+            groups_payload.append({
+                "obj": g,
+                "is_member": g.members.filter(pk=profile.pk).exists(),
+                "member_count": g.members.count(),
+            })
+        context["groups"] = groups_payload
+        context["group_form"] = CommunityGroupForm()
 
         return context 
 
@@ -628,6 +674,76 @@ def forum_vote(request, pk):
     return redirect(request.META.get("HTTP_REFERER", "community"))
 
 
+class GroupJoinView(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        group = get_object_or_404(CommunityGroup, pk=pk)
+        group.members.add(profile)
+        return redirect(request.META.get("HTTP_REFERER", "community"))
+
+
+class GroupLeaveView(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        group = get_object_or_404(CommunityGroup, pk=pk)
+        group.members.remove(profile)
+        return redirect(request.META.get("HTTP_REFERER", "community"))
+
+
+class GroupCreateView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        form = CommunityGroupForm(request.POST)
+        if not form.is_valid():
+            messages.error(request, "Please fix errors before creating a group.")
+            return redirect(request.META.get("HTTP_REFERER", "community"))
+
+        group, created = CommunityGroup.objects.get_or_create(
+            name=form.cleaned_data["name"],
+            defaults={
+                "tagline": form.cleaned_data.get("tagline") or "",
+                "description": form.cleaned_data.get("description") or "",
+                "category": form.cleaned_data.get("category") or "General",
+            },
+        )
+        group.members.add(profile)
+        if created:
+            messages.success(request, f"Group '{group.name}' created and joined.")
+        else:
+            messages.info(request, f"You joined '{group.name}'.")
+        return redirect(request.META.get("HTTP_REFERER", "community"))
+
+
+class GroupDetailView(LoginRequiredMixin, DetailView):
+    model = CommunityGroup
+    template_name = "group_detail.html"
+    context_object_name = "group"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        profile, _ = Profile.objects.get_or_create(user=self.request.user)
+        group = self.object
+        ctx["is_member"] = group.members.filter(pk=profile.pk).exists()
+        ctx["members"] = group.members.select_related("user").all()
+        ctx["member_count"] = ctx["members"].count()
+        return ctx
+
+
+class GroupsView(LoginRequiredMixin, TemplateView):
+    template_name = "groups.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        profile, _ = Profile.objects.get_or_create(user=self.request.user)
+        groups = list(CommunityGroup.objects.all().order_by("name"))
+        for g in groups:
+            g.is_member = g.members.filter(pk=profile.pk).exists()
+        ctx["groups"] = groups
+        ctx["my_groups"] = profile.community_groups.all()
+        ctx["group_form"] = CommunityGroupForm()
+        return ctx
+
+
 
 
 
@@ -683,16 +799,19 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
             activity.append({
                 "title": f"Completed {task.title}",
                 "meta": task.date.strftime("%b %d, %Y"),
+                "type": "Task",
             })
         for j in Journal.objects.filter(account_user=user).order_by('-date')[:2]:
             activity.append({
                 "title": f"Journal entry: {j.entry_type.title()}",
                 "meta": j.date.strftime("%b %d, %Y"),
+                "type": "Journal",
             })
         for b in badges[:2]:
             activity.append({
                 "title": f"Badge unlocked: {b.badge.title}",
                 "meta": b.awarded_at.strftime("%b %d, %Y"),
+                "type": "Badge",
             })
 
         ctx.update({
@@ -1114,6 +1233,17 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('disciplinebuilder')
 
 
+class TaskCompleteView(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        task = get_object_or_404(Task, pk=pk, account_user=request.user)
+        if task.status != Task.COMPLETED:
+            task.status = Task.COMPLETED
+            task.completed_at = timezone.now()
+            task.save(update_fields=["status", "completed_at"])
+            task_completion_badge(task)
+        return redirect("dashboard")
+
+
 
 class GoalList(LoginRequiredMixin, ListView):
     model = Goals
@@ -1161,6 +1291,16 @@ class GoalDelete(LoginRequiredMixin, DeleteView):
     model = Goals
     template_name = 'goals/confirm_delete.html'
     success_url = reverse_lazy('disciplinebuilder')
+
+
+class GoalCompleteView(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        goal = get_object_or_404(Goals, pk=pk, account_user=request.user)
+        if goal.status != "completed":
+            goal.status = "completed"
+            goal.save(update_fields=["status"])
+            goal_award_updater(goal)
+        return redirect("dashboard")
 
 
 

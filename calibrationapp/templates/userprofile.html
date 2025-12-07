@@ -8,21 +8,31 @@
 
   <style>
     :root {
-      --bg: #eef2ff;
-      --bg-soft: #e5f0ff;
-      --card: #ffffff;
-      --card-soft: #f3f6ff;
-      --accent: #0ea5e9;
-      --accent-strong: #1d4ed8;
-      --accent-soft: #dbeafe;
-      --text-main: #0f172a;
-      --text-muted: #6b7280;
-      --border-subtle: #e2e8f0;
+      /* --- OCEAN TEAL CALIBRATION THEME --- */
+      --bg-main: #EEEEEE;
+      --bg-soft: #C3E4E9;
+      --bg-sidebar: #023653;
+
+      --card: #FFFFFF;
+      --card-soft: #EAF3F6;
+
+      --accent: #056C89;
+      --accent-soft: #88B4BE;
+      --accent-strong: #023653;
+
+      --text-main: #022432;
+      --text-muted: #4B6770;
+
+      --border-subtle: #C5D4D8;
+
       --radius-lg: 18px;
       --radius-md: 12px;
       --radius-pill: 999px;
-      --shadow-soft: 0 16px 40px rgba(15, 23, 42, 0.12);
+
+      --shadow-soft: 0 16px 40px rgba(2, 54, 83, 0.18);
+
       --sidebar-w: 260px;
+
       --danger: #ef4444;
       --success: #22c55e;
     }
@@ -34,7 +44,7 @@
       padding: 0;
       min-height: 100%;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
-      background: radial-gradient(circle at top left, #e0f2fe 0, #eef2ff 45%, #dbeafe 100%);
+      background: var(--bg-main);
       color: var(--text-main);
     }
 
@@ -58,15 +68,22 @@
       }
     }
 
-    /* SIDEBAR */
+    /* SIDEBAR (match Messages / Dashboard) */
     .sidebar {
-      background: #020617;
-      color: #e5eef7;
-      border-right: 1px solid rgba(148, 163, 184, 0.35);
+      background: linear-gradient(180deg, var(--bg-sidebar) 0%, #011823 100%);
+      color: #E5E7EB;
+      border-right: 1px solid #011824;
       padding: 16px 18px 18px;
       display: flex;
       flex-direction: column;
       gap: 18px;
+
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      align-self: start;
+      z-index: 40;
+      box-shadow: 10px 0 30px rgba(2, 20, 32, 0.55);
     }
 
     @media (max-width: 900px) {
@@ -74,6 +91,8 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        height: auto;
+        box-shadow: none;
       }
     }
 
@@ -87,32 +106,18 @@
       width: 32px;
       height: 32px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #38bdf8, #0ea5e9 40%, #1d4ed8 100%);
+      background: linear-gradient(135deg, #27B0C7, #58D58F);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #0b1120;
+      color: #F9FAFB;
       font-weight: 800;
       font-size: 0.9rem;
-      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.12);
+      box-shadow: 0 0 0 2px #011627;
     }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand-title {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
-
-    .brand-subtitle {
-      font-size: 0.72rem;
-      color: #94a3b8;
-    }
+    .brand-text { display: flex; flex-direction: column; gap: 2px; }
+    .brand-title { font-size: 1rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+    .brand-subtitle { font-size: 0.72rem; color: #9CA3AF; }
 
     .nav {
       display: flex;
@@ -136,52 +141,51 @@
       justify-content: space-between;
       gap: 8px;
       padding: 8px 10px;
+      position: relative;
       border-radius: 10px;
       font-size: 0.86rem;
-      color: #cbd5f5;
+      color: #E5E7EB;
+      background: rgba(1, 16, 28, 0.92);
       border: 1px solid transparent;
-      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
-      position: relative;
+      transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        box-shadow 0.16s ease,
+        transform 0.12s ease,
+        color 0.16s ease;
     }
-
-    .nav-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: transparent;
-    }
-
     .nav-link:hover {
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(2, 31, 47, 1);
       border-color: rgba(148, 163, 184, 0.6);
-      color: #f9fafb;
+      color: #F9FAFB;
+      box-shadow: 0 8px 18px rgba(1, 20, 33, 0.7);
+      transform: translateY(-1px);
     }
-
     .nav-link.active {
-      background: #0ea5e9;
-      color: #001018;
+      background: linear-gradient(120deg, #27B0C7, #056C89);
+      color: #F9FAFB;
       font-weight: 600;
+      box-shadow: 0 10px 26px rgba(4, 120, 132, 0.75);
+      border-color: transparent;
     }
-
-    .nav-link.active .nav-indicator {
-      background: #001018;
-    }
-
     .nav-link.has-unread::after {
       content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--danger);
       position: absolute;
       top: 6px;
       right: 8px;
-      box-shadow: 0 0 0 3px rgba(239,68,68,0.25);
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #F97373;
+      box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.22);
     }
 
     /* MAIN LAYOUT */
     .site-main {
       padding-bottom: 40px;
+      background:
+        radial-gradient(circle at top left, rgba(136, 180, 190, 0.22), transparent 60%),
+        var(--bg-main);
     }
 
     .container {
@@ -192,8 +196,8 @@
 
     .site-header {
       padding: 16px 24px 14px;
-      border-bottom: 1px solid rgba(226, 232, 240, 0.95);
-      background: rgba(248, 250, 252, 0.96);
+      border-bottom: 1px solid rgba(197, 212, 216, 0.95);
+      background: rgba(250, 252, 255, 0.96);
       backdrop-filter: blur(6px);
       display: flex;
       align-items: center;
@@ -236,10 +240,14 @@
       font-size: 0.8rem;
       font-weight: 500;
       border: 1px solid var(--border-subtle);
-      background: #ffffff;
-      color: #0f172a;
+      background: #FFFFFF;
+      color: var(--text-main);
       cursor: pointer;
-      transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+      transition:
+        background 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.1s ease,
+        border-color 0.15s ease;
     }
 
     .btn-sm {
@@ -248,24 +256,25 @@
     }
 
     .btn:hover {
-      background: #f9fafb;
-      box-shadow: 0 6px 16px rgba(15,23,42,0.12);
+      background: #F5FAFB;
+      border-color: #B4C7CD;
+      box-shadow: 0 6px 16px rgba(2, 54, 83, 0.18);
       transform: translateY(-1px);
     }
 
     .btn-primary {
       border-color: transparent;
-      background: linear-gradient(135deg, #0ea5e9, #1d4ed8);
-      color: #eff6ff;
-      box-shadow: 0 10px 25px rgba(30, 64, 175, 0.45);
+      background: var(--accent);
+      color: #F2FBFF;
+      box-shadow: 0 10px 25px rgba(5, 108, 137, 0.45);
     }
 
     .btn-primary:hover {
-      background: linear-gradient(135deg, #0284c7, #1e40af);
+      background: #045975;
     }
 
     .btn-ghost {
-      background: #f9fafb;
+      background: #F5FAFB;
     }
 
     /* PROFILE PAGE SHELL */
@@ -286,19 +295,21 @@
       box-shadow: var(--shadow-soft);
     }
 
-    /* COVER + HEADER (Facebook-style) */
+    /* COVER + HEADER */
     .profile-cover {
       position: relative;
       overflow: hidden;
       border-radius: var(--radius-lg);
       margin-bottom: 12px;
-      background: radial-gradient(circle at 0% 0%, #38bdf8 0, #1d4ed8 40%, #020617 100%);
-      color: #e5edff;
+      background: radial-gradient(circle at 0% 0%, #27B0C7 0, #056C89 40%, #011824 100%);
+      color: #E5EDFF;
     }
 
     .profile-cover-banner {
       height: 180px;
-      background-image: linear-gradient(120deg, rgba(56,189,248,0.8), rgba(37,99,235,0.9)), url("{% static 'img/calibration-cover-pattern.svg' %}");
+      background-image:
+        linear-gradient(120deg, rgba(136, 180, 190, 0.65), rgba(5,108,137,0.9)),
+        url("{% static 'img/calibration-cover-pattern.svg' %}");
       background-size: cover;
       background-position: center;
       position: relative;
@@ -339,10 +350,10 @@
       width: 120px;
       height: 120px;
       border-radius: 999px;
-      border: 4px solid #e5edff;
+      border: 4px solid #E5EDFF;
       overflow: hidden;
-      box-shadow: 0 18px 32px rgba(15, 23, 42, 0.6);
-      background: #0b1120;
+      box-shadow: 0 18px 32px rgba(2, 20, 33, 0.7);
+      background: #011627;
       flex-shrink: 0;
     }
 
@@ -380,7 +391,7 @@
       gap: 5px;
       padding: 3px 8px;
       border-radius: 999px;
-      background: rgba(15, 23, 42, 0.4);
+      background: rgba(1, 15, 25, 0.45);
       border: 1px solid rgba(191, 219, 254, 0.8);
       font-size: 0.76rem;
     }
@@ -388,7 +399,7 @@
     .profile-bio {
       font-size: 0.84rem;
       max-width: 420px;
-      color: #e0edff;
+      color: #E0EDFF;
     }
 
     .profile-actions-row {
@@ -411,22 +422,22 @@
     .profile-stat-pill {
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.5);
-      border: 1px solid rgba(191,219,254,0.7);
+      background: rgba(1, 18, 36, 0.5);
+      border: 1px solid rgba(191, 219, 254, 0.7);
       display: inline-flex;
       gap: 6px;
       align-items: center;
     }
 
     .profile-stat-label {
-      opacity: 0.8;
+      opacity: 0.85;
     }
 
     .profile-stat-value {
       font-weight: 600;
     }
 
-    /* SUB NAV (Timeline / About / Growth / Buddies) */
+    /* SUB NAV */
     .profile-subnav-wrap {
       padding: 0 20px 12px;
       margin-top: -22px;
@@ -440,14 +451,13 @@
     }
 
     .profile-subnav {
-      background: rgba(248,250,252,0.98);
+      background: rgba(250,252,255,0.98);
       border-radius: var(--radius-pill);
       border: 1px solid var(--border-subtle);
-      box-shadow: 0 8px 20px rgba(15,23,42,0.08);
+      box-shadow: 0 8px 20px rgba(2,54,83,0.12);
       padding: 4px;
       display: inline-flex;
       gap: 4px;
-      position: relative;
       max-width: 100%;
       overflow-x: auto;
     }
@@ -465,14 +475,13 @@
       color: var(--text-muted);
       cursor: pointer;
       white-space: nowrap;
-      position: relative;
-      transition: color 0.16s ease, background 0.16s ease;
+      transition: color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
     }
 
     .profile-subnav-btn.active {
-      background: linear-gradient(135deg, #0ea5e9, #1d4ed8);
-      color: #eff6ff;
-      box-shadow: 0 6px 14px rgba(37,99,235,0.4);
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #EFF6FF;
+      box-shadow: 0 6px 14px rgba(2,54,83,0.45);
     }
 
     /* BODY: TWO COLUMNS */
@@ -489,7 +498,8 @@
       }
     }
 
-    .profile-col-left, .profile-col-right {
+    .profile-col-left,
+    .profile-col-right {
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -510,6 +520,10 @@
     /* ABOUT CARD */
     .about-card {
       padding: 12px 14px;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
     }
 
     .about-row {
@@ -547,7 +561,7 @@
       border-radius: var(--radius-md);
       padding: 10px;
       background: var(--card-soft);
-      border: 1px solid #dbeafe;
+      border: 1px solid var(--border-subtle);
       font-size: 0.8rem;
     }
 
@@ -566,32 +580,68 @@
     .pill {
       padding: 3px 8px;
       border-radius: 999px;
-      background: #eff6ff;
-      border: 1px solid #dbeafe;
+      background: #F5FAFB;
+      border: 1px solid #C5D4D8;
       font-size: 0.76rem;
-      color: #1e3a8a;
+      color: var(--accent-strong);
     }
 
     /* BADGES */
     .badge-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
       margin-top: 4px;
     }
 
-    .badge-chip {
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px dashed #bfdbfe;
-      background: #eff6ff;
-      font-size: 0.76rem;
-      display: inline-flex;
+    .badge-mini {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: linear-gradient(135deg, #F5FAFB, #FFFFFF);
+      box-shadow: 0 8px 18px rgba(5, 108, 137, 0.16);
       align-items: center;
-      gap: 6px;
     }
 
-    /* GROUPS / COMMUNITIES */
+    .badge-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #F8FAFC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(2,54,83,0.35);
+    }
+
+    .badge-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .badge-name {
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+
+    .badge-desc {
+      font-size: 0.8rem;
+      color: #475569;
+    }
+
+    .badge-date {
+      font-size: 0.76rem;
+      color: #6B7280;
+    }
+
+    /* GROUPS */
     .group-list {
       display: flex;
       flex-direction: column;
@@ -603,8 +653,8 @@
     .group-item {
       padding: 6px 8px;
       border-radius: 10px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
+      background: #F8FAFC;
+      border: 1px solid #D1DFE4;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -621,7 +671,7 @@
       font-weight: 600;
     }
 
-    /* BUDDIES MINI CARD (LEFT) */
+    /* BUDDIES MINI */
     .buddies-mini-list {
       display: flex;
       flex-wrap: wrap;
@@ -635,8 +685,8 @@
       gap: 6px;
       padding: 4px 8px;
       border-radius: 999px;
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
+      background: #EAF3F6;
+      border: 1px solid var(--border-subtle);
       font-size: 0.78rem;
     }
 
@@ -644,8 +694,8 @@
       width: 24px;
       height: 24px;
       border-radius: 999px;
-      background: #4f46e5;
-      color: #eef2ff;
+      background: var(--accent-strong);
+      color: #EAF3F6;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -656,6 +706,10 @@
     /* RIGHT COL: COMPOSER + FEED */
     .composer-card {
       padding: 10px 14px;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
     }
 
     .composer-row {
@@ -668,8 +722,8 @@
       width: 36px;
       height: 36px;
       border-radius: 999px;
-      background: #0ea5e9;
-      color: #f9fafb;
+      background: var(--accent);
+      color: #F9FAFB;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -686,7 +740,7 @@
       width: 100%;
       min-height: 48px;
       border-radius: 18px;
-      border: 1px solid #d1d5db;
+      border: 1px solid #D1D5DB;
       padding: 8px 12px;
       font-size: 0.84rem;
       resize: vertical;
@@ -695,8 +749,8 @@
     }
 
     .composer-input:focus {
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 1px #93c5fd;
+      border-color: #88B4BE;
+      box-shadow: 0 0 0 1px rgba(8, 86, 110, 0.35);
     }
 
     .composer-actions {
@@ -718,14 +772,18 @@
     .composer-tag {
       padding: 3px 7px;
       border-radius: var(--radius-pill);
-      background: #f3f4ff;
-      border: 1px solid #e0e7ff;
+      background: #F5FAFB;
+      border: 1px solid #D1DFE4;
       cursor: pointer;
     }
 
     /* FEED POSTS */
     .feed-card {
       padding: 10px 14px;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
     }
 
     .feed-empty {
@@ -736,8 +794,8 @@
     .feed-item {
       padding: 8px 10px;
       border-radius: 12px;
-      border: 1px solid #e2e8f0;
-      background: #f8fafc;
+      border: 1px solid #D1DFE4;
+      background: #F8FAFC;
       margin-bottom: 8px;
       opacity: 0;
       transform: translateY(8px);
@@ -783,111 +841,16 @@
     .tag-chip {
       padding: 3px 8px;
       border-radius: 999px;
-      background: #e0f2fe;
-      border: 1px solid #bae6fd;
+      background: #E0F2FE;
+      border: 1px solid #BAE6FD;
       color: #075985;
-    }
-
-    /* RIGHT: FULL BUDDIES / LIVE ACTIVITY */
-    .friends-card {
-      padding: 10px 14px;
-    }
-
-    .friends-header,
-    .activity-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .friends-list-scroll {
-      max-height: 180px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .friend-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 0;
-      border-bottom: 1px solid #e5e7eb;
-      font-size: 0.8rem;
-    }
-
-    .friend-row:last-child {
-      border-bottom: none;
-    }
-
-    .friend-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      background: #4f46e5;
-      color: #eef2ff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-
-    .friend-name {
-      font-weight: 600;
-    }
-
-    .friend-status {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .activity-card {
-      padding: 10px 14px;
-    }
-
-    .activity-stream {
-      max-height: 200px;
-      overflow-y: auto;
-      padding-right: 4px;
-      font-size: 0.8rem;
-    }
-
-    .activity-item {
-      padding: 7px 8px;
-      border-radius: 10px;
-      background: #f8fafc;
-      border: 1px solid #e5e7eb;
-      margin-bottom: 6px;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-
-    .activity-item.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .activity-item-title {
-      font-weight: 500;
-      margin-bottom: 2px;
-    }
-
-    .activity-item-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 6px;
-      color: var(--text-muted);
-      font-size: 0.76rem;
     }
 
     .chip {
       padding: 2px 7px;
       border-radius: 999px;
-      background: #dbeafe;
-      color: #1e3a8a;
+      background: #D6E6EB;
+      color: var(--accent-strong);
       font-size: 0.75rem;
     }
 
@@ -912,41 +875,44 @@
       <div class="brand-mark">CB</div>
       <div class="brand-text">
         <div class="brand-title">Calibration</div>
-        <div class="brand-subtitle">Discipline • Habits • Skills</div>
+        <div class="brand-subtitle">Discipline · Habits · Skills</div>
       </div>
     </div>
 
     <div class="nav">
       <a href="{% url 'dashboard' %}" class="nav-link">
-        <span>Dashboard</span><span class="nav-indicator"></span>
+        <span>Dashboard</span>
       </a>
       <a href="{% url 'disciplinebuilder' %}" class="nav-link">
-        <span>Discipline Builder</span><span class="nav-indicator"></span>
+        <span>Discipline Builder</span>
       </a>
       <a href="{% url 'progresstracker' %}" class="nav-link">
-        <span>Progress Tracker</span><span class="nav-indicator"></span>
+        <span>Progress Tracker</span>
       </a>
       <a href="{% url 'rewards' %}" class="nav-link">
-        <span>Rewards</span><span class="nav-indicator"></span>
+        <span>Rewards</span>
       </a>
       <a href="{% url 'coaching' %}" class="nav-link">
-        <span>Coaching</span><span class="nav-indicator"></span>
+        <span>Coaching</span>
       </a>
       <a href="{% url 'messages' %}" class="nav-link{% if has_unread_messages %} has-unread{% endif %}">
-        <span>Messages</span><span class="nav-indicator"></span>
+        <span>Messages</span>
       </a>
       <a href="{% url 'community' %}" class="nav-link">
-        <span>Community</span><span class="nav-indicator"></span>
+        <span>Community</span>
+      </a>
+      <a href="{% url 'groups' %}" class="nav-link">
+        <span>Groups</span>
       </a>
       <a href="{% url 'user_profile' %}" class="nav-link active">
-        <span>Profile</span><span class="nav-indicator"></span>
+        <span>Profile</span>
       </a>
     </div>
   </nav>
 
   <!-- MAIN -->
   <main class="site-main">
-    <div class="container">
+ 
       <header class="site-header">
         <div class="site-header-title">
           <h1>Profile</h1>
@@ -955,6 +921,7 @@
         <div class="header-actions">
           <a href="{% url 'dashboard' %}" class="btn btn-ghost">← Back</a>
           <a href="/settings/" class="btn btn-primary">Edit Profile</a>
+          <a class="btn btn-primary" href="/accounts/logout/">Log out</a>
         </div>
       </header>
 
@@ -1037,7 +1004,7 @@
           <!-- LEFT COLUMN -->
           <div class="profile-col-left">
             <!-- ABOUT PANEL -->
-            <article class="card about-card reveal profile-section" id="section-about">
+            <article class="about-card reveal profile-section" id="section-about">
               <h2 class="section-heading">About</h2>
               <p class="section-subtext">Basic info tied to your Calibration profile.</p>
               <div class="about-row">
@@ -1061,7 +1028,7 @@
             </article>
 
             <!-- FOCUS / SKILLS SUMMARY -->
-            <article class="card about-card reveal profile-section" id="section-growth">
+            <article class="about-card reveal profile-section" id="section-growth">
               <h2 class="section-heading">Focus Areas</h2>
               <p class="section-subtext">What you’ve been building lately.</p>
               <div class="mini-grid">
@@ -1089,24 +1056,29 @@
             </article>
 
             <!-- BADGES -->
-            <article class="card about-card reveal">
+            <article class="about-card reveal">
               <h2 class="section-heading">Badges</h2>
               <p class="section-subtext">Milestones unlocked through consistent effort.</p>
               <div class="badge-grid">
-                <div class="badge-chip">🏁 First Skill</div>
-                <div class="badge-chip">📓 First Journal</div>
-                {% if login_streak|default:0 >= 7 %}
-                  <div class="badge-chip">🔥 7-day Streak</div>
-                {% endif %}
-                {% if login_streak|default:0 >= 30 %}
-                  <div class="badge-chip">🌕 30-day Streak</div>
-                {% endif %}
-                <div class="badge-chip">🔐 Profile Created</div>
+                {% for ub in badges %}
+                  <div class="badge-mini">
+                    <div class="badge-icon">
+                      {{ ub.badge.title|slice:":1"|upper }}
+                    </div>
+                    <div class="badge-meta">
+                      <div class="badge-name">{{ ub.badge.title }}</div>
+                      <div class="badge-desc">{{ ub.badge.description|default:"Unlocked milestone" }}</div>
+                      <div class="badge-date">Earned {{ ub.awarded_at|date:"M d, Y" }}</div>
+                    </div>
+                  </div>
+                {% empty %}
+                  <p class="muted" style="margin:0;">No badges yet. Complete tasks, streaks, or skills to earn some.</p>
+                {% endfor %}
               </div>
             </article>
 
             <!-- GROUPS / FUTURE COMMUNITIES -->
-            <article class="card about-card reveal">
+            <article class="about-card reveal">
               <h2 class="section-heading">Groups</h2>
               <p class="section-subtext">Calibration groups based on skills, habits, or goals (coming soon).</p>
               <div class="group-list">
@@ -1128,7 +1100,7 @@
             </article>
 
             <!-- BUDDIES MINI -->
-            <article class="card about-card reveal profile-section" id="section-buddies">
+            <article class="about-card reveal profile-section" id="section-buddies">
               <h2 class="section-heading">Buddies</h2>
               <p class="section-subtext">Your accountability network in a snapshot.</p>
               <div class="buddies-mini-list">
@@ -1147,7 +1119,7 @@
           <!-- RIGHT COLUMN -->
           <div class="profile-col-right">
             <!-- TIMELINE COMPOSER -->
-            <article class="card composer-card reveal profile-section" id="section-timeline">
+            <article class="composer-card reveal profile-section" id="section-timeline">
               <h2 class="section-heading">Share an update</h2>
               <p class="section-subtext">In the future this can post to your timeline or log a journal entry.</p>
               <div class="composer-row">
@@ -1171,7 +1143,7 @@
             </article>
 
             <!-- FEED -->
-            <article class="card feed-card reveal">
+            <article class="feed-card reveal">
               <h2 class="section-heading">Timeline</h2>
               <p class="section-subtext">A feed of your recent activity across habits, skills, and journals.</p>
 
@@ -1206,60 +1178,14 @@
                 {% endif %}
               </div>
             </article>
-
-            <!-- FULL BUDDIES LIST -->
-            <article class="card friends-card reveal">
-              <div class="friends-header">
-                <div>
-                  <h2 class="section-heading">Buddies</h2>
-                  <p class="section-subtext">People who can see your Calibration progress (later: permissions & privacy).</p>
-                </div>
-                <a href="{% url 'buddies' %}" class="btn btn-ghost btn-sm">Manage</a>
-              </div>
-              <div class="friends-list-scroll">
-                {% for buddy in friends %}
-                  <div class="friend-row">
-                    <div class="friend-avatar">{{ buddy.user.username|slice:":2"|upper }}</div>
-                    <div>
-                      <div class="friend-name">{{ buddy.user.username }}</div>
-                      <div class="friend-status">
-                        {% if buddy.user.last_login %}
-                          Last seen {{ buddy.user.last_login|timesince }} ago
-                        {% else %}
-                          Joined recently
-                        {% endif %}
-                      </div>
-                    </div>
-                  </div>
-                {% empty %}
-                  <p class="muted">No buddies yet.</p>
-                {% endfor %}
-              </div>
-            </article>
-
-            <!-- LIVE ACTIVITY -->
-            <article class="card activity-card reveal">
-              <div class="activity-header">
-                <div>
-                  <h2 class="section-heading">Live Activity</h2>
-                  <p class="section-subtext">Demo stream – later this can show real-time habit & skill events.</p>
-                </div>
-                <span class="chip" id="activity-clock">--:--</span>
-              </div>
-              <div class="activity-stream" id="activity-stream"></div>
-            </article>
           </div>
         </div>
       </section>
-    </div>
+  
   </main>
 </div>
 
 <script>
-  function clamp(num, min, max) {
-    return Math.min(Math.max(num, min), max);
-  }
-
   document.addEventListener("DOMContentLoaded", function () {
     /* GREETING */
     const greetingLabel = document.getElementById("greeting-label");
@@ -1272,10 +1198,8 @@
     else greeting = "Good evening";
     if (greetingLabel) greetingLabel.textContent = greeting;
 
-    /* SUBNAV SWITCHING (just highlights + optional scroll) */
-    const subnav = document.getElementById("profile-subnav");
+    /* SUBNAV SWITCHING */
     const subnavBtns = document.querySelectorAll(".profile-subnav-btn");
-    const sections = document.querySelectorAll(".profile-section");
 
     subnavBtns.forEach(btn => {
       btn.addEventListener("click", () => {
@@ -1291,7 +1215,7 @@
       });
     });
 
-    /* QUICK SCROLL BUTTONS IN HEADER */
+    /* QUICK SCROLL BUTTONS */
     const scrollTimelineBtn = document.getElementById("btn-scroll-timeline");
     const scrollAboutBtn = document.getElementById("btn-scroll-about");
     const timelineSection = document.getElementById("section-timeline");
@@ -1331,53 +1255,6 @@
         item.classList.add("visible");
       }, 120 + index * 80);
     });
-
-    /* LIVE ACTIVITY DEMO */
-    const activityStream = document.getElementById("activity-stream");
-    const sampleActivities = [
-      { title: "Completed habit: Morning planning", type: "Habit", ago: "2 min ago" },
-      { title: "Logged skill: Deep Work (45 min)", type: "Skill", ago: "15 min ago" },
-      { title: "Updated journal with mood 4/5", type: "Journal", ago: "40 min ago" },
-      { title: "Streak hit {{ login_streak|default:0 }} days", type: "Streak", ago: "3 hrs ago" }
-    ];
-
-    function renderActivity() {
-      if (!activityStream) return;
-      activityStream.innerHTML = "";
-      sampleActivities.forEach((item, idx) => {
-        const node = document.createElement("div");
-        node.className = "activity-item";
-        node.innerHTML = `
-          <div class="activity-item-title">${item.title}</div>
-          <div class="activity-item-meta">
-            <span class="chip">${item.type}</span>
-            <span>${item.ago}</span>
-          </div>
-        `;
-        activityStream.appendChild(node);
-        setTimeout(() => node.classList.add("visible"), 140 + idx * 80);
-      });
-    }
-
-    if (activityStream) {
-      renderActivity();
-      setInterval(() => {
-        sampleActivities.push(sampleActivities.shift());
-        renderActivity();
-      }, 26000);
-    }
-
-    /* CLOCK */
-    const activityClock = document.getElementById("activity-clock");
-    function updateClock() {
-      if (!activityClock) return;
-      const d = new Date();
-      const hh = String(d.getHours()).padStart(2,"0");
-      const mm = String(d.getMinutes()).padStart(2,"0");
-      activityClock.textContent = hh + ":" + mm;
-    }
-    updateClock();
-    setInterval(updateClock, 60000);
 
     /* BOOST DEMO BUTTON */
     const boostBtn = document.getElementById("simulate-boost");

@@ -28,12 +28,14 @@ urlpatterns = [
     path('tasks/create/', views.TaskCreate.as_view(), name='task_create'),
     path('tasks/<int:pk>/edit/', views.TaskUpdate.as_view(), name='task_update'),
     path('tasks/<int:pk>/delete', views.TaskDelete.as_view(), name= 'task_delete'),
+    path('tasks/<int:pk>/complete/', views.TaskCompleteView.as_view(), name='task_complete'),
 
 #-----Reward Entry URLs----#
     path('goals/', views.GoalList.as_view(), name='goal_list'),
     path('goals/create/', views.GoalCreate.as_view(), name='goal_create'),
     path('goals/<int:pk>/edit/', views.GoalUpdate.as_view(), name='goal_update'),
     path('goals/<int:pk>/delete', views.GoalDelete.as_view(), name= 'goal_delete'),
+    path('goals/<int:pk>/complete/', views.GoalCompleteView.as_view(), name='goal_complete'),
    
 
 
@@ -48,6 +50,11 @@ urlpatterns = [
     path("community/thread/<int:pk>/", views.ForumDetailView.as_view(), name="community_thread"),
     path("community/thread/<int:pk>/vote/", views.forum_vote, name="forum_vote"),
     path("community/thread/<int:pk>/delete/", views.ForumDeleteView.as_view(), name="community_thread_delete"),
+    path("community/group/<int:pk>/join/", views.GroupJoinView.as_view(), name="group_join"),
+    path("community/group/<int:pk>/leave/", views.GroupLeaveView.as_view(), name="group_leave"),
+    path("community/groups/create/", views.GroupCreateView.as_view(), name="group_create"),
+    path("groups/<int:pk>/", views.GroupDetailView.as_view(), name="group_detail"),
+    path("groups/", views.GroupsView.as_view(), name="groups"),
     path("profile/<int:user_id>/", views.VisitorProfileView.as_view(), name="visitor_profile"),
 
     path("buddies/", views.BuddiesView.as_view(), name="buddies"),

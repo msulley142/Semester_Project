@@ -307,6 +307,32 @@ class Topics(models.Model):
         return self.name
 
 
+class CommunityGroup(models.Model):
+    CATEGORY_CHOICES = [
+        ("General", "General"),
+        ("Habit", "Habit"),
+        ("Skill", "Skill"),
+        ("Goal", "Goal"),
+    ]
+
+    name = models.CharField(max_length=120, unique=True)
+    tagline = models.CharField(max_length=255, blank=True)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    members = models.ManyToManyField(Profile, related_name="community_groups", blank=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="General")
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def member_count(self):
+        return self.members.count()
+
+
 class Forum(models.Model):
     topic = models.ForeignKey(Topics, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)

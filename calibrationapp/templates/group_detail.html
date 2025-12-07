@@ -1,0 +1,167 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ group.name }} | Group</title>
+  <style>
+    :root {
+      --grp-bg: #f3f4f6;
+      --grp-card: #ffffff;
+      --grp-border: #e5e7eb;
+      --grp-accent: #0ea5e9;
+      --grp-strong: #1d4ed8;
+      --grp-muted: #6b7280;
+      --grp-radius: 16px;
+      --grp-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+    }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top left, #e0f2fe 0, #f3f4f6 45%, #e0f2fe 100%);
+      color: #0f172a;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 18px 30px;
+    }
+    .card {
+      background: var(--grp-card);
+      border: 1px solid var(--grp-border);
+      border-radius: var(--grp-radius);
+      box-shadow: var(--grp-shadow);
+      padding: 18px 20px;
+    }
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .title {
+      margin: 0;
+      font-size: 1.15rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .tagline { margin: 6px 0 0; color: var(--grp-muted); }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(14,165,233,0.12);
+      color: #0369a1;
+      font-size: 0.84rem;
+      border: 1px solid rgba(56,189,248,0.5);
+    }
+    .meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--grp-muted);
+      font-size: 0.9rem;
+      margin: 8px 0 14px;
+    }
+    .actions form { display: inline; }
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.15s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--grp-accent), var(--grp-strong));
+      color: #eef2ff;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.55);
+    }
+    .btn-muted {
+      background: #f1f5f9;
+      color: #0f172a;
+      border: 1px solid var(--grp-border);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .desc { margin: 0 0 14px; line-height: 1.5; color: #0f172a; }
+    .section-title { margin: 0 0 8px; font-size: 1rem; }
+    .members {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+    }
+    .member {
+      padding: 8px 10px;
+      border: 1px solid var(--grp-border);
+      border-radius: 10px;
+      background: #f8fafc;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      color: #0f172a;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back-link" href="{% url 'groups' %}">← Back to groups</a>
+    <div class="card">
+      <div class="header">
+        <div>
+          <h1 class="title">{{ group.name }}</h1>
+          {% if group.tagline %}<p class="tagline">{{ group.tagline }}</p>{% endif %}
+        </div>
+        <span class="pill">{{ group.category|default:"General" }}</span>
+      </div>
+
+      <div class="meta">
+        <span>👥 {{ member_count }} member(s)</span>
+        <span>⏱️ Created {{ group.created_at|date:"M j, Y"|default:"recently" }}</span>
+      </div>
+
+      <p class="desc">{{ group.description|default:"No description yet." }}</p>
+
+      <div class="actions">
+        {% if is_member %}
+          <form action="{% url 'group_leave' group.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-muted" type="submit">✕ Leave group</button>
+          </form>
+        {% else %}
+          <form action="{% url 'group_join' group.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary" type="submit">➕ Join group</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h2 class="section-title">Members</h2>
+      {% if members %}
+        <ul class="members">
+          {% for m in members %}
+            <li class="member">
+              {{ m.user.username }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="desc" style="color: var(--grp-muted); margin: 0;">No members yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

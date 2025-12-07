@@ -4,7 +4,6 @@ from itertools import chain
 
 from django.db import models
 from django.db.models import Avg, Count, Q
-from django.db.models.functions import Coalesce, TruncDate
 from django.db.models.functions import TruncDate
 from django.utils import timezone
 
@@ -88,36 +87,38 @@ def xp_activity_summary(user):
     Uses completed tasks' points (on completion date) plus journal XP from
     PRACTICE (5 XP) and REFLECTION (1 XP) entries on their logged date.
     """
-    today = timezone.now().date()
+    tz = timezone.get_current_timezone()
+    today = timezone.localdate()
     start_week = today - timedelta(days=today.weekday())  # Monday
 
+    xp_today = 0
+    xp_week = 0
+
     # ---- Tasks XP ----
-    base_qs = (
-        Task.objects.filter(account_user=user, status=Task.COMPLETED)
-        .annotate(done_date=Coalesce("completed_at", "date"))
-    )
-    xp_today = base_qs.filter(done_date__date=today).aggregate(total=models.Sum("points"))["total"] or 0
-    xp_week = base_qs.filter(done_date__date__gte=start_week).aggregate(total=models.Sum("points"))["total"] or 0
+    tasks = Task.objects.filter(account_user=user, status=Task.COMPLETED).only("points", "completed_at", "date")
+    for t in tasks:
+        dt = t.completed_at or t.date
+        if not dt:
+            continue
+        day = timezone.localtime(dt, tz).date()
+        if day == today:
+            xp_today += t.points or 0
+        if day >= start_week:
+            xp_week += t.points or 0
 
     # ---- Journal XP ----
-    journal_today = Journal.objects.filter(
+    journals = Journal.objects.filter(
         account_user=user,
-        date__date=today,
         entry_type__in=[Journal.PRACTICE, Journal.REFLECTION],
-    )
-    journal_week = Journal.objects.filter(
-        account_user=user,
-        date__date__gte=start_week,
-        entry_type__in=[Journal.PRACTICE, Journal.REFLECTION],
-    )
+    ).only("entry_type", "date")
 
-    def journal_xp(qs):
-        practice = qs.filter(entry_type=Journal.PRACTICE).count()
-        reflection = qs.filter(entry_type=Journal.REFLECTION).count()
-        return practice * 5 + reflection * 1
-
-    xp_today += journal_xp(journal_today)
-    xp_week += journal_xp(journal_week)
+    for j in journals:
+        day = timezone.localtime(j.date, tz).date()
+        pts = 5 if j.entry_type == Journal.PRACTICE else 1
+        if day == today:
+            xp_today += pts
+        if day >= start_week:
+            xp_week += pts
 
     return {
         "xp_today": xp_today,

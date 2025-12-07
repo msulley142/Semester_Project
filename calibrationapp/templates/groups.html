@@ -1,0 +1,750 @@
+{% block content %}
+<style>
+  :root {
+    --grp-bg: #f3f4f6;
+    --grp-bg-soft: #e0f2fe;
+    --grp-card: #ffffff;
+    --grp-card-soft: #f9fafb;
+    --grp-accent: #0ea5e9;
+    --grp-accent-strong: #1d4ed8;
+    --grp-text-main: #0f172a;
+    --grp-text-muted: #6b7280;
+    --grp-border-subtle: #e5e7eb;
+    --grp-radius-lg: 18px;
+    --grp-radius-md: 12px;
+    --grp-radius-pill: 999px;
+    --grp-shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
+  }
+
+  .groups-shell {
+    padding: 20px 24px 34px;
+    background: radial-gradient(circle at top left, #e0f2fe 0, #f3f4f6 45%, #e0f2fe 100%);
+    color: var(--grp-text-main);
+  }
+
+  .groups-page {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .groups-shell {
+      padding: 16px 14px 26px;
+    }
+  }
+
+  .groups-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  @media (max-width: 640px) {
+    .groups-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+  }
+
+  .groups-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .groups-title-block h1 {
+    margin: 0;
+    font-size: 1.32rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .groups-title-block p {
+    margin: 0;
+    font-size: 0.86rem;
+    color: var(--grp-text-muted);
+  }
+
+  .groups-pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .groups-pill {
+    padding: 5px 12px;
+    border-radius: var(--grp-radius-pill);
+    background: rgba(14, 165, 233, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.6);
+    font-size: 0.8rem;
+    color: #0369a1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .groups-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  @media (max-width: 640px) {
+    .groups-meta {
+      align-items: flex-start;
+    }
+  }
+
+  .groups-meta-chip {
+    padding: 4px 10px;
+    border-radius: var(--grp-radius-pill);
+    background: rgba(15, 23, 42, 0.04);
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    font-size: 0.78rem;
+    color: var(--grp-text-muted);
+  }
+
+  .groups-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.6fr);
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 960px) {
+    .groups-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .groups-card {
+    background: var(--grp-card);
+    border-radius: var(--grp-radius-lg);
+    border: 1px solid var(--grp-border-subtle);
+    box-shadow: var(--grp-shadow-soft);
+    padding: 14px 16px 13px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .groups-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.14), transparent 55%);
+    opacity: 0.5;
+  }
+
+  .groups-card-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .groups-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .groups-card-header h2 {
+    margin: 0;
+    font-size: 0.98rem;
+  }
+
+  .groups-card-header span {
+    font-size: 0.78rem;
+    color: var(--grp-text-muted);
+  }
+
+  .groups-section-sub {
+    margin: 0 0 8px;
+    font-size: 0.78rem;
+    color: var(--grp-text-muted);
+  }
+
+  .badge-small {
+    padding: 2px 8px;
+    border-radius: var(--grp-radius-pill);
+    font-size: 0.72rem;
+    background: #e0f2fe;
+    color: #1d4ed8;
+    white-space: nowrap;
+  }
+
+  /* Search + filters row */
+  .groups-controls {
+    margin-top: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .groups-search-wrap {
+    flex: 1;
+    min-width: 180px;
+    position: relative;
+  }
+
+  .groups-search-wrap input {
+    width: 100%;
+    border-radius: var(--grp-radius-pill);
+    border: 1px solid var(--grp-border-subtle);
+    padding: 7px 12px 7px 30px;
+    font-size: 0.82rem;
+    background: #ffffff;
+  }
+
+  .groups-search-icon {
+    position: absolute;
+    left: 10px;
+    top: 6px;
+    font-size: 0.8rem;
+    color: var(--grp-text-muted);
+  }
+
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .filter-chip {
+    border-radius: var(--grp-radius-pill);
+    border: 1px solid var(--grp-border-subtle);
+    padding: 5px 10px;
+    font-size: 0.76rem;
+    background: #f9fafb;
+    color: #4b5563;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+  }
+
+  .filter-chip:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    box-shadow: 0 6px 12px rgba(148, 163, 184, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .filter-chip.active {
+    background: #1d4ed8;
+    color: #eff6ff;
+    border-color: #1d4ed8;
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.6);
+  }
+
+  .groups-list {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 12px;
+  }
+
+  @media (max-width: 600px) {
+    .groups-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .group-card {
+    padding: 10px 10px 9px;
+    border-radius: var(--grp-radius-md);
+    background: var(--grp-card-soft);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 110px;
+    transition: box-shadow 0.15s ease, transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .group-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 22px rgba(148, 163, 184, 0.55);
+    border-color: #bfdbfe;
+    background: #ffffff;
+  }
+
+  .group-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .group-name {
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .group-category {
+    font-size: 0.74rem;
+    padding: 2px 8px;
+    border-radius: var(--grp-radius-pill);
+    background: #e0f2fe;
+    color: #1d4ed8;
+    white-space: nowrap;
+  }
+
+  .group-desc {
+    font-size: 0.8rem;
+    color: var(--grp-text-muted);
+    margin: 0;
+  }
+
+  .group-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .group-meta-left {
+    font-size: 0.76rem;
+    color: var(--grp-text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .group-meta-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .group-join-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .btn-chip {
+    border-radius: var(--grp-radius-pill);
+    border: 1px solid var(--grp-border-subtle);
+    padding: 5px 10px;
+    font-size: 0.76rem;
+    background: #ffffff;
+    color: var(--grp-text-main);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+  }
+
+  .btn-chip:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .btn-chip-primary {
+    border-color: transparent;
+    background: linear-gradient(135deg, #0ea5e9, #1d4ed8);
+    color: #eff6ff;
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.6);
+  }
+
+  .btn-chip-primary:hover {
+    background: linear-gradient(135deg, #0284c7, #1e40af);
+  }
+
+  .btn-chip-muted {
+    border-color: #e5e7eb;
+    color: #4b5563;
+    background: #f9fafb;
+  }
+
+  .empty-text {
+    font-size: 0.8rem;
+    color: var(--grp-text-muted);
+    padding: 4px 0;
+  }
+
+  /* Sidebar: My groups + Create */
+  .sidebar-stack > section {
+    margin-bottom: 14px;
+  }
+
+  .mygroups-list {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0;
+  }
+
+  .mygroup-item {
+    padding: 7px 8px;
+    border-radius: var(--grp-radius-md);
+    background: var(--grp-card-soft);
+    border: 1px solid #e2e8f0;
+    font-size: 0.82rem;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    transition: box-shadow 0.15s ease, transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .mygroup-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(148, 163, 184, 0.5);
+    border-color: #bfdbfe;
+    background: #ffffff;
+  }
+
+  .mygroup-name {
+    font-weight: 600;
+  }
+
+  .mygroup-pill {
+    font-size: 0.74rem;
+    padding: 2px 8px;
+    border-radius: var(--grp-radius-pill);
+    background: #ecfdf3;
+    color: #15803d;
+    white-space: nowrap;
+  }
+
+  .group-create-form {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.82rem;
+  }
+
+  .group-create-form label {
+    font-size: 0.78rem;
+    color: var(--grp-text-muted);
+  }
+
+  .group-create-form input,
+  .group-create-form textarea,
+  .group-create-form select {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--grp-border-subtle);
+    padding: 7px 9px;
+    font-size: 0.82rem;
+    background: #ffffff;
+  }
+
+  .group-create-form textarea {
+    min-height: 70px;
+    resize: vertical;
+  }
+
+  .group-create-form button {
+    align-self: flex-start;
+    border-radius: var(--grp-radius-pill);
+    border: none;
+    padding: 7px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: linear-gradient(135deg, #0ea5e9, #1d4ed8);
+    color: #eff6ff;
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.55);
+    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+  }
+
+  .group-create-form button:hover {
+    background: linear-gradient(135deg, #0284c7, #1e40af);
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.7);
+    transform: translateY(-1px);
+  }
+
+</style>
+
+<div class="groups-shell">
+  <div class="groups-page">
+    <div class="groups-header">
+      <div class="groups-title-block">
+        <h1>Groups</h1>
+        <p>
+          Join or create spaces where people share similar goals, habits, and skills.
+        </p>
+        <div class="groups-pill-row">
+          <div class="groups-pill">
+            <span>👥</span>
+            <span>Find accountability circles by goal, habit, or skill.</span>
+          </div>
+        </div>
+      </div>
+      <div class="groups-meta">
+        <div class="groups-meta-chip">
+          {% if groups %}{{ groups|length }} total group(s){% else %}No groups yet{% endif %}
+        </div>
+        <div class="groups-meta-chip">
+          {% if my_groups %}You’re in {{ my_groups|length }} group(s){% else %}You’re not in any groups yet{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="groups-grid">
+      <!-- LEFT: Browse groups -->
+      <section class="groups-card">
+        <div class="groups-card-inner">
+          <div class="groups-card-header">
+            <div>
+              <h2>Browse groups</h2>
+              <p class="groups-section-sub">
+                Explore public groups where you can connect with people working on similar goals.
+              </p>
+            </div>
+            <span class="badge-small">Open communities</span>
+          </div>
+
+          <div class="groups-controls">
+            <div class="groups-search-wrap">
+              <span class="groups-search-icon">🔍</span>
+              <input
+                type="text"
+                id="group-search"
+                placeholder="Search groups by name or description…">
+            </div>
+            <div class="filter-chips">
+              <button type="button" class="filter-chip active" data-filter="all">
+                All
+              </button>
+              <button type="button" class="filter-chip" data-filter="habit">
+                Habits
+              </button>
+              <button type="button" class="filter-chip" data-filter="skill">
+                Skills
+              </button>
+              <button type="button" class="filter-chip" data-filter="goal">
+                Goals
+              </button>
+            </div>
+          </div>
+
+          {% if groups %}
+            <div class="groups-list" id="groups-list">
+              {% for g in groups %}
+                {# assume g.category could be "habit", "skill", "goal" or similar (fallback to "other") #}
+                <article
+                  class="group-card"
+                  data-category="{{ g.category|default:'other'|lower }}"
+                  data-name="{{ g.name|default:'' }}"
+                  data-desc="{{ g.description|default:'' }}">
+                  <div class="group-card-header">
+                    <h3 class="group-name">
+                      <a href="{% url 'group_detail' g.id %}"
+                         style="color:inherit; text-decoration:none;">
+                        {{ g.name }}
+                      </a>
+                    </h3>
+                    <span class="group-category">
+                      {{ g.category|default:"General" }}
+                    </span>
+                  </div>
+                  <p class="group-desc">
+                    {{ g.description|default:"No description yet." }}
+                  </p>
+                  <div class="group-meta-row">
+                    <div class="group-meta-left">
+                      <span class="group-meta-tag">
+                        👥
+                        <span>
+                          {% if g.member_count %}
+                            {{ g.member_count }} member(s)
+                          {% elif g.members %}
+                            {{ g.members.count }} member(s)
+                          {% else %}
+                            0 member(s)
+                          {% endif %}
+                        </span>
+                      </span>
+                      <span class="group-meta-tag">
+                        ⏱️
+                        <span>
+                          Created {{ g.created_at|date:"M j, Y"|default:"recently" }}
+                        </span>
+                      </span>
+                    </div>
+                    <div class="group-join-actions">
+                      {% if g.is_member %}
+                        <form action="{% url 'group_leave' g.id %}" method="post">
+                          {% csrf_token %}
+                          <button type="submit" class="btn-chip btn-chip-muted">
+                            ✕ Leave
+                          </button>
+                        </form>
+                      {% else %}
+                        <form action="{% url 'group_join' g.id %}" method="post">
+                          {% csrf_token %}
+                          <button type="submit" class="btn-chip btn-chip-primary">
+                            ➕ Join
+                          </button>
+                        </form>
+                      {% endif %}
+                    </div>
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="empty-text">
+              No groups have been created yet. Be the first to create a new space.
+            </p>
+          {% endif %}
+        </div>
+      </section>
+
+      <!-- RIGHT: My groups + Create group -->
+      <div class="sidebar-stack">
+        <!-- My groups -->
+        <section class="groups-card">
+          <div class="groups-card-inner">
+            <div class="groups-card-header">
+              <div>
+                <h2>Your groups</h2>
+                <p class="groups-section-sub">
+                  Quick access to the spaces you’re already part of.
+                </p>
+              </div>
+              <span class="badge-small">
+                {% if my_groups %}{{ my_groups|length }} joined{% else %}None joined{% endif %}
+              </span>
+            </div>
+
+            {% if my_groups %}
+              <ul class="mygroups-list">
+                {% for g in my_groups %}
+                  <li class="mygroup-item">
+                    <div class="mygroup-name">
+                      <a href="{% url 'group_detail' g.id %}"
+                         style="color:inherit; text-decoration:none;">
+                        {{ g.name }}
+                      </a>
+                    </div>
+                    <span class="mygroup-pill">
+                      {{ g.category|default:"Group" }}
+                    </span>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="empty-text">
+                You’re not in any groups yet. Join a group from the list or create your own.
+              </p>
+            {% endif %}
+          </div>
+        </section>
+
+        <!-- Create group -->
+        <section class="groups-card">
+          <div class="groups-card-inner">
+            <div class="groups-card-header">
+              <div>
+                <h2>Create a group</h2>
+                <p class="groups-section-sub">
+                  Start a new space for people working toward a shared habit, skill, or goal.
+                </p>
+              </div>
+            </div>
+
+            {# assuming you pass in a Django form as "group_form" #}
+            <form action="{% url 'group_create' %}" method="post" class="group-create-form">
+              {% csrf_token %}
+              {# If you want full control, replace this block with individual fields #}
+              {{ group_form.non_field_errors }}
+              <div>
+                {{ group_form.name.label_tag }}
+                {{ group_form.name }}
+                {{ group_form.name.errors }}
+              </div>
+              <div>
+                {{ group_form.category.label_tag }}
+                {{ group_form.category }}
+                {{ group_form.category.errors }}
+              </div>
+              <div>
+                {{ group_form.description.label_tag }}
+                {{ group_form.description }}
+                {{ group_form.description.errors }}
+              </div>
+              {# Optional: tags or focus field if present #}
+              {% if group_form.tags %}
+                <div>
+                  {{ group_form.tags.label_tag }}
+                  {{ group_form.tags }}
+                  {{ group_form.tags.errors }}
+                </div>
+              {% endif %}
+
+              <button type="submit">
+                🚀 Create group
+              </button>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const searchInput = document.getElementById("group-search");
+    const chips = document.querySelectorAll(".filter-chip");
+    const cards = document.querySelectorAll(".group-card");
+
+    let activeFilter = "all";
+
+    function normalize(text) {
+      return (text || "").toLowerCase();
+    }
+
+    function applyFilters() {
+      const q = normalize(searchInput ? searchInput.value : "");
+
+      cards.forEach(card => {
+        const category = (card.dataset.category || "other").toLowerCase();
+        const name = normalize(card.dataset.name);
+        const desc = normalize(card.dataset.desc);
+
+        const matchesFilter = activeFilter === "all" || category === activeFilter;
+        const matchesSearch = !q || name.includes(q) || desc.includes(q);
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener("input", applyFilters);
+    }
+
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        chips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        activeFilter = chip.dataset.filter || "all";
+        applyFilters();
+      });
+    });
+  })();
+</script>
+{% endblock %}

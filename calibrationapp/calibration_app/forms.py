@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Skill, Habit, Journal, Reward, Task, Profile, Mood, Goals, Forum, Topics, Post, BuddyRequest
 
+from .models import CommunityGroup
 
 
 
@@ -112,3 +113,12 @@ class BuddyRespondForm(forms.Form):
     ]
     request_id = forms.IntegerField(widget=forms.HiddenInput)
     action = forms.ChoiceField(choices=ACTION_CHOICES)
+
+
+class CommunityGroupForm(forms.ModelForm):
+    class Meta:
+        model = CommunityGroup
+        fields = ["name", "category", "tagline", "description"]
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 3}),
+        }
