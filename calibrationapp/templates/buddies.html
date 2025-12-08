@@ -1,3 +1,4 @@
+<!--The html template was heavily edited using AI Generated Code -->
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -5,26 +6,35 @@
   <meta charset="utf-8">
   <title>Buddies - Calibration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <style>
-    :root {
-      /* Ocean palette to match Groups page */
-      --cb-bg: #EEEEEE;
-      --cb-bg-soft: #E8F5F8;
-      --cb-card: #FFFFFF;
-      --cb-card-soft: #C3E4E9;
-      --cb-accent: #056C89;
-      --cb-accent-strong: #023653;
-      --cb-text-main: #02222E;
-      --cb-text-muted: #5B6B75;
-      --cb-border-subtle: #D3DDE4;
-      --cb-radius-lg: 18px;
-      --cb-radius-md: 12px;
-      --cb-radius-pill: 999px;
-      --cb-shadow-soft: 0 12px 26px rgba(2, 54, 83, 0.12);
+        :root {
+      /* --- CALIBRATION THEME --- */
+      --bg: #EEEEEE;
+      --bg-soft: #C3E4E9;
+
+      --card: #FFFFFF;
+      --card-soft: #EAF3F6;
+
+      --accent: #056C89;
+      --accent-soft: #88B4BE;
+      --accent-strong: #023653;
+
+      --text-main: #022432;
+      --text-muted: #4B6770;
+
+      --border-subtle: #C5D4D8;
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+
+      --shadow-soft: 0 16px 40px rgba(2, 54, 83, 0.18);
+
       --sidebar-w: 260px;
     }
     *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin:0; padding:0; min-height:100%; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif; color: var(--cb-text-main); background: var(--cb-bg); }
+    html, body { margin:0; padding:0; min-height:100%; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif; color: var(--text-main); background: var(--bg); }
     a { color: inherit; text-decoration: none; }
     button { border:0; background:none; cursor:pointer; }
     /* APP SHELL */
@@ -33,121 +43,74 @@
     .sidebar { background: linear-gradient(180deg, #023653 0%, #000000 100%); color:#E5E7EB; border-right:1px solid #000000; padding:18px; display:flex; flex-direction:column; gap:18px; position:sticky; top:0; height:100vh; align-self:start; z-index:40; box-shadow:10px 0 30px rgba(0,0,0,0.5); }
     @media(max-width:900px){ .sidebar{position:static;height:auto;flex-direction:row;align-items:center;justify-content:space-between;box-shadow:none;} }
     .brand{display:flex;align-items:center;gap:10px;}
-    .brand-mark{width:36px;height:36px;border-radius:999px;background:linear-gradient(135deg,var(--cb-accent),var(--cb-accent-strong));display:flex;align-items:center;justify-content:center;color:#f9fafb;font-weight:800;font-size:0.9rem;box-shadow:0 0 0 2px #000;}
+    .brand-mark{width:36px;height:36px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-strong));display:flex;align-items:center;justify-content:center;color:#f9fafb;font-weight:800;font-size:0.9rem;box-shadow:0 0 0 2px #000;}
     .brand-text{display:flex;flex-direction:column;gap:2px;}
     .brand-title{font-size:1rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#F9FAFB;}
     .brand-subtitle{font-size:0.72rem;color:#D1E2F2;}
-    .nav{display:flex;flex-direction:column;gap:4px;margin-top:6px;}
-    @media(max-width:900px){.nav{flex-direction:row;overflow-x:auto;margin-top:0;}}
-    .nav-link{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;position:relative;border-radius:10px;font-size:0.86rem;color:#e5e7eb;background:rgba(2,16,32,0.8);border:1px solid transparent;transition:background .16s,border-color .16s,box-shadow .16s,transform .12s,color .16s;white-space:nowrap;}
-    .nav-link:hover{background:#011524;border-color:var(--cb-accent);color:#fff;box-shadow:0 8px 18px rgba(0,0,0,0.6);transform:translateY(-1px);}
-    .nav-link.active{background:linear-gradient(120deg,var(--cb-accent),var(--cb-accent-strong));color:#fff;font-weight:600;box-shadow:0 10px 26px rgba(0,0,0,0.7);border-color:transparent;}
-    .nav-link.has-unread::after{content:"";position:absolute;top:6px;right:8px;width:8px;height:8px;border-radius:999px;background:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,0.18);}
-    .site-main{padding:0;display:flex;flex-direction:column;gap:16px;background:radial-gradient(circle at top left, rgba(136,180,190,0.22), transparent 60%), var(--cb-bg);} 
+    .site-main{padding:0;display:flex;flex-direction:column;gap:16px;background:radial-gradient(circle at top left, rgba(136,180,190,0.22), transparent 60%), var(--bg);} 
     .site-main-inner{padding:0 22px 28px;display:flex;flex-direction:column;gap:24px;}
     @media(max-width:900px){.site-main-inner{padding:0 14px 22px;}}
-    .site-header{margin:0 0 18px;padding:14px 24px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--cb-border-subtle);background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10;box-shadow:0 6px 16px rgba(2,54,83,0.08);width:100%;}
+    .site-header{margin:0 0 18px;padding:14px 24px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border-subtle);background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10;box-shadow:0 6px 16px rgba(2,54,83,0.08);width:100%;}
     @media(max-width:640px){.site-header{flex-wrap:wrap;padding:12px 16px 10px;margin-bottom:16px;}}
     .site-header-title{display:flex;flex-direction:column;gap:4px;}
     .site-header-title h1{margin:0;font-size:1.18rem;letter-spacing:0.12em;text-transform:uppercase;color:#023653;}
-    .site-header-title span{font-size:0.86rem;color:var(--cb-text-muted);}
+    .site-header-title span{font-size:0.86rem;color:var(--text-muted);}
     .header-actions{display:inline-flex;gap:8px;flex-wrap:wrap;align-items:center;}
     .toolbar{display:flex;align-items:center;gap:10px;}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:7px 12px;border-radius:var(--cb-radius-pill);font-size:0.8rem;font-weight:500;border:1px solid var(--cb-border-subtle);background:#fff;color:var(--cb-text-main);cursor:pointer;text-decoration:none;transition:background .16s,border-color .16s,box-shadow .16s,transform .12s,color .12s;}
-    .btn:hover{background:var(--cb-card-soft);border-color:var(--cb-accent);box-shadow:0 8px 20px rgba(2,54,83,0.16);transform:translateY(-1px);}
-    .btn-primary{border-color:transparent;background:linear-gradient(115deg,var(--cb-accent),var(--cb-accent-strong));color:#fff;box-shadow:0 10px 22px rgba(2,54,83,0.45);}
-    .btn-primary:hover{filter:brightness(1.05);box-shadow:0 12px 26px rgba(2,54,83,0.55);}
-    .btn-sm{padding:6px 10px;font-size:0.78rem;}
-    .profile-button{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--cb-border-subtle);box-shadow:0 6px 16px rgba(2,54,83,0.08);transition:background .16s,box-shadow .16s,transform .12s,border-color .12s;}
-    .profile-button:hover{background:var(--cb-card-soft);border-color:var(--cb-accent);box-shadow:0 10px 22px rgba(2,54,83,0.16);transform:translateY(-1px);}
-    .avatar-wrap{width:32px;height:32px;border-radius:999px;overflow:hidden;background:#D1D5DB;flex-shrink:0;}
-    .avatar-wrap img{width:100%;height:100%;object-fit:cover;}
-    .gear-icon{font-size:18px;color:var(--cb-accent);}
-    /* PROFILE MODAL (matches dashboard) */
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.38);display:none;z-index:2000;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px);}
-    .modal-overlay.is-open{display:flex;}
-    .modal{width:380px;max-width:100%;background:#FFFFFF;border-radius:18px;box-shadow:0 20px 44px rgba(0,0,0,0.35);border:1px solid var(--cb-border-subtle);overflow:hidden;animation:fadeInUp 0.22s ease-out forwards;color:var(--cb-text-main);}
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(10px) scale(0.98);}to{opacity:1;transform:translateY(0) scale(1);}}
-    .modal-header{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(120deg,var(--cb-accent),var(--cb-accent-strong));color:#FFFFFF;}
-    .modal-header h3{margin:0;font-size:0.96rem;}
-    .modal-close{font-size:1.4rem;line-height:1;background:transparent;color:#E5E7EB;border:none;cursor:pointer;}
-    .modal-body{padding:12px 16px 16px;font-size:0.9rem;background:var(--cb-card-soft);}
-    .profile-modal-layout{display:flex;flex-direction:column;gap:12px;}
-    .profile-card{border-radius:14px;border:1px solid var(--cb-border-subtle);background:#FFFFFF;box-shadow:0 10px 20px rgba(0,0,0,0.12);overflow:hidden;}
-    .profile-card-header{position:relative;padding:24px 18px 40px;text-align:center;color:var(--cb-text-main);background:linear-gradient(135deg,var(--cb-card-soft) 0%,#FFFFFF 60%);}
-    .profile-card-header p{margin:0;font-size:0.78rem;color:var(--cb-text-muted);}
-    .profile-card-header h4{margin:6px 0 0;font-size:1.05rem;color:var(--cb-accent-strong);}
-    .profile-tagline{margin-top:3px;font-size:0.8rem;color:var(--cb-text-muted);}
-    .profile-avatar-shell{position:absolute;left:50%;bottom:-28px;transform:translateX(-50%);width:70px;height:70px;border-radius:999px;border:3px solid #FFFFFF;overflow:hidden;background:#D1D5DB;box-shadow:0 10px 24px rgba(0,0,0,0.3);}
-    .profile-avatar-shell img{width:100%;height:100%;object-fit:cover;}
-    .profile-card-main{padding:40px 16px 14px;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;}
-    .profile-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;font-size:0.8rem;}
-    .profile-detail-item{background:var(--cb-card-soft);border-radius:10px;padding:6px 8px;border:1px solid var(--cb-border-subtle);}
-    .profile-detail-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--cb-text-muted);margin-bottom:1px;}
-    .profile-detail-value{font-size:0.86rem;color:var(--cb-text-main);}
-    .profile-quick-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;}
-    .p-btn{padding:6px 10px;border-radius:999px;border:1px solid var(--cb-border-subtle);background:#FFFFFF;font-size:0.8rem;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;color:var(--cb-text-main);transition:background 0.14s ease,border-color 0.14s ease,box-shadow 0.14s ease,transform 0.14s ease;}
-    .p-btn-primary{background:linear-gradient(120deg,var(--cb-accent),var(--cb-accent-strong));color:#FFFFFF;border-color:transparent;box-shadow:0 8px 18px rgba(37,99,235,0.5);}
-    .p-btn-primary:hover{filter:brightness(1.05);transform:translateY(-1px);}
-    .p-btn-ghost{background:var(--cb-card-soft);}
-    .p-btn-ghost:hover{background:var(--cb-bg-soft);}
-    .p-btn-logout{background:#FEE2E2;border-color:#FECACA;color:#B91C1C;}
-    .p-btn-logout:hover{background:#FECACA;}
-    .profile-quick-links{border-radius:14px;border:1px solid var(--cb-border-subtle);background:#FFFFFF;padding:10px 12px;font-size:0.8rem;color:var(--cb-text-main);box-shadow:0 10px 22px rgba(0,0,0,0.08);}
-    .profile-quick-links h4{margin:0 0 4px;font-size:0.84rem;color:var(--cb-accent-strong);}
-    .profile-quick-links ul{list-style:none;padding:0;margin:0;}
-    .profile-quick-links li+li{margin-top:3px;}
-    .profile-quick-links a{color:var(--cb-accent);}
-    .profile-quick-links a:hover{text-decoration:underline;color:var(--cb-accent-strong);}
-    .profile-footnote{font-size:0.78rem;color:var(--cb-text-muted);margin-top:6px;}
-    /* Existing buddies styles */
-    .buddies-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 18px; }
-    @media (max-width: 640px) { .buddies-header { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 16px; } }
-    .buddies-title-block { display: flex; flex-direction: column; gap: 4px; }
-    .buddies-title-block h1 { margin: 0; font-size: 1.32rem; letter-spacing: 0.16em; text-transform: uppercase; }
-    .buddies-title-block p { margin: 0; font-size: 0.86rem; color: var(--cb-text-muted); }
-    .buddies-pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-    .buddies-badge { padding: 5px 12px; border-radius: var(--cb-radius-pill); background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(56, 189, 248, 0.6); font-size: 0.8rem; color: #0369a1; display: inline-flex; align-items: center; gap: 6px; }
-    .buddies-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
-    @media (max-width: 640px) { .buddies-meta { align-items: flex-start; } }
-    .buddies-meta-chip { padding: 4px 10px; border-radius: var(--cb-radius-pill); background: rgba(15, 23, 42, 0.04); border: 1px solid rgba(148, 163, 184, 0.5); font-size: 0.78rem; color: var(--cb-text-muted); }
-    .buddies-grid { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.6fr); gap: 18px; align-items: flex-start; }
-    @media (max-width: 960px) { .buddies-grid { grid-template-columns: minmax(0, 1fr); } }
-    .buddies-card { background: var(--cb-card); border-radius: var(--cb-radius-lg); border: 1px solid var(--cb-border-subtle); box-shadow: var(--cb-shadow-soft); padding: 14px 16px 13px; position: relative; overflow: hidden; }
-    .buddies-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 55%); opacity: 0.45; }
-    .buddies-card-inner { position: relative; z-index: 1; }
-    .buddies-card-header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
-    .buddies-card-header h2 { margin: 0; font-size: 0.98rem; }
-    .buddies-card-header span { font-size: 0.78rem; color: var(--cb-text-muted); }
-    .buddies-section-sub { margin: 0 0 8px; font-size: 0.78rem; color: var(--cb-text-muted); }
-    .buddies-list { list-style: none; padding: 0; margin: 4px 0 0; }
-    .buddies-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 9px; border-radius: var(--cb-radius-md); background: var(--cb-card-soft); border: 1px solid #e2e8f0; margin-bottom: 7px; transition: box-shadow 0.15s ease, transform 0.12s ease, border-color 0.15s ease, background 0.15s ease; }
-    .buddies-item:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(148, 163, 184, 0.5); border-color: #bfdbfe; background: #ffffff; }
+    .section-title-block h1 { margin: 0; font-size: 1.32rem; letter-spacing: 0.16em; text-transform: uppercase; }
+    .section-title-block p { margin: 0; font-size: 0.86rem; color: var(--text-muted); }
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.6fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+    @media (max-width: 960px) {
+      .content-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    /* restore box styling for cards */
+    .panel-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px 13px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-card::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 55%); opacity: 0.45; }
+    .panel-card-inner { position: relative; z-index: 1; }
+    .panel-card-header h2 { margin: 0; font-size: 0.98rem; }
+    .panel-card-header span { font-size: 0.78rem; color: var(--text-muted); }
+    .item-list { list-style: none; padding: 0; margin: 4px 0 0; }
+    .item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 9px; border-radius: var(--radius-md); background: var(--card-soft); border: 1px solid #e2e8f0; margin-bottom: 7px; transition: box-shadow 0.15s ease, transform 0.12s ease, border-color 0.15s ease, background 0.15s ease; }
+    .item:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(148, 163, 184, 0.5); border-color: #bfdbfe; background: #ffffff; }
     .buddy-meta { display: flex; align-items: center; gap: 8px; min-width: 0; }
-    .buddy-avatar { width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, var(--cb-accent), var(--cb-accent-strong)); color: #eff6ff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 600; box-shadow: 0 0 0 2px #E8F5F8; flex-shrink: 0; }
+    .buddy-avatar { width: 32px; height: 32px; border-radius: 999px; background: linear-gradient(135deg, var(--accent), var(--accent-strong)); color: #eff6ff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 600; box-shadow: 0 0 0 2px #E8F5F8; flex-shrink: 0; }
     .buddy-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
     .buddy-name { font-size: 0.9rem; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-    .buddy-tag { font-size: 0.76rem; color: var(--cb-text-muted); }
+    .buddy-tag { font-size: 0.76rem; color: var(--text-muted); }
     .buddy-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
     .buddy-inline-form { margin: 0; }
     .buddy-inline-form button { font-family: inherit; }
-    .btn-chip { border-radius: var(--cb-radius-pill); border: 1px solid var(--cb-border-subtle); padding: 5px 10px; font-size: 0.76rem; background: #ffffff; color: var(--cb-text-main); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease; }
+    .btn-chip { border-radius: var(--radius-pill); border: 1px solid var(--border-subtle); padding: 5px 10px; font-size: 0.76rem; background: #ffffff; color: var(--text-main); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease; }
     .btn-chip:hover { background: #f8fafc; border-color: #cbd5e1; box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12); transform: translateY(-1px); }
     .btn-chip-danger { border-color: rgba(248, 113, 113, 0.7); background: #fef2f2; color: #b91c1c; }
     .btn-chip-danger:hover { background: #fee2e2; border-color: #f97373; }
     .btn-chip-success { border-color: rgba(34, 197, 94, 0.7); background: #ecfdf3; color: #15803d; }
     .btn-chip-success:hover { background: #dcfce7; }
     .btn-chip-muted { border-color: #e5e7eb; color: #4b5563; background: #f9fafb; }
-    .badge-small { padding: 2px 8px; border-radius: var(--cb-radius-pill); font-size: 0.72rem; background: var(--cb-bg-soft); color: var(--cb-accent-strong); white-space: nowrap; }
-    .buddies-requests-stack { margin-top: 4px; }
-    .buddies-requests-stack > div, .buddies-requests-stack > p { margin-bottom: 6px; }
+    .badge-small { padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.72rem; background: var(--bg-soft); color: var(--accent-strong); white-space: nowrap; }
+    .requests-stack { margin-top: 4px; }
+    .requests-stack > div, .requests-stack > p { margin-bottom: 6px; }
     .request-user { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-    .request-label { font-size: 0.78rem; color: var(--cb-text-muted); }
+    .request-label { font-size: 0.78rem; color: var(--text-muted); }
     .send-request-form { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-    .send-request-form select { border-radius: var(--cb-radius-pill); border: 1px solid var(--cb-border-subtle); padding: 7px 11px; font-size: 0.8rem; min-width: 220px; background: #ffffff; }
-    .send-request-form button { border-radius: var(--cb-radius-pill); border: none; padding: 7px 14px; font-size: 0.8rem; font-weight: 500; cursor: pointer; background: linear-gradient(135deg, var(--cb-accent), var(--cb-accent-strong)); color: #eff6ff; box-shadow: 0 10px 22px rgba(2, 54, 83, 0.45); transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease; }
-    .send-request-form button:hover { background: linear-gradient(135deg, #045872, var(--cb-accent-strong)); box-shadow: 0 12px 30px rgba(2, 54, 83, 0.6); transform: translateY(-1px); }
-    .empty-text { font-size: 0.8rem; color: var(--cb-text-muted); padding: 4px 0; }
+    .send-request-form select { border-radius: var(--radius-pill); border: 1px solid var(--border-subtle); padding: 7px 11px; font-size: 0.8rem; min-width: 220px; background: #ffffff; }
+    .send-request-form button { border-radius: var(--radius-pill); border: none; padding: 7px 14px; font-size: 0.8rem; font-weight: 500; cursor: pointer; background: linear-gradient(135deg, var(--accent), var(--accent-strong)); color: #eff6ff; box-shadow: 0 10px 22px rgba(2, 54, 83, 0.45); transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease; }
+    .send-request-form button:hover { background: linear-gradient(135deg, #045872, var(--accent-strong)); box-shadow: 0 12px 30px rgba(2, 54, 83, 0.6); transform: translateY(-1px); }
+    .empty-text { font-size: 0.8rem; color: var(--text-muted); padding: 4px 0; }
   </style>
 </head>
 <body>
@@ -263,21 +226,21 @@
         </div>
       </div>
 
-          <div class="buddies-header">
-            <div class="buddies-title-block">
+          <div class="section-header">
+            <div class="section-title-block">
               <h1>Buddies</h1>
               <p>Manage your accountability partners, friend requests, and outgoing invites.</p>
-              <div class="buddies-pill-row">
-                <div class="buddies-badge">
+              <div class="pill-row">
+                <div class="badge">
                   <span> Stay accountable together</span>
                 </div>
               </div>
             </div>
-            <div class="buddies-meta">
-              <div class="buddies-meta-chip">
+            <div class="section-meta">
+              <div class="meta-chip">
                 {% if buddies %}{{ buddies|length }} active buddy(ies){% else %}No active buddies yet{% endif %}
               </div>
-              <div class="buddies-meta-chip">
+              <div class="meta-chip">
                 {% with incoming_count=incoming|length outgoing_count=outgoing|length %}
                   {{ incoming_count }} incoming  {{ outgoing_count }} outgoing
                 {% endwith %}
@@ -285,20 +248,20 @@
             </div>
           </div>
 
-          <div class="buddies-grid">
+          <div class="content-grid">
             <div>
-              <section class="buddies-card">
-                <div class="buddies-card-inner">
-                  <div class="buddies-card-header">
+              <section class="panel-card">
+                <div class="panel-card-inner">
+                  <div class="panel-card-header">
                     <div>
                       <h2>Your buddies</h2>
-                      <p class="buddies-section-sub">People you?re actively connected with in Calibration.</p>
+                      <p class="section-subtitle">People you?re actively connected with in Calibration.</p>
                     </div>
                     <span class="badge-small">{% if buddies %}{{ buddies|length }} total{% else %}0 buddies{% endif %}</span>
                   </div>
-                  <ul class="buddies-list">
+                  <ul class="item-list">
                     {% for b in buddies %}
-                      <li class="buddies-item">
+                      <li class="item">
                         <div class="buddy-meta">
                           <div class="buddy-avatar">{{ b.user.username|slice:":2"|upper }}</div>
                           <div class="buddy-main">
@@ -322,12 +285,12 @@
                 </div>
               </section>
 
-              <section class="buddies-card" style="margin-top: 14px;">
-                <div class="buddies-card-inner">
-                  <div class="buddies-card-header">
+              <section class="panel-card" style="margin-top: 14px;">
+                <div class="panel-card-inner">
+                  <div class="panel-card-header">
                     <div>
                       <h2>Send a buddy request</h2>
-                      <p class="buddies-section-sub">Choose a user to invite as an accountability partner.</p>
+                      <p class="section-subtitle">Choose a user to invite as an accountability partner.</p>
                     </div>
                   </div>
                   <form action="{% url 'buddy-send' %}" method="post" class="send-request-form">
@@ -340,18 +303,18 @@
             </div>
 
             <div>
-              <section class="buddies-card">
-                <div class="buddies-card-inner">
-                  <div class="buddies-card-header">
+              <section class="panel-card">
+                <div class="panel-card-inner">
+                  <div class="panel-card-header">
                     <div>
                       <h2>Incoming requests</h2>
-                      <p class="buddies-section-sub">Other users who want to connect with you.</p>
+                      <p class="section-subtitle">Other users who want to connect with you.</p>
                     </div>
                     <span class="badge-small">{% if incoming %}{{ incoming|length }} pending{% else %}No pending{% endif %}</span>
                   </div>
-                  <div class="buddies-requests-stack">
+                  <div class="requests-stack">
                     {% for r in incoming %}
-                      <div class="buddies-item">
+                      <div class="item">
                         <div>
                           <div class="request-user">
                             <div class="buddy-avatar">{{ r.sender.user.username|slice:":2"|upper }}</div>
@@ -377,18 +340,18 @@
                 </div>
               </section>
 
-              <section class="buddies-card" style="margin-top: 14px;">
-                <div class="buddies-card-inner">
-                  <div class="buddies-card-header">
+              <section class="panel-card" style="margin-top: 14px;">
+                <div class="panel-card-inner">
+                  <div class="panel-card-header">
                     <div>
                       <h2>Outgoing requests</h2>
-                      <p class="buddies-section-sub">Requests you've sent that are still waiting on a response.</p>
+                      <p class="section-subtitle">Requests you've sent that are still waiting on a response.</p>
                     </div>
                     <span class="badge-small">{% if outgoing %}{{ outgoing|length }} pending{% else %}No pending{% endif %}</span>
                   </div>
-                  <div class="buddies-requests-stack">
+                  <div class="requests-stack">
                     {% for r in outgoing %}
-                      <div class="buddies-item">
+                      <div class="item">
                         <div>
                           <div class="request-user">
                             <div class="buddy-avatar">{{ r.receiver.user.username|slice:":2"|upper }}</div>
@@ -421,37 +384,6 @@
 </div>
 
 <!-- PROFILE MODAL JS -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const profilePill = document.getElementById("profile-button");
-    const modal = document.getElementById("profile-modal");
-    const closeBtn = document.getElementById("modal-close");
-
-    if (!profilePill || !modal || !closeBtn) return;
-
-    function openModal() {
-      modal.classList.add("is-open");
-      modal.setAttribute("aria-hidden", "false");
-    }
-
-    function closeModal() {
-      modal.classList.remove("is-open");
-      modal.setAttribute("aria-hidden", "true");
-    }
-
-    profilePill.addEventListener("click", openModal);
-    closeBtn.addEventListener("click", closeModal);
-
-    modal.addEventListener("click", function (e) {
-      if (e.target === modal) closeModal();
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && modal.classList.contains("is-open")) {
-        closeModal();
-      }
-    });
-  });
-</script>
+{% include 'partials/profile_modal_script.html' %}
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Sign up – Calibration</title>
+  <title>Sign up - Calibration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -107,20 +107,20 @@
         <div class="field">
           <label class="label" for="{{ form.username.id_for_label|default:'id_username' }}">Username</label>
           {{ form.username|default:"<input type='text' id='id_username' name='username' placeholder='yourusername'>" }}
-          {% if form.username.help_text %}<div class="help">{{ form.username.help_text|safe }}</div>{% endif %}
+          {% if form.username.help_text %}<div class="help">{{ form.username.help_text }}</div>{% endif %}
           {% if form.username.errors %}<div class="errors">{{ form.username.errors }}</div>{% endif %}
         </div>
 
         <div class="field">
           <label class="label" for="{{ form.password1.id_for_label|default:'id_password1' }}">Password</label>
-          {{ form.password1|default:"<input type='password' id='id_password1' name='password1' placeholder='••••••••'>" }}
-          {% if form.password1.help_text %}<div class="help">{{ form.password1.help_text|safe }}</div>{% endif %}
+          {{ form.password1|default:"<input type='password' id='id_password1' name='password1' placeholder='--------'>" }}
+          {% if form.password1.help_text %}<div class="help">{{ form.password1.help_text }}</div>{% endif %}
           {% if form.password1.errors %}<div class="errors">{{ form.password1.errors }}</div>{% endif %}
         </div>
 
         <div class="field">
           <label class="label" for="{{ form.password2.id_for_label|default:'id_password2' }}">Confirm Password</label>
-          {{ form.password2|default:"<input type='password' id='id_password2' name='password2' placeholder='••••••••'>" }}
+          {{ form.password2|default:"<input type='password' id='id_password2' name='password2' placeholder='--------'>" }}
           {% if form.password2.errors %}<div class="errors">{{ form.password2.errors }}</div>{% endif %}
         </div>
 

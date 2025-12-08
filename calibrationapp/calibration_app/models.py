@@ -3,14 +3,17 @@ from django.utils import timezone
 from datetime import date
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.validators import FileExtensionValidator
+from django.core.validators import (
+    FileExtensionValidator,
+    MaxValueValidator,
+    MinValueValidator,
+    RegexValidator,
+)
 
 
 
 
-
-
-#----skill----#
+#Skill Model
 
 class Skill(models.Model):
     account_user = models.ForeignKey(User, on_delete=models.CASCADE , null=True, blank=True)
@@ -20,8 +23,6 @@ class Skill(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     xp = models.PositiveIntegerField(default=0)
 
-
-    
     def __str__(self):
         return self.name
     
@@ -62,11 +63,9 @@ class Habit(models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField(blank=True, null=True)
     habit_type = models.CharField(max_length=5, choices=HABIT_TYPE_CHOICES, default=Build)
-    #frequency = models.CharField(max_length=50)  # e.g., daily, weekly
     goal_start = models.DateField(default=date.today)
     goal_end = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
-
 
     def __str__(self):
         return f"{self.name} [{self.habit_type}]"
@@ -77,8 +76,7 @@ class Habit(models.Model):
 
 
 
-
-  
+#-------Goals Model-------#
 class Goals(models.Model):
   Short_Term,Long_Term ,LifeStyle = ('Short Term' ,'Long Term', 'Lifestyle')
   goal_OP = [(Short_Term, 'Short Term'),  (Long_Term, 'Long Term'), (LifeStyle, 'Lifestyle')]
@@ -102,7 +100,10 @@ class Goals(models.Model):
     ]
   status = models.CharField(max_length=20, choices=STATUS, default="not_started")
 
-  priority = models.IntegerField(default=1)  # 1 = low, 5 = critical
+  priority = models.IntegerField(
+      default=1,
+      validators=[MinValueValidator(1), MaxValueValidator(5)],
+  )  # 1 = low, 5 = critical
 
   reason = models.TextField(blank=True, null=True)  # personal motivation
   reflection = models.TextField(blank=True, null=True)  # end of goal review
@@ -121,9 +122,9 @@ class Goals(models.Model):
 class Reward(models.Model):
     account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     tokens = models.PositiveIntegerField(default=0)
-     #This function was edited by AI
+    
    
-
+#-------Badge Model-------#
 class Badge(models.Model):
     code = models.CharField(max_length=50, unique=True)
     title = models.CharField(max_length=100)
@@ -132,8 +133,7 @@ class Badge(models.Model):
     def __str__(self):
         return f"{self.title} - {self.code}"
     
-
-
+#-------User Badge Model-------#
 class User_Badge(models.Model):
     account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True )
     badge = models.ForeignKey(Badge, on_delete=models.CASCADE)
@@ -145,15 +145,15 @@ class User_Badge(models.Model):
     def __str__(self):
         return f"{self.account_user.username} - {self.badge.title}"
 
-
-
-
-
+#This Model was created with the help of ChatGPT to track user moods over time.
+#-------Mood Model-------#
 class Mood(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # core mood rating
-    mood_score = models.IntegerField()  # e.g., 1–10 or -5 to +5
+    mood_score = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(10)]
+    )  # e.g., 1–10
 
     # optional mood category
     MOOD_TYPES = [
@@ -170,10 +170,26 @@ class Mood(models.Model):
     note = models.TextField(blank=True, null=True)  # journal-like free text
 
   
-    energy_level = models.IntegerField(blank=True, null=True)  # 1–10
-    sleep_hours = models.FloatField(blank=True, null=True)
-    stress_level = models.IntegerField(blank=True, null=True)  # 1–10
-    social_interaction = models.IntegerField(blank=True, null=True)  # e.g., 1–5 scale
+    energy_level = models.IntegerField(
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(1), MaxValueValidator(10)],
+    )  # 1–10
+    sleep_hours = models.FloatField(
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(0)],
+    )
+    stress_level = models.IntegerField(
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(1), MaxValueValidator(10)],
+    )  # 1–10
+    social_interaction = models.IntegerField(
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+    )  # e.g., 1–5 scale
 
     related_goal = models.ForeignKey(Goals, on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -186,12 +202,11 @@ class Mood(models.Model):
 
 
 
-
+#-------Journal Model-------#
 class Journal(models.Model):
     PRACTICE, REFLECTION, URGE, LAPSE, SUCCESS = ("PRACTICE","REFLECTION","URGE","LAPSE","SUCCESS")
     ENTRY_TYPES = [(PRACTICE,"Practice"),(REFLECTION,"Reflection"),(URGE,"Urge"),(LAPSE,"Lapse"),(SUCCESS,"Success")]
-  #  OP_Skill, OP_Habit = ("SKILL","HABIT")
-   # Journal_TYPES = [(OP_Skill,"Skill"),(OP_Habit,"Habit")]
+ 
     
     account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     skill = models.ForeignKey(Skill, null=True, blank=True, on_delete=models.SET_NULL)
@@ -205,8 +220,6 @@ class Journal(models.Model):
     class Meta:
         unique_together = ('habit', 'date') # suggested by github's copilot assitant to avoid duplicate entries.
         
-    
-       
 
     def __str__(self):
         return f"{self.note} - {self.date} "
@@ -239,12 +252,21 @@ class Task(models.Model):
 
 
 
-
+#This model was created with the help of ChatGPT to manage user profiles and friendships.
 #------User_Profile------#
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=20, blank=True)
+    phone_number = models.CharField(
+        max_length=20,
+        blank=True,
+        validators=[
+            RegexValidator(
+                regex=r"^[0-9+()\-\s]{7,20}$",
+                message="Enter a valid phone number (digits, +, space, (), -).",
+            )
+        ],
+    )
     bio = models.TextField(max_length=500, blank=True)
     profile_picture = models.ImageField(
         upload_to='profile_pic/',
@@ -277,7 +299,7 @@ class Profile(models.Model):
             if size > max_bytes:
                 raise ValidationError({"profile_picture": "Profile picture must be 2MB or smaller."})
 
-
+#-------Topics Model-------#
 class Topics(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
@@ -288,7 +310,7 @@ class Topics(models.Model):
     def __str__(self):
         return self.name
 
-
+#-------Community Group Model-------#
 class CommunityGroup(models.Model):
     CATEGORY_CHOICES = [
         ("General", "General"),
@@ -314,7 +336,7 @@ class CommunityGroup(models.Model):
     def member_count(self):
         return self.members.count()
 
-
+#-------Forum Model-------#
 class Forum(models.Model):
     topic = models.ForeignKey(Topics, on_delete=models.CASCADE)
     group = models.ForeignKey(
@@ -337,7 +359,7 @@ class Forum(models.Model):
     def __str__(self):
         return self.title
 
-
+#-------Forum Vote Model-------#
 class ForumVote(models.Model):
     UP = 1
     DOWN = -1
@@ -355,6 +377,7 @@ class ForumVote(models.Model):
         return f"{self.user} -> {self.forum} ({self.value})"
 
 
+#-------Post Model-------#
 class Post(models.Model):
     forum = models.ForeignKey(Forum, blank=True, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -369,6 +392,8 @@ class Post(models.Model):
         return f"Reply by {self.author} on {self.forum}"
 
 
+#This model was edited by ChatGpt to manage buddy requests and friendships.
+#-------Buddy Request Model-------#
 class BuddyRequest(models.Model):
     PENDING, ACCEPTED, DECLINED, CANCELED = ("pending", "accepted", "declined", "canceled")
     buddy_status = [(PENDING, "pending"), (ACCEPTED, "accepted"), (DECLINED, "declined"), (CANCELED, "canceled")]

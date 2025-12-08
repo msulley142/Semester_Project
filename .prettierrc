@@ -1,0 +1,17 @@
+{
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "printWidth": 100,
+  "semi": true,
+  "endOfLine": "lf",
+  "plugins": ["prettier-plugin-django"],
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "django"
+      }
+    }
+  ]
+}

@@ -58,12 +58,9 @@ def award_badge(account_user, code, title, description=''):
 
 
 
-
+#----Badges for skill level ups----#
 def skill_level_badges(account_user, skill: Skill, previous_level: int):
-    """
-    Award badges when a skill levels up and when multiple skills reach
-    level thresholds.
-    """
+
     new_level = skill.level
 
     # Single-skill milestones
@@ -84,6 +81,7 @@ def skill_level_badges(account_user, skill: Skill, previous_level: int):
         award_badge(account_user, "MULTI_SKILL_LEVEL_10", "Multiple Skills at Level 10")
 
 
+#----Badges for journal entries----#
 def journal_entry_create(journal: Journal):
     account_user = journal.account_user
 
@@ -112,6 +110,7 @@ def journal_entry_create(journal: Journal):
     elif entry_total == 10:
         award_badge(account_user, "10th_Journal", "Tenth Journal", "Logged your Tenth journal entry!!!")
 
+#----Badges for practice streaks----#
     streak_notify(account_user)
     if journal.habit and journal.habit.habit_type == 'Break':
         abst_badge(account_user, journal.habit)
@@ -140,7 +139,7 @@ def streak_notify(account_user):
     if streak >= 7:
          award_badge(account_user, "7_Practice_Streak", "7-day Practice Streak" )
 
-
+#----Badges for abstinence streaks----#
 def abst_badge(account_user, habit):
     tod = timezone.localdate()
     streak = 0
@@ -244,7 +243,7 @@ def skill_badge_award(skill: Skill):
 
 
 
-#def quest_completion_proc(account_user):
+
 
 def goal_award_updater(goal: Goals):
     xp = 100

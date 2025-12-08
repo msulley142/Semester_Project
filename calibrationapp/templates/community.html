@@ -1,39 +1,39 @@
-﻿{% load static %}
+﻿<!--The html template was heavily edited using AI Generated Code -->
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Community · Calibration</title>
+  <title>Community - Calibration</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
   <style>
-    :root {
-      /* --- SHARED CALIBRATION THEME: OCEAN TEAL --- */
+        :root {
+      /* --- CALIBRATION THEME --- */
+      --bg: #EEEEEE;
+      --bg-soft: #C3E4E9;
+
       --card: #FFFFFF;
-      --card-soft: #C3E4E9;
+      --card-soft: #EAF3F6;
 
-      /* teal primary scale derived from your accent colors */
-      --primary-200: #88B4BE;
-      --primary-300: #56A6B8;
-      --primary-500: #056C89; /* accent */
-      --primary-600: #045A72;
-      --primary-700: #03465A;
-      --primary-800: #023653; /* accent-strong */
+      --accent: #056C89;
+      --accent-soft: #88B4BE;
+      --accent-strong: #023653;
 
-      --text-main: #023653;
-      --text-muted: #4b6470;
-      --border-subtle: #B7CED4;
+      --text-main: #022432;
+      --text-muted: #4B6770;
+
+      --border-subtle: #C5D4D8;
 
       --radius-lg: 18px;
+      --radius-md: 12px;
       --radius-pill: 999px;
 
       --shadow-soft: 0 16px 40px rgba(2, 54, 83, 0.18);
 
-      /* aliases */
-      --accent: #056C89;
-      --accent-soft: #88B4BE;
-      --accent-strong: #023653;
+      --sidebar-w: 260px;
     }
 
     * { box-sizing: border-box; }
@@ -113,53 +113,6 @@
   .brand-subtitle {
     font-size: 0.72rem;
     color: #D1E2F2;
-  }
-
-  .nav {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 6px;
-  }
-  .nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 10px;
-    position: relative;
-    border-radius: 10px;
-    font-size: 0.86rem;
-    color: #e5e7eb;
-    background: rgba(2, 16, 32, 0.8);
-    border: 1px solid transparent;
-    transition: background 0.16s ease, border-color 0.16s ease,
-                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
-  }
-  .nav-link:hover {
-    background: #011524;
-    border-color: #056C89;
-    color: #ffffff;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
-    transform: translateY(-1px);
-  }
-  .nav-link.active {
-    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
-    border-color: transparent;
-  }
-  .nav-link.has-unread::after {
-    content: "";
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
   }
 
   .site-header {
@@ -256,16 +209,16 @@
       transform: translateY(-1px);
       box-shadow: 0 10px 24px rgba(2, 54, 83, 0.18);
       background: var(--accent-soft);
-      border-color: var(--primary-300);
+      border-color: var(--accent);
     }
     .btn-primary {
-      background: linear-gradient(115deg, var(--primary-500), var(--primary-700));
+      background: linear-gradient(115deg, var(--accent), var(--accent-strong));
       border-color: transparent;
       color: #ffffff;
       box-shadow: 0 10px 24px rgba(3, 70, 90, 0.75);
     }
     .btn-primary:hover {
-      background: linear-gradient(115deg, var(--primary-600), var(--primary-800));
+      background: linear-gradient(115deg, var(--accent), var(--accent-strong));
       box-shadow: 0 12px 28px rgba(3, 70, 90, 0.85);
     }
     .btn-sm {
@@ -464,8 +417,8 @@
         color 0.14s ease;
     }
     .tab-pill.active {
-      background: var(--primary-500);
-      border-color: var(--primary-500);
+      background: var(--accent);
+      border-color: var(--accent);
       color: #f9fafb;
       font-weight: 600;
     }
@@ -501,13 +454,13 @@
     }
     .topic-item:hover {
       background: var(--card-soft);
-      border-color: var(--primary-200);
+      border-color: var(--accent-soft);
       box-shadow: 0 10px 22px rgba(2, 54, 83, 0.12);
       transform: translateY(-1px);
     }
     .topic-item.active {
       background: var(--accent-soft);
-      border-color: var(--primary-500);
+      border-color: var(--accent);
       color: var(--accent-strong);
       font-weight: 600;
     }
@@ -520,7 +473,7 @@
       width: 6px;
       height: 6px;
       border-radius: 999px;
-      background: var(--primary-500);
+      background: var(--accent);
     }
 
     /* small-screen filters drawer */
@@ -600,7 +553,7 @@
     }
     .thread-card:hover {
       transform: translateY(-2px);
-      border-color: var(--primary-200);
+      border-color: var(--accent-soft);
       box-shadow: 0 18px 40px rgba(2, 54, 83, 0.2);
       background: #FFFFFF;
     }
@@ -624,7 +577,7 @@
       justify-content: center;
       font-size: 0.8rem;
       font-weight: 600;
-      color: var(--primary-700);
+      color: var(--accent-strong);
       flex-shrink: 0;
     }
     .meta-dot {
@@ -738,7 +691,7 @@
       justify-content: center;
       font-size: 0.72rem;
       font-weight: 600;
-      color: var(--primary-700);
+      color: var(--accent-strong);
     }
 
     .groups-list {
@@ -765,7 +718,7 @@
     }
     .group-item:hover {
       background: var(--card-soft);
-      border-color: var(--primary-200);
+      border-color: var(--accent-soft);
       box-shadow: 0 10px 22px rgba(2, 54, 83, 0.16);
       transform: translateY(-1px);
     }
@@ -1294,7 +1247,7 @@
       <div class="brand-mark">CB</div>
       <div class="brand-text">
         <div class="brand-title">Calibration</div>
-        <div class="brand-subtitle">Discipline · Habits · Skills</div>
+        <div class="brand-subtitle">Discipline - Habits - Skills</div>
       </div>
     </div>
 
@@ -1457,8 +1410,8 @@
           <p class="filters-header-sub">Search and filter threads by topic.</p>
 
           <div class="search-input-wrap">
-            <input type="text" placeholder="Search for topics…" autocomplete="off">
-            <span>⌕</span>
+            <input type="text" placeholder="Search for topics..." autocomplete="off">
+            <span></span>
           </div>
 
           <div class="tabs-row" id="tabsRow">
@@ -1609,9 +1562,9 @@
                   <div class="thread-footer">
                     <form method="post" action="{% url 'forum_vote' thread.id %}" class="vote-form" data-thread="{{ thread.id }}" style="display:flex; gap:6px; align-items:center;">
                       {% csrf_token %}
-                      <button type="submit" name="vote" value="up" class="vote vote-up">▲</button>
+                      <button type="submit" name="vote" value="up" class="vote vote-up">^</button>
                       <span class="vote-count up-count" data-thread="{{ thread.id }}">{{ thread.up_count|default:0 }}</span>
-                      <button type="submit" name="vote" value="down" class="vote vote-down">▼</button>
+                      <button type="submit" name="vote" value="down" class="vote vote-down">v</button>
                       <span class="vote-count down-count" data-thread="{{ thread.id }}">{{ thread.down_count|default:0 }}</span>
                     </form>
                     <div class="thread-footer-spacer"></div>
@@ -1637,7 +1590,7 @@
               </a>
             {% empty %}
               <div class="empty">
-                No discussions yet. Click <strong>“Start a new topic”</strong> in the banner to open the first thread.
+                No discussions yet. Click <strong>"Start a new topic"</strong> in the banner to open the first thread.
               </div>
             {% endfor %}
           </div>
@@ -1653,7 +1606,7 @@
           </p>
           <div class="members-row">
             <span>Online indicator</span>
-            <span style="font-weight:600; color:#16a34a;">● Active</span>
+            <span style="font-weight:600; color:#16a34a;">* Active</span>
           </div>
           <button id="openThreadModal" class="btn btn-primary" style="width:100%; justify-content:center;">
             + New Discussion
@@ -1848,7 +1801,7 @@
       const data = await res.json().catch(() => null);
       if (data && data.ok) {
         const countEl = document.querySelector(`.comment-count[data-thread="${threadId}"]`);
-        if (countEl) {
+          if (countEl) {
           countEl.textContent = `💬 ${data.comment_count}`;
         }
         form.reset();
@@ -1903,38 +1856,7 @@
 });
 </script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const profilePill = document.getElementById("profile-button");
-    const modal = document.getElementById("profile-modal");
-    const closeBtn = document.getElementById("modal-close");
-
-    if (!profilePill || !modal || !closeBtn) return;
-
-    function openModal() {
-      modal.classList.add("is-open");
-      modal.setAttribute("aria-hidden", "false");
-    }
-
-    function closeModal() {
-      modal.classList.remove("is-open");
-      modal.setAttribute("aria-hidden", "true");
-    }
-
-    profilePill.addEventListener("click", openModal);
-    closeBtn.addEventListener("click", closeModal);
-
-    modal.addEventListener("click", function (e) {
-      if (e.target === modal) closeModal();
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && modal.classList.contains("is-open")) {
-        closeModal();
-      }
-    });
-  });
-</script>
+{% include 'partials/profile_modal_script.html' %}
 
 </body>
 </html>

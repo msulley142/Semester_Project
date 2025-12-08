@@ -1,77 +1,17 @@
+<!--The html template was heavily eddited using AI Generated Code -->
 {% load static %}
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Dashboard – Calibration</title>
+  <title>Dashboard - Calibration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
   <style>
-    :root {
-    
-      --bg-main: #EEEEEE;        
-      --card: #FFFFFF;          
-      --card-soft: #C3E4E9;     
-      --accent: #056C89;         
-      --accent-soft: #88B4BE;   
-      --accent-strong: #023653;  
-
-      --text-main: #02222E;
-      --text-muted: #5B6B75;
-     
-
-      --border-subtle: #D3DDE4;
-
-      --radius-lg: 16px;
-      --radius-pill: 999px;
-
-      --shadow-soft: 0 12px 26px rgba(2, 54, 83, 0.12);
-      --sidebar-w: 260px;
-
-      /* mapped “primary scale” so existing classes still work */
-     
-    }
-
-    *, *::before, *::after { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
-      color: var(--text-main);
-      background: var(--bg-main);
-    }
-
-  
-
-    a { color: inherit; text-decoration: none; }
-    button { border: 0; background: none; cursor: pointer; }
-    .muted { color: var(--text-muted); font-size: 0.86rem; }
-
-    .app-shell {
-      display: block;
-      min-height: 100vh;
-    }
-
-    /* ---- SIDEBAR (same vibe everywhere) ---- */
-    .sidebar {
-      position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 260px;
-    background: linear-gradient(180deg, #023653 0%, #000000 100%);
-    color: #e5e7eb;
-    border-right: 1px solid #000000;
-    padding: 18px 18px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    z-index: 40;
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
-    }
-
+    /* Overrides on shared layout */
+    .app-shell { display: block; min-height: 100vh; }
+    .sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: var(--sidebar-w); }
     @media (max-width: 900px) {
       .sidebar {
         position: static;
@@ -83,94 +23,10 @@
         padding: 14px 16px;
       }
     }
-
-    .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .brand-mark {
-    width: 36px;
-    height: 36px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #f9fafb;
-    font-weight: 800;
-    font-size: 0.9rem;
-    box-shadow: 0 0 0 2px #000000;
-  }
-
-  .brand-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .brand-title {
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: #F9FAFB;
-  }
-  .brand-subtitle {
-    font-size: 0.72rem;
-    color: #D1E2F2;
-  }
-
-  .nav {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 6px;
-  }
-  .nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 10px;
-    position: relative;
-    border-radius: 10px;
-    font-size: 0.86rem;
-    color: #e5e7eb;
-    background: rgba(2, 16, 32, 0.8);
-    border: 1px solid transparent;
-    transition: background 0.16s ease, border-color 0.16s ease,
-                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
-  }
-  .nav-link:hover {
-    background: #011524;
-    border-color: #056C89;
-    color: #ffffff;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
-    transform: translateY(-1px);
-  }
-  .nav-link.active {
-    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
-    border-color: transparent;
-  }
-  .nav-link.has-unread::after {
-    content: "";
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
-  }
     /* ---- MAIN LAYOUT ---- */
     .site-main {
       margin-left: var(--sidebar-w);
-      background: var(--bg-main);
+      background: var(--bg);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
@@ -244,96 +100,6 @@
       display: flex;
       align-items: center;
       gap: 10px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 7px 12px;
-      border-radius: var(--radius-pill);
-      font-size: 0.8rem;
-      font-weight: 500;
-      border: 1px solid var(--border-subtle);
-      background: #FFFFFF;
-      color: var(--text-main);
-      cursor: pointer;
-      text-decoration: none;
-      transition:
-        background 0.16s ease,
-        border-color 0.16s ease,
-        box-shadow 0.16s ease,
-        transform 0.12s ease,
-        color 0.12s ease;
-    }
-
-    .btn:hover {
-      background: var(--card-soft);
-      border-color: var(--accent-soft);
-      box-shadow: 0 8px 20px rgba(2, 54, 83, 0.16);
-      transform: translateY(-1px);
-    }
-
-    .btn-primary {
-      border-color: transparent;
-      background: linear-gradient(115deg, var(--accent), var(--accent-strong));
-      color: #FFFFFF;
-      box-shadow: 0 10px 22px rgba(2, 54, 83, 0.45);
-    }
-
-    .btn-primary:hover {
-      filter: brightness(1.04);
-      box-shadow: 0 12px 26px rgba(2, 54, 83, 0.55);
-    }
-
-    .btn-sm {
-      padding: 6px 10px;
-      font-size: 0.78rem;
-    }
-
-    /* PROFILE BUTTON */
-    .profile-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: #FFFFFF;
-      border: 1px solid var(--border-subtle);
-      box-shadow: 0 6px 16px rgba(2, 54, 83, 0.08);
-      transition:
-        background 0.16s ease,
-        box-shadow 0.16s ease,
-        transform 0.12s ease,
-        border-color 0.12s ease;
-    }
-
-    .profile-button:hover {
-      background: var(--card-soft);
-      border-color: var(--accent-soft);
-      box-shadow: 0 10px 22px rgba(2, 54, 83, 0.16);
-      transform: translateY(-1px);
-    }
-
-    .avatar-wrap {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: #D1D5DB;
-      flex-shrink: 0;
-    }
-
-    .avatar-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .gear-icon {
-      font-size: 18px;
-      color: var(--accent);
     }
 
     /* SECTION WRAPPER */
@@ -612,14 +378,6 @@
     /* SECTION HEADER */
     .section-block {
       margin-bottom: 24px;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 8px;
-      margin: 0 0 10px;
     }
 
     .section-title {
@@ -991,265 +749,6 @@
       color: var(--text-muted);
     }
 
-    /* MODALS */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.38);
-      display: none;
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      backdrop-filter: blur(6px);
-    }
-
-    .modal-overlay.is-open {
-      display: flex;
-    }
-
-    .modal {
-      width: 380px;
-      max-width: 100%;
-      background: #FFFFFF;
-      border-radius: 18px;
-      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
-      border: 1px solid #D3DFE8;
-      overflow: hidden;
-      animation: fadeInUp 0.22s ease-out forwards;
-      color: var(--text-main);
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(10px) scale(0.98); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .modal-header {
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-      color: #FFFFFF;
-    }
-
-    .modal-header h3 {
-      margin: 0;
-      font-size: 0.96rem;
-    }
-
-    .modal-close {
-      font-size: 1.4rem;
-      line-height: 1;
-      background: transparent;
-      color: #E5E7EB;
-      border: none;
-      cursor: pointer;
-    }
-
-    .modal-body {
-      padding: 12px 16px 16px;
-      font-size: 0.9rem;
-      background: #F5FAFC;
-    }
-
-    .profile-modal-layout {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .profile-card {
-      border-radius: 14px;
-      border: 1px solid #D3DFE8;
-      background: #FFFFFF;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
-      overflow: hidden;
-    }
-
-    .profile-card-header {
-      position: relative;
-      padding: 24px 18px 40px;
-      text-align: center;
-      color: var(--text-main);
-      background: linear-gradient(
-        135deg,
-        var(--card-soft) 0%,
-        #FFFFFF 60%
-      );
-    }
-
-    .profile-card-header p {
-      margin: 0;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .profile-card-header h4 {
-      margin: 6px 0 0;
-      font-size: 1.05rem;
-      color: var(--accent-strong);
-    }
-
-    .profile-tagline {
-      margin-top: 3px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .profile-avatar-shell {
-      position: absolute;
-      left: 50%;
-      bottom: -28px;
-      transform: translateX(-50%);
-      width: 70px;
-      height: 70px;
-      border-radius: 999px;
-      border: 3px solid #FFFFFF;
-      overflow: hidden;
-      background: #D1D5DB;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
-    }
-
-    .profile-avatar-shell img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .profile-card-main {
-      padding: 40px 16px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      background: #FFFFFF;
-    }
-
-    .profile-detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      font-size: 0.8rem;
-    }
-
-    .profile-detail-item {
-      background: #F5FAFC;
-      border-radius: 10px;
-      padding: 6px 8px;
-      border: 1px solid #D3DFE8;
-    }
-
-    .profile-detail-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 1px;
-    }
-
-    .profile-detail-value {
-      font-size: 0.86rem;
-      color: var(--text-main);
-    }
-
-    .profile-quick-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 4px;
-    }
-
-    .p-btn {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid #D3DFE8;
-      background: #FFFFFF;
-      font-size: 0.8rem;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-main);
-      transition:
-        background 0.14s ease,
-        border-color 0.14s ease,
-        box-shadow 0.14s ease,
-        transform 0.14s ease;
-    }
-
-    .p-btn-primary {
-      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-      color: #FFFFFF;
-      border-color: transparent;
-      box-shadow: 0 8px 18px rgba(2, 54, 83, 0.5);
-    }
-
-    .p-btn-primary:hover {
-      filter: brightness(1.05);
-      transform: translateY(-1px);
-    }
-
-    .p-btn-ghost {
-      background: #F5FAFC;
-    }
-
-    .p-btn-ghost:hover {
-      background: var(--card-soft);
-    }
-
-    .p-btn-logout {
-      background: #FEE2E2;
-      border-color: #FECACA;
-      color: #B91C1C;
-    }
-
-    .p-btn-logout:hover {
-      background: #FECACA;
-    }
-
-    .profile-quick-links {
-      border-radius: 14px;
-      border: 1px solid #D3DFE8;
-      background: #FFFFFF;
-      padding: 10px 12px;
-      font-size: 0.8rem;
-      color: var(--text-main);
-      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
-    }
-
-    .profile-quick-links h4 {
-      margin: 0 0 4px;
-      font-size: 0.84rem;
-      color: var(--accent-strong);
-    }
-
-    .profile-quick-links ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .profile-quick-links li + li {
-      margin-top: 3px;
-    }
-
-    .profile-quick-links a {
-      color: var(--accent);
-    }
-
-    .profile-quick-links a:hover {
-      color: var(--accent-strong);
-      text-decoration: underline;
-    }
-
-    .profile-footnote {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-
     /* ENTRANCE ANIMATIONS */
     @keyframes fadeInSoft {
       from { opacity: 0; transform: translateY(10px); }
@@ -1276,7 +775,7 @@
       <div class="brand-mark">CB</div>
       <div class="brand-text">
         <div class="brand-title">Calibration</div>
-        <div class="brand-subtitle">Discipline • Habits • Skills</div>
+        <div class="brand-subtitle">Discipline - Habits - Skills</div>
       </div>
     </div>
 
@@ -1406,8 +905,8 @@
             <div>
               <h2>Welcome, {{ user.username }} 👋</h2>
               <p>
-                This dashboard gives you a calm overview: skills you’re leveling,
-                habits you’re building, and tasks that move your goals forward.
+                This dashboard gives you a calm overview: skills you're leveling,
+                habits you're building, and tasks that move your goals forward.
               </p>
               <div class="hero-pills">
                 <div class="hero-pill">
@@ -1415,7 +914,7 @@
                   <span>Track growth with clean stats</span>
                 </div>
                 <div class="hero-pill">
-                  <span>✅</span>
+                  <span>?</span>
                   <span>See what matters today at a glance</span>
                 </div>
               </div>
@@ -1503,7 +1002,7 @@
           <div class="activity-row">
             <!-- Skills -->
             <article class="activity-card">
-              <h3><span class="activity-icon">🧩</span> Skills</h3>
+              <h3><span class="activity-icon">🎯</span> Skills</h3>
               {% for x in latest_skills %}
                 <div class="skill_item">
                   <div class="skill_head">
@@ -1516,7 +1015,7 @@
                   </div>
 
                   <small class="progress-label">
-                    {{ x.xp }} / {{ x.to_level_up }} XP · {{ x.left_over }} XP to next level
+                    {{ x.xp }} / {{ x.to_level_up }} XP - {{ x.left_over }} XP to next level
                   </small>
                 </div>
               {% empty %}
@@ -1555,7 +1054,7 @@
                   <div class="badge-glow"></div>
 
                   <div class="badge-icon">
-                    🎖️
+                    🏅
                   </div>
 
                   <div class="badge-main">
@@ -1660,7 +1159,7 @@
                   </a>
                 {% endfor %}
               {% else %}
-                <p class="muted">You’re not in any groups yet. Join or create one from the Groups page.</p>
+                <p class="muted">You're not in any groups yet. Join or create one from the Groups page.</p>
               {% endif %}
             </article>
 
@@ -1745,7 +1244,7 @@
           html += "<ul style='padding-left: 1.1rem; margin: 0;'>";
           dayEvents.items.forEach(function (evt) {
             const title = evt.title || "Event";
-            const time = evt.time ? `<strong>${evt.time}</strong> – ` : "";
+            const time = evt.time ? `<strong>${evt.time}</strong> - ` : "";
             const desc = evt.description ? `<br><span class='muted'>${evt.description}</span>` : "";
             html += `<li style="margin-bottom: 6px;">${time}${title}${desc}</li>`;
           });
@@ -1930,38 +1429,7 @@
 </script>
 
 <!-- PROFILE MODAL JS -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const profilePill = document.getElementById("profile-button");
-    const modal = document.getElementById("profile-modal");
-    const closeBtn = document.getElementById("modal-close");
-
-    if (!profilePill || !modal || !closeBtn) return;
-
-    function openModal() {
-      modal.classList.add("is-open");
-      modal.setAttribute("aria-hidden", "false");
-    }
-
-    function closeModal() {
-      modal.classList.remove("is-open");
-      modal.setAttribute("aria-hidden", "true");
-    }
-
-    profilePill.addEventListener("click", openModal);
-    closeBtn.addEventListener("click", closeModal);
-
-    modal.addEventListener("click", function (e) {
-      if (e.target === modal) closeModal();
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && modal.classList.contains("is-open")) {
-        closeModal();
-      }
-    });
-  });
-</script>
+{% include 'partials/profile_modal_script.html' %}
 
 </body>
 </html>

@@ -1,8 +1,9 @@
-# calibration_app/mood_utils.py
+# calibration_app/mood_tracker.py
 from django.utils import timezone
 from .models import Mood
+from .utils import sanitize_text
 
-
+#helps create a mood entry from user input
 def create_mood_entry(
     account_user,
     mood_score=None,
@@ -15,10 +16,7 @@ def create_mood_entry(
     social_interaction=None,
     timestamp=None,
 ):
-    """
-    Safely create a Mood entry if mood_score is provided.
-    Assumes Mood has an 'account_user' FK like your other models.
-    """
+    # Validate and sanitize inputs
     if not mood_score:
         return
 
@@ -30,14 +28,17 @@ def create_mood_entry(
     if timestamp is None:
         timestamp = timezone.now()
 
+    note = sanitize_text(note)
+
     data = {
-        "user": account_user,   # if your Mood model uses 'user', change this key
+        "user": account_user,  
         "mood_score": mood_score,
         "mood_type": mood_type or None,
         "note": note or None,
         "related_goal": related_goal,
     }
 
+    # Optional fields with type conversion
     if energy_level not in ("", None):
         try:
             data["energy_level"] = int(energy_level)

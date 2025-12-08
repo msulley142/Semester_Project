@@ -1,16 +1,20 @@
-﻿{% load static %}
+﻿<!--The html template was heavily eddited using AI Generated Code -->
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Messages · Calibration</title>
+  <title>Messages - Calibration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
   <style>
-    :root {
-      /* --- OCEAN TEAL CALIBRATION THEME --- */
-      --bg-main: #EEEEEE;
+        :root {
+      /* --- CALIBRATION THEME --- */
+      --bg: #EEEEEE;
       --bg-soft: #C3E4E9;
+
+      --card: #FFFFFF;
       --card-soft: #EAF3F6;
 
       --accent: #056C89;
@@ -23,11 +27,13 @@
       --border-subtle: #C5D4D8;
 
       --radius-lg: 18px;
+      --radius-md: 12px;
       --radius-pill: 999px;
 
       --shadow-soft: 0 16px 40px rgba(2, 54, 83, 0.18);
 
       --sidebar-w: 260px;
+
       --pane-h: min(78vh, 680px);
     }
 
@@ -37,7 +43,7 @@
       margin: 0;
       padding: 0;
       min-height: 100%;
-      background: var(--bg-main);
+      background: var(--bg);
       color: var(--text-main);
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
     }
@@ -123,53 +129,6 @@
     color: #D1E2F2;
   }
 
-  .nav {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 6px;
-  }
-  .nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 10px;
-    position: relative;
-    border-radius: 10px;
-    font-size: 0.86rem;
-    color: #e5e7eb;
-    background: rgba(2, 16, 32, 0.8);
-    border: 1px solid transparent;
-    transition: background 0.16s ease, border-color 0.16s ease,
-                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
-  }
-  .nav-link:hover {
-    background: #011524;
-    border-color: #056C89;
-    color: #ffffff;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
-    transform: translateY(-1px);
-  }
-  .nav-link.active {
-    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
-    border-color: transparent;
-  }
-  .nav-link.has-unread::after {
-    content: "";
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
-  }
-
 
 
     
@@ -188,7 +147,7 @@
       gap: 16px;
       background:
         radial-gradient(circle at top left, rgba(136, 180, 190, 0.22), transparent 60%),
-        var(--bg-main);
+        var(--bg);
     }
 
     @media (max-width: 900px) {
@@ -664,7 +623,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* === LEFT PANE – CONVERSATION LIST === */
+    /* === LEFT PANE - CONVERSATION LIST === */
     .pane-list-header {
       padding: 10px 14px;
       border-bottom: 1px solid var(--border-subtle);
@@ -801,7 +760,7 @@
       flex-shrink: 0;
     }
 
-    /* === MIDDLE PANE – CHAT === */
+    /* === MIDDLE PANE - CHAT === */
     .pane-chat-header {
       padding: 10px 16px;
       border-bottom: 1px solid var(--border-subtle);
@@ -1012,7 +971,7 @@
       box-shadow: 0 10px 24px rgba(5, 108, 137, 0.55);
     }
 
-    /* === RIGHT PANE – DETAILS + BUDDIES === */
+    /* === RIGHT PANE - DETAILS + BUDDIES === */
     .pane-details-header {
       padding: 10px 16px;
       border-bottom: 1px solid var(--border-subtle);
@@ -1122,7 +1081,7 @@
       <div class="brand-mark">CB</div>
       <div class="brand-text">
         <div class="brand-title">Calibration</div>
-        <div class="brand-subtitle">Discipline · Habits · Skills</div>
+        <div class="brand-subtitle">Discipline - Habits - Skills</div>
       </div>
     </div>
 
@@ -1249,7 +1208,7 @@
               <small>All conversations</small>
             </div>
             <div class="pane-search">
-              <span>🔍</span>
+              <span>💬</span>
               <input type="text" id="conversation-search" placeholder="Search conversations">
             </div>
           </div>
@@ -1294,7 +1253,7 @@
                 {{ other_user.username|slice:":2"|upper }}
               </a>
               {% else %}
-              <div class="chat-avatar">??</div>
+              <div class="chat-avatar">*</div>
               {% endif %}
               <div class="chat-user-text">
                 <div class="chat-user-name">
@@ -1305,7 +1264,7 @@
                   {% endif %}
                 </div>
                 <div class="chat-user-sub">
-                  Accountability buddy · Private chat
+                  Accountability buddy - Private chat
                 </div>
               </div>
             </div>
@@ -1343,8 +1302,8 @@
           <div class="chat-input-wrap">
             <form id="chat-form">
               <div class="chat-input-inner">
-                <button type="button" class="icon-btn" title="Emoji">😊</button>
-                <textarea id="chat-input" placeholder="Type a message…" autocomplete="off"></textarea>
+                <button type="button" class="icon-btn" title="Emoji">:)</button>
+                <textarea id="chat-input" placeholder="Type a message..." autocomplete="off"></textarea>
                 <button type="button" class="icon-btn" title="Attach">📎</button>
                 <button type="submit" class="send-btn">Send</button>
               </div>
@@ -1385,7 +1344,7 @@
                 <div class="buddy-note">Chat & accountability</div>
               </div>
               <div class="buddy-actions">
-                <span class="status-dot">● Online</span>
+                <span class="status-dot">* Online</span>
                 <a class="buddy-btn" href="{% url 'messages' %}?with={{ buddy.user.id }}">Open chat</a>
               </div>
             </li>
@@ -1500,38 +1459,7 @@
 </script>
 
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const profilePill = document.getElementById("profile-button");
-    const modal = document.getElementById("profile-modal");
-    const closeBtn = document.getElementById("modal-close");
-
-    if (!profilePill || !modal || !closeBtn) return;
-
-    function openModal() {
-      modal.classList.add("is-open");
-      modal.setAttribute("aria-hidden", "false");
-    }
-
-    function closeModal() {
-      modal.classList.remove("is-open");
-      modal.setAttribute("aria-hidden", "true");
-    }
-
-    profilePill.addEventListener("click", openModal);
-    closeBtn.addEventListener("click", closeModal);
-
-    modal.addEventListener("click", function (e) {
-      if (e.target === modal) closeModal();
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && modal.classList.contains("is-open")) {
-        closeModal();
-      }
-    });
-  });
-</script>
+{% include 'partials/profile_modal_script.html' %}
 
 
 </body>

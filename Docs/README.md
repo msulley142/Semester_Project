@@ -1,5 +1,5 @@
 # Calibration 
-Calibration is a personal growth and accountablity tracker designed for indivisuals who who struggle to build better habits, break bad ones and develop new skills. With this web application, users will can visually track thier skill growth and habit progress overtime. The Ultimate goal of Calibration is to build a supportive community where people can grow, learn, and best version of themselves. 
+Calibration is a personal growth and accountability tracker designed for individuals who struggle to build better habits, break bad ones,and develop new skills. With this web application, users can visually track their skill growth and habit progress over time.The ultimate goal of Calibration is to build a supportive community where people can grow, learn, and become the best version of themselves.
 
 ## Software Requirments 
 

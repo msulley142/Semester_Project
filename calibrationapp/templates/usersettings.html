@@ -1,3 +1,4 @@
+<!--The html template was heavily edited using AI Generated Code -->
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -5,32 +6,22 @@
   <meta charset="utf-8">
   <title>Account Settings - Calibration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <style>
-    :root{
-      --bg:#f3f7fb;
-      --card:#ffffff;
-      --border:#e2e8f0;
-      --text:#0f172a;
-      --muted:#64748b;
-      --accent:#0ea5e9;
-      --accent-deep:#0284c7;
-      --radius:14px;
-      --shadow:0 12px 30px rgba(15,23,42,0.12);
-    }
-    *{box-sizing:border-box;}
-    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);} 
+     
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text-main);} 
     a{text-decoration:none;color:inherit;}
     .shell{max-width:1024px;margin:32px auto;padding:0 18px 48px;}
     .page-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;}
     .page-head h1{margin:0;font-size:1.35rem;}
-    .muted{color:var(--muted);}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 18px 14px;}
+    .muted{color:var(--text-muted);}
+    .card{background:var(--card);border:1px solid var(--border-subtle);border-radius:14px;box-shadow:var(--shadow-soft);padding:18px 18px 14px;}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;}
     label{font-size:0.9rem;font-weight:600;display:block;margin-bottom:4px;}
-    input,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-size:0.95rem;}
+    input,textarea{width:100%;padding:10px 12px;border:1px solid var(--border-subtle);border-radius:10px;font-size:0.95rem;}
     textarea{min-height:96px;}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
-    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;font-weight:600;}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;border:1px solid var(--border-subtle);background:#fff;color:var(--text-main);cursor:pointer;font-weight:600;}
     .btn-primary{background:var(--accent);border-color:transparent;color:#001018;box-shadow:0 10px 22px rgba(14,165,233,0.35);} 
     .btn-ghost{background:transparent;}
     .field{margin-bottom:14px;}

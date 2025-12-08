@@ -4,14 +4,12 @@ from django.utils import timezone
 from django.db.models import Q
 
 from .models import ChatMessage, Profile, UserBlock
+#The following code is heavily edited by ChatGPT.
+# Context processor to provide unread message count and status. 
 
-
+# Adds unread message info to the template context
 def unread_messages(request):
-    """
-    Inject unread message metadata for the current user.
-    Uses the session-stored timestamp of the last time they opened the
-    Messages page to decide if there is anything new.
-    """
+ 
     user = getattr(request, "user", None)
     if not user or not user.is_authenticated:
         return {}
@@ -30,11 +28,7 @@ def unread_messages(request):
             last_seen = None
 
     # User is part of any room that starts/ends with their id, e.g. dm-2-5
-    room_filter = (
-        Q(room__startswith=f"dm-{user.id}-")
-        | Q(room__endswith=f"-{user.id}")
-        | Q(room__contains=f"-{user.id}-")
-    )
+    room_filter = (Q(room__startswith=f"dm-{user.id}-")| Q(room__endswith=f"-{user.id}") | Q(room__contains=f"-{user.id}-") )
 
     if profile:
         group_ids = profile.community_groups.values_list("id", flat=True)
@@ -42,6 +36,8 @@ def unread_messages(request):
         if group_rooms:
             room_filter = room_filter | Q(room__in=group_rooms)
 
+
+    # Query for unread messages excluding those from blocked users
     qs = ChatMessage.objects.filter(room_filter).exclude(sender=user)
     blocked_ids = set(
         UserBlock.objects.filter(Q(blocker=user) | Q(blocked=user)).values_list("blocked_id", flat=True)

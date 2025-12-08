@@ -1,37 +1,38 @@
+<!--The html template was heavily edited using AI Generated Code -->
 {% load static %}
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Rewards – Calibration</title>
+  <title>Rewards - Calibration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
   <style>
-    :root {
-      /* ---- OCEAN CALIBRATION THEME ---- */
-      --bg-main: #EEEEEE;
-     
+        :root {
+      /* --- CALIBRATION THEME --- */
+      --bg: #EEEEEE;
+      --bg-soft: #C3E4E9;
 
       --card: #FFFFFF;
-      --card-soft: #C3E4E9;
+      --card-soft: #EAF3F6;
 
       --accent: #056C89;
       --accent-soft: #88B4BE;
       --accent-strong: #023653;
 
-      --text-main: #01212B;
-      --text-muted: #4B6B72;
-      --border-subtle: #B7D1D7;
+      --text-main: #022432;
+      --text-muted: #4B6770;
 
-      --radius-lg: 16px;
-      --radius-md: 10px;
+      --border-subtle: #C5D4D8;
+
+      --radius-lg: 18px;
+      --radius-md: 12px;
       --radius-pill: 999px;
-      --shadow-soft: 0 12px 30px rgba(2, 54, 83, 0.18);
+
+      --shadow-soft: 0 16px 40px rgba(2, 54, 83, 0.18);
+
       --sidebar-w: 260px;
-
-
-      /* backwards-compat alias */
-      --bg: var(--bg-main);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -40,7 +41,7 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      background: var(--bg-main);
+      background: var(--bg);
       color: var(--text-main);
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
     }
@@ -124,53 +125,6 @@
   .brand-subtitle {
     font-size: 0.72rem;
     color: #D1E2F2;
-  }
-
-  .nav {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 6px;
-  }
-  .nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 10px;
-    position: relative;
-    border-radius: 10px;
-    font-size: 0.86rem;
-    color: #e5e7eb;
-    background: rgba(2, 16, 32, 0.8);
-    border: 1px solid transparent;
-    transition: background 0.16s ease, border-color 0.16s ease,
-                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
-  }
-  .nav-link:hover {
-    background: #011524;
-    border-color: #056C89;
-    color: #ffffff;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
-    transform: translateY(-1px);
-  }
-  .nav-link.active {
-    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
-    border-color: transparent;
-  }
-  .nav-link.has-unread::after {
-    content: "";
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
   }
 
     /* MAIN AREA */
@@ -346,7 +300,7 @@
       color: var(--accent);
     }
 
-    /* HERO – REWARD BANNER + WALLET */
+    /* HERO - REWARD BANNER + WALLET */
     .hero-row {
       display: grid;
       grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
@@ -558,14 +512,6 @@
 
     @media (max-width: 640px) {
       .section-block { margin: 0 0 24px; }
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 8px;
-      margin-bottom: 12px;
     }
 
     .section-title {
@@ -991,268 +937,7 @@
       box-shadow: 0 18px 36px rgba(2, 54, 83, 0.26);
     }
 
-    .muted { color: var(--text-muted); }
-
-    /* PROFILE MODAL */
-     /* MODALS */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.38);
-      display: none;
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      backdrop-filter: blur(6px);
-    }
-
-    .modal-overlay.is-open {
-      display: flex;
-    }
-
-    .modal {
-      width: 380px;
-      max-width: 100%;
-      background: #FFFFFF;
-      border-radius: 18px;
-      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
-      border: 1px solid #D3DFE8;
-      overflow: hidden;
-      animation: fadeInUp 0.22s ease-out forwards;
-      color: var(--text-main);
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(10px) scale(0.98); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .modal-header {
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-      color: #FFFFFF;
-    }
-
-    .modal-header h3 {
-      margin: 0;
-      font-size: 0.96rem;
-    }
-
-    .modal-close {
-      font-size: 1.4rem;
-      line-height: 1;
-      background: transparent;
-      color: #E5E7EB;
-      border: none;
-      cursor: pointer;
-    }
-
-    .modal-body {
-      padding: 12px 16px 16px;
-      font-size: 0.9rem;
-      background: #F5FAFC;
-    }
-
-    .profile-modal-layout {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .profile-card {
-      border-radius: 14px;
-      border: 1px solid #D3DFE8;
-      background: #FFFFFF;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
-      overflow: hidden;
-    }
-
-    .profile-card-header {
-      position: relative;
-      padding: 24px 18px 40px;
-      text-align: center;
-      color: var(--text-main);
-      background: linear-gradient(
-        135deg,
-        var(--card-soft) 0%,
-        #FFFFFF 60%
-      );
-    }
-
-    .profile-card-header p {
-      margin: 0;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .profile-card-header h4 {
-      margin: 6px 0 0;
-      font-size: 1.05rem;
-      color: var(--accent-strong);
-    }
-
-    .profile-tagline {
-      margin-top: 3px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .profile-avatar-shell {
-      position: absolute;
-      left: 50%;
-      bottom: -28px;
-      transform: translateX(-50%);
-      width: 70px;
-      height: 70px;
-      border-radius: 999px;
-      border: 3px solid #FFFFFF;
-      overflow: hidden;
-      background: #D1D5DB;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
-    }
-
-    .profile-avatar-shell img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .profile-card-main {
-      padding: 40px 16px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      background: #FFFFFF;
-    }
-
-    .profile-detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      font-size: 0.8rem;
-    }
-
-    .profile-detail-item {
-      background: #F5FAFC;
-      border-radius: 10px;
-      padding: 6px 8px;
-      border: 1px solid #D3DFE8;
-    }
-
-    .profile-detail-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 1px;
-    }
-
-    .profile-detail-value {
-      font-size: 0.86rem;
-      color: var(--text-main);
-    }
-
-    .profile-quick-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 4px;
-    }
-
-    .p-btn {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid #D3DFE8;
-      background: #FFFFFF;
-      font-size: 0.8rem;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-main);
-      transition:
-        background 0.14s ease,
-        border-color 0.14s ease,
-        box-shadow 0.14s ease,
-        transform 0.14s ease;
-    }
-
-    .p-btn-primary {
-      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-      color: #FFFFFF;
-      border-color: transparent;
-      box-shadow: 0 8px 18px rgba(2, 54, 83, 0.5);
-    }
-
-    .p-btn-primary:hover {
-      filter: brightness(1.05);
-      transform: translateY(-1px);
-    }
-
-    .p-btn-ghost {
-      background: #F5FAFC;
-    }
-
-    .p-btn-ghost:hover {
-      background: var(--card-soft);
-    }
-
-    .p-btn-logout {
-      background: #FEE2E2;
-      border-color: #FECACA;
-      color: #B91C1C;
-    }
-
-    .p-btn-logout:hover {
-      background: #FECACA;
-    }
-
-    .profile-quick-links {
-      border-radius: 14px;
-      border: 1px solid #D3DFE8;
-      background: #FFFFFF;
-      padding: 10px 12px;
-      font-size: 0.8rem;
-      color: var(--text-main);
-      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
-    }
-
-    .profile-quick-links h4 {
-      margin: 0 0 4px;
-      font-size: 0.84rem;
-      color: var(--accent-strong);
-    }
-
-    .profile-quick-links ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .profile-quick-links li + li {
-      margin-top: 3px;
-    }
-
-    .profile-quick-links a {
-      color: var(--accent);
-    }
-
-    .profile-quick-links a:hover {
-      color: var(--accent-strong);
-      text-decoration: underline;
-    }
-
-    .profile-footnote {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-
+    
     /* ENTRANCE ANIMATIONS */
     @keyframes fadeInSoft {
       from { opacity: 0; transform: translateY(10px); }
@@ -1270,7 +955,7 @@
       <div class="brand-mark">CB</div>
       <div class="brand-text">
         <div class="brand-title">Calibration</div>
-        <div class="brand-subtitle">Discipline • Habits • Skills</div>
+        <div class="brand-subtitle">Discipline - Habits - Skills</div>
       </div>
     </div>
 
@@ -1403,7 +1088,7 @@
         <section class="hero-row">
           <article class="hero-card">
             <div class="hero-main-content">
-              <h2>Nice work, {{ user.username }} 🏅</h2>
+              <h2>Nice work, {{ user.username }} 🎉</h2>
               <p>Your consistency is being converted into tokens, badges, and bragging rights.</p>
 
               <div class="hero-metrics">
@@ -1424,7 +1109,7 @@
               <div class="hero-actions">
                 <a href="{% url 'progresstracker' %}" class="btn btn-sm">View progress</a>
                 <button type="button" class="btn btn-primary btn-sm" id="spark-badges">
-                  Celebrate latest badge ✨
+                  Celebrate latest badge ?
                 </button>
               </div>
             </div>
@@ -1440,8 +1125,8 @@
                 </p>
               </div>
               <div class="wallet-chip">
-                <span>⚡ Live</span>
-                <span style="font-size:0.7rem;">Calibration XP → Tokens</span>
+                <span>? Live</span>
+                <span style="font-size:0.7rem;">Calibration XP -> Tokens</span>
               </div>
             </div>
 
@@ -1500,7 +1185,7 @@
                         <div class="lb-name">
                           {% if friend.is_self %}You ({{ friend.username }}){% else %}{{ friend.username }}{% endif %}
                         </div>
-                        <div class="lb-meta">{{ friend.badges }} badges • {{ friend.streak }} day streak</div>
+                        <div class="lb-meta">{{ friend.badges }} badges - {{ friend.streak }} day streak</div>
                       </div>
                     </div>
                     <div class="lb-xp">
@@ -1520,7 +1205,7 @@
                       <div class="lb-avatar">YO</div>
                       <div>
                         <div class="lb-name">You</div>
-                        <div class="lb-meta">6 badges • 10 day streak</div>
+                        <div class="lb-meta">6 badges - 10 day streak</div>
                       </div>
                     </div>
                     <div class="lb-xp"><span data-xp="4200">4200</span> XP</div>
@@ -1536,7 +1221,7 @@
                       <div class="lb-avatar">JT</div>
                       <div>
                         <div class="lb-name">Justin</div>
-                        <div class="lb-meta">4 badges • 7 day streak</div>
+                        <div class="lb-meta">4 badges - 7 day streak</div>
                       </div>
                     </div>
                     <div class="lb-xp"><span data-xp="3200">3200</span> XP</div>
@@ -1552,7 +1237,7 @@
                       <div class="lb-avatar">JN</div>
                       <div>
                         <div class="lb-name">Jennie</div>
-                        <div class="lb-meta">3 badges • 5 day streak</div>
+                        <div class="lb-meta">3 badges - 5 day streak</div>
                       </div>
                     </div>
                     <div class="lb-xp"><span data-xp="2500">2500</span> XP</div>
@@ -1577,10 +1262,10 @@
 
               <div>
                 <div class="highlight-champ" id="highlight-champ">
-                  <div class="highlight-medal">🏆</div>
+                  <div class="highlight-medal">🏅</div>
                   <div class="highlight-text">
                     <strong id="champ-name">You</strong>
-                    <span id="champ-stat">+2 ranks • +900 XP</span>
+                    <span id="champ-stat">+2 ranks - +900 XP</span>
                   </div>
                 </div>
 
@@ -1632,7 +1317,7 @@
 
               <div class="badge-search-wrap">
                 <input type="text" class="badge-search-input" id="badge-search"
-                       placeholder="Search badges…">
+                       placeholder="Search badges...">
               </div>
             </aside>
 
@@ -1643,7 +1328,7 @@
                          data-category="{{ b.category }}"
                          data-name="{{ b.badge.title|default:'Badge'|escape }}">
                   <div class="badge-glow"></div>
-                  <div class="badge-icon">⭐</div>
+                  <div class="badge-icon">?</div>
                   <div class="badge-title">{{ b.badge.title }}</div>
                   <div class="badge-desc">{{ b.badge.description }}</div>
                   <div class="badge-meta">
@@ -1658,7 +1343,7 @@
                          data-category="{{ b.category }}"
                          data-name="{{ b.title|default:'Badge'|escape }}">
                   <div class="badge-glow"></div>
-                  <div class="badge-icon">🔒</div>
+                  <div class="badge-icon">🏆</div>
                   <div class="badge-title">{{ b.title }}</div>
                   <div class="badge-desc">{{ b.description }}</div>
                   <div class="badge-meta">
@@ -1672,7 +1357,7 @@
                          data-category="skills"
                          data-name="First Skill">
                   <div class="badge-glow"></div>
-                  <div class="badge-icon">💡</div>
+                  <div class="badge-icon">🏆</div>
                   <div class="badge-title">First Skill</div>
                   <div class="badge-desc">Create and track your first skill.</div>
                   <div class="badge-meta">
@@ -1685,7 +1370,7 @@
                          data-category="habits"
                          data-name="First Habit">
                   <div class="badge-glow"></div>
-                  <div class="badge-icon">🌱</div>
+                  <div class="badge-icon">🏆</div>
                   <div class="badge-title">First Habit</div>
                   <div class="badge-desc">Log your first habit streak.</div>
                   <div class="badge-meta">
@@ -1698,7 +1383,7 @@
                          data-category="goals"
                          data-name="First Goal">
                   <div class="badge-glow"></div>
-                  <div class="badge-icon">🎯</div>
+                  <div class="badge-icon">🏆</div>
                   <div class="badge-title">First Goal</div>
                   <div class="badge-desc">Complete your first long-term goal.</div>
                   <div class="badge-meta">
@@ -1711,7 +1396,7 @@
                          data-category="streaks"
                          data-name="7 Day Streak">
                   <div class="badge-glow"></div>
-                  <div class="badge-icon">🔥</div>
+                  <div class="badge-icon">🏆</div>
                   <div class="badge-title">7 Day Streak</div>
                   <div class="badge-desc">Check in every day for a week.</div>
                   <div class="badge-meta">
@@ -1860,38 +1545,7 @@
    
   });
 </script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const profilePill = document.getElementById("profile-button");
-    const modal = document.getElementById("profile-modal");
-    const closeBtn = document.getElementById("modal-close");
-
-    if (!profilePill || !modal || !closeBtn) return;
-
-    function openModal() {
-      modal.classList.add("is-open");
-      modal.setAttribute("aria-hidden", "false");
-    }
-
-    function closeModal() {
-      modal.classList.remove("is-open");
-      modal.setAttribute("aria-hidden", "true");
-    }
-
-    profilePill.addEventListener("click", openModal);
-    closeBtn.addEventListener("click", closeModal);
-
-    modal.addEventListener("click", function (e) {
-      if (e.target === modal) closeModal();
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && modal.classList.contains("is-open")) {
-        closeModal();
-      }
-    });
-  });
-</script>
+{% include 'partials/profile_modal_script.html' %}
 
 
 

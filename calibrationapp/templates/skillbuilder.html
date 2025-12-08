@@ -1,11 +1,13 @@
+<!--The html template was heavily edited using AI Generated Code -->
 {% load static %}
-<!--The html template was created using AI Generated Code as a starting point-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Discipline Builder · Calibration</title>
+  <title>Discipline Builder - Calibration</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
  <style>
   :root {
     --bg: #EEEEEE;
@@ -118,53 +120,6 @@
   .brand-subtitle {
     font-size: 0.72rem;
     color: #D1E2F2;
-  }
-
-  .nav {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-top: 6px;
-  }
-  .nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 10px;
-    position: relative;
-    border-radius: 10px;
-    font-size: 0.86rem;
-    color: #e5e7eb;
-    background: rgba(2, 16, 32, 0.8);
-    border: 1px solid transparent;
-    transition: background 0.16s ease, border-color 0.16s ease,
-                box-shadow 0.16s ease, transform 0.12s ease, color 0.16s ease;
-  }
-  .nav-link:hover {
-    background: #011524;
-    border-color: #056C89;
-    color: #ffffff;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
-    transform: translateY(-1px);
-  }
-  .nav-link.active {
-    background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
-    border-color: transparent;
-  }
-  .nav-link.has-unread::after {
-    content: "";
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
   }
 
   .site-main {
@@ -432,14 +387,6 @@
   }
   @media (max-width: 860px) {
     .page-grid { grid-template-columns: minmax(0, 1fr); }
-  }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
-    margin: 10px 0 6px;
   }
 
   .section-title {
@@ -1124,7 +1071,7 @@
       <div class="brand-mark">CB</div>
       <div class="brand-text">
         <div class="brand-title">Calibration</div>
-        <div class="brand-subtitle">Discipline • Habits • Skills</div>
+        <div class="brand-subtitle">Discipline - Habits - Skills</div>
       </div>
     </div>
 
@@ -1242,7 +1189,7 @@
       <div class="hero-main">
         <div class="hero-title">
           Discipline Dashboard
-          <span class="hero-pill">Today’s Focus</span>
+          <span class="hero-pill">Today's Focus</span>
         </div>
         <p class="hero-subtitle">
           Capture <strong>one small win</strong> today. Add a skill, set a habit,
@@ -1283,7 +1230,7 @@
               <span class="section-title-dot"></span>
               Skills
             </div>
-            <div class="section-sub">Track progress on the abilities you’re building.</div>
+            <div class="section-sub">Track progress on the abilities you're building.</div>
           </div>
           <button class="btn btn-primary btn-sm" id="open-skill-modal">+ New Skill</button>
         </div>
@@ -1307,8 +1254,8 @@
               </div>
 
               <div class="item-actions">
-                <a href="{% url 'skill_update' s.id %}" class="item-btn edit" aria-label="Edit {{ s.name }}">✎ Edit</a>
-                <a href="{% url 'skill_delete' s.id %}" class="item-btn delete" aria-label="Delete {{ s.name }}">🗑 Delete</a>
+                <a href="{% url 'skill_update' s.id %}" class="item-btn edit" aria-label="Edit {{ s.name }}">✏️ Edit</a>
+                <a href="{% url 'skill_delete' s.id %}" class="item-btn delete" aria-label="Delete {{ s.name }}">🗑️ Delete</a>
               </div>
             </article>
           {% empty %}
@@ -1349,8 +1296,8 @@
               </div>
 
               <div class="item-actions">
-                <a href="{% url 'habit_update' h.id %}" class="item-btn edit" aria-label="Edit {{ h.name }}">✎ Edit</a>
-                <a href="{% url 'habit_delete' h.id %}" class="item-btn delete" aria-label="Delete {{ h.name }}">🗑 Delete</a>
+                <a href="{% url 'habit_update' h.id %}" class="item-btn edit" aria-label="Edit {{ h.name }}">✏️ Edit</a>
+                <a href="{% url 'habit_delete' h.id %}" class="item-btn delete" aria-label="Delete {{ h.name }}">🗑️ Delete</a>
               </div>
             </article>
           {% empty %}
@@ -1387,8 +1334,8 @@
               </div>
 
               <div class="item-actions">
-                <a href="{% url 'goal_update' g.id %}" class="item-btn edit" aria-label="Edit {{ g.title }}">✎ Edit</a>
-                <a href="{% url 'goal_delete' g.id %}" class="item-btn delete" aria-label="Delete {{ g.title }}">🗑 Delete</a>
+                <a href="{% url 'goal_update' g.id %}" class="item-btn edit" aria-label="Edit {{ g.title }}">✏️ Edit</a>
+                <a href="{% url 'goal_delete' g.id %}" class="item-btn delete" aria-label="Delete {{ g.title }}">🗑️ Delete</a>
               </div>
             </article>
           {% empty %}
@@ -1599,7 +1546,7 @@
                 <div class="field">
                   <label class="label" for="task_mood_type">Mood type</label>
                   <select id="task_mood_type" name="mood_type" class="control">
-                    <option value="">—</option>
+                    <option value="">-</option>
                     <option value="happy">Happy</option>
                     <option value="sad">Sad</option>
                     <option value="angry">Angry</option>
@@ -1827,14 +1774,14 @@
               <legend style="font-size: 0.78rem; font-weight: 600; color:#6b7280;">Mood check-in (optional)</legend>
               <div class="form-grid" style="margin-top: 4px;">
                 <div class="field">
-                  <label class="label" for="journal_mood_score">Mood (1–10)</label>
+                  <label class="label" for="journal_mood_score">Mood (1-10)</label>
                   <input id="journal_mood_score" name="mood_score" type="number" min="1" max="10" class="control">
                 </div>
 
                 <div class="field">
                   <label class="label" for="journal_mood_type">Mood type</label>
                   <select id="journal_mood_type" name="mood_type" class="control">
-                    <option value="">—</option>
+                    <option value="">-</option>
                     <option value="happy">Happy</option>
                     <option value="sad">Sad</option>
                     <option value="anxious">Anxious</option>
@@ -1846,7 +1793,7 @@
                 </div>
 
                 <div class="field">
-                  <label class="label" for="journal_energy_level">Energy (1–10)</label>
+                  <label class="label" for="journal_energy_level">Energy (1-10)</label>
                   <input id="journal_energy_level" name="energy_level" type="number" min="1" max="10" class="control">
                 </div>
 
@@ -1856,12 +1803,12 @@
                 </div>
 
                 <div class="field">
-                  <label class="label" for="journal_stress_level">Stress (1–10)</label>
+                  <label class="label" for="journal_stress_level">Stress (1-10)</label>
                   <input id="journal_stress_level" name="stress_level" type="number" min="1" max="10" class="control">
                 </div>
 
                 <div class="field">
-                  <label class="label" for="journal_social_interaction">Social (1–5)</label>
+                  <label class="label" for="journal_social_interaction">Social (1-5)</label>
                   <input id="journal_social_interaction" name="social_interaction" type="number" min="1" max="5" class="control">
                 </div>
               </div>
@@ -1887,38 +1834,12 @@
 <!-- UNIFIED JS -->
 <script>
 (function() {
-  function setupModal(triggerIds, modalId) {
-    const modal = document.getElementById(modalId);
-    if (!modal) return;
-
-    const openers = triggerIds
-      .map(id => document.getElementById(id))
-      .filter(Boolean);
-
-    function open() {
-      modal.classList.add('is-open');
-      modal.setAttribute('aria-hidden', 'false');
-    }
-
-    function close() {
-      modal.classList.remove('is-open');
-      modal.setAttribute('aria-hidden', 'true');
-    }
-
-    openers.forEach(btn => btn.addEventListener('click', open));
-
-    const closeBtns = modal.querySelectorAll('[data-close-modal="' + modalId + '"], .modal-close');
-    closeBtns.forEach(btn => btn.addEventListener('click', close));
-
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal) close();
-    });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && modal.classList.contains('is-open')) {
-        close();
-      }
-    });
+  function initModals() {
+    const setupModal = window.ModalManager && window.ModalManager.setupModal;
+    if (!setupModal) return;
+    setupModal(['open-goal-modal'], 'goal-modal');
+    setupModal(['open-journal-modal', 'open-journal-modal-secondary'], 'journal-modal');
+    setupModal(['open-task-modal'], 'task-modal');
   }
 
   // Detail modal helpers
@@ -1957,12 +1878,12 @@
     });
   }
 
-  // Attach modals
- 
-  setupModal(['open-goal-modal'], 'goal-modal');
-  setupModal(['open-journal-modal', 'open-journal-modal-secondary',], 'journal-modal');
-  setupModal(['open-task-modal'], 'task-modal');
-  setupModal(['profile-button'], 'profile-modal');
+  // Attach modals once DOM is ready so the shared helper is available.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initModals);
+  } else {
+    initModals();
+  }
 
   // Journal filters
   const filtersContainer = document.getElementById('journal-filters');
@@ -2038,5 +1959,6 @@
 })();
 </script>
 
+{% include 'partials/profile_modal_script.html' %}
 </body>
 </html>

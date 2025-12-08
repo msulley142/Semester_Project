@@ -1,8 +1,8 @@
-# core/analytics.py
+#Analytics functions for user data
 from datetime import timedelta
 from itertools import chain
 
-from django.db import models
+
 from django.db.models import Avg, Count, Q
 from django.db.models.functions import TruncDate
 from django.utils import timezone
@@ -12,30 +12,24 @@ from .models import Mood, Journal, Task, Goals, Habit, Skill
 
 # ---------- BASIC HELPERS ---------- #
 
+#The following functions were edited by ChatGPT. It's sugesstions were acurate and saved time. 
 def get_daily_mood(user, days_back=None):
-    """
-    Average mood per day for this user.
-    Optionally limit to last N days.
-    Returns: [{day, avg_mood, entries}, ...]
-    """
+
+   # Average mood per day for user. returns the day, avg_mood, entries.
+ 
     qs = Mood.objects.filter(user=user)
 
     if days_back is not None:
         start_date = timezone.now().date() - timedelta(days=days_back)
         qs = qs.filter(timestamp__date__gte=start_date)
 
-    return list(
-        qs.annotate(day=TruncDate("timestamp"))
-          .values("day")
-          .annotate(
-              avg_mood=Avg("mood_score"),
-              entries=Count("id"),
-          )
-          .order_by("day")
-    )
+    return list(qs.annotate(day=TruncDate("timestamp")).values("day").annotate(avg_mood=Avg("mood_score"),entries=Count("id"),).order_by("day") )
 
 
+
+ #calculates how many tasks the user has completed and returns data for display for progress tracker page.
 def tasks_summary(user):
+   
     qs = Task.objects.filter(account_user=user)
 
     total = qs.count()
@@ -54,6 +48,7 @@ def tasks_summary(user):
     }
 
 
+#calculates how many goals the user has completed and returns data for display for progress tracker page.
 def goals_summary(user):
     qs = Goals.objects.filter(account_user=user)
 
@@ -70,7 +65,7 @@ def goals_summary(user):
         "goals_completion_rate": completion_rate,
     }
 
-
+#calculates how many habits and skills the user has and returns data for display for progress tracker page.
 def habits_skills_summary(user):
     habits_count = Habit.objects.filter(account_user=user).count()
     skills_count = Skill.objects.filter(account_user=user).count()
@@ -81,20 +76,17 @@ def habits_skills_summary(user):
     }
 
 
+#Calculates the XP earned by the user today and this week from tasks and journal entries to display on dashboard.
 def xp_activity_summary(user):
-    """
-    XP Today / XP This Week:
-    Uses completed tasks' points (on completion date) plus journal XP from
-    PRACTICE (5 XP) and REFLECTION (1 XP) entries on their logged date.
-    """
+
     tz = timezone.get_current_timezone()
     today = timezone.localdate()
-    start_week = today - timedelta(days=today.weekday())  # Monday
+    start_week = today - timedelta(days=today.weekday())  # Monday of this week
 
     xp_today = 0
     xp_week = 0
 
-    # ---- Tasks XP ----
+    # Calculate XP from completed tasks
     tasks = Task.objects.filter(account_user=user, status=Task.COMPLETED).only("points", "completed_at", "date")
     for t in tasks:
         dt = t.completed_at or t.date
@@ -106,11 +98,8 @@ def xp_activity_summary(user):
         if day >= start_week:
             xp_week += t.points or 0
 
-    # ---- Journal XP ----
-    journals = Journal.objects.filter(
-        account_user=user,
-        entry_type__in=[Journal.PRACTICE, Journal.REFLECTION],
-    ).only("entry_type", "date")
+    # Calculate XP from journal entries
+    journals = Journal.objects.filter(account_user=user,entry_type__in=[Journal.PRACTICE, Journal.REFLECTION],).only("entry_type", "date")
 
     for j in journals:
         day = timezone.localtime(j.date, tz).date()
@@ -126,39 +115,21 @@ def xp_activity_summary(user):
     }
 
 
-# ---------- LOGIN / ACTIVITY STREAKS ---------- #
 
+
+#Calculates user streaks for analytics page.
 def _activity_dates(user):
-    """
-    Set of dates where the user had any activity:
-    - mood entry
-    - task
-    - journal
-    """
-    mood_days = (
-        Mood.objects.filter(user=user)
-        .annotate(day=TruncDate("timestamp"))
-        .values_list("day", flat=True)
-    )
-    task_days = (
-        Task.objects.filter(account_user=user)
-        .annotate(day=TruncDate("date"))
-        .values_list("day", flat=True)
-    )
-    journal_days = (
-        Journal.objects.filter(account_user=user)
-        .annotate(day=TruncDate("date"))
-        .values_list("day", flat=True)
-    )
+    
+    #Get dates were user logged activity.
+    mood_days = (Mood.objects.filter(user=user).annotate(day=TruncDate("timestamp")).values_list("day", flat=True))
+    task_days = (Task.objects.filter(account_user=user).annotate(day=TruncDate("date")).values_list("day", flat=True) )
+    journal_days = ( Journal.objects.filter(account_user=user) .annotate(day=TruncDate("date")).values_list("day", flat=True))
 
     return set(chain(mood_days, task_days, journal_days))
 
-
+#Calculates current streak of user activity.
 def _current_streak(activity_dates):
-    """
-    Current streak in days, counting backwards from today,
-    as long as each previous day has activity.
-    """
+
     if not activity_dates:
         return 0
 
@@ -172,7 +143,7 @@ def _current_streak(activity_dates):
 
     return streak
 
-
+#Calculates longest streak of user activity.
 def _longest_streak(activity_dates):
     if not activity_dates:
         return 0
@@ -190,7 +161,7 @@ def _longest_streak(activity_dates):
 
     return max(longest, current)
 
-
+#Calculates overall streak analytics for the analytics page. This Function is heavily edited by ChatGPT.
 def streak_analytics(user):
     activity_dates = _activity_dates(user)
 
@@ -224,7 +195,7 @@ def streak_analytics(user):
     }
 
 
-# ---------- MOOD ANALYTICS ---------- #
+# Calculates mood analytics over a 14-day period for the analytics page. This Function is Completly done by ChatGPT
 
 def mood_analytics(user):
     # last 14 days mood
@@ -263,13 +234,10 @@ def mood_analytics(user):
     }
 
 
-# ---------- TASKS VS MOOD (CORRELATION) ---------- #
+#Corelate task completed and mood.  This Function is Completly done by ChatGPT.
 
 def tasks_completed_vs_mood(user, days_back=30):
-    """
-    Per-day tasks completed and mood.
-    Returns [{day, tasks_done, avg_mood}, ...]
-    """
+
     # daily mood
     daily_mood = get_daily_mood(user, days_back=days_back)
     mood_by_day = {row["day"]: row["avg_mood"] for row in daily_mood}
@@ -348,13 +316,10 @@ def mood_productivity_correlation(user):
     }
 
 
-# ---------- WEEK AT A GLANCE (behavior_points) ---------- #
+#Calculates behavior points for the week for analytics page. This Function is Completly done by ChatGPT. prompt: how calculate corelated behavior points for a user based on tasks completed and mood logged over the last 7 days.
 
 def week_behavior_points(user):
-    """
-    Build 7 entries for your chart:
-    each: { label: 'Mon', score: 0–100, mood: 1–10 or None }
-    """
+
     today = timezone.now().date()
     start = today - timedelta(days=6)
 
@@ -363,13 +328,7 @@ def week_behavior_points(user):
     mood_by_day = {row["day"]: row["avg_mood"] for row in last7_mood}
 
     # tasks per day in last 7 days
-    tasks = (
-        Task.objects
-        .filter(account_user=user, date__date__gte=start)
-        .annotate(day=TruncDate("date"))
-        .values("day")
-        .annotate(tasks_done=Count("id"))
-    )
+    tasks = (Task.objects.filter(account_user=user, date__date__gte=start).annotate(day=TruncDate("date")).values("day").annotate(tasks_done=Count("id")))
     tasks_by_day = {row["day"]: row["tasks_done"] for row in tasks}
 
     # get max tasks to scale scores

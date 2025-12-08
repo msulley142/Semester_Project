@@ -7,14 +7,21 @@ from django.db import models
 import re
 
 from .models import ChatMessage, CommunityGroup, UserBlock
+from .utils import sanitize_text
+
+#The following code is heavily edited by ChatGPT.
+# ChatConsumer handles WebSocket connections for chat functionality.
+
 
 User = get_user_model()
 
+# room name patterns for direct messages and group chats
 DM_ROOM_PATTERN = re.compile(r"^dm-(\d+)-(\d+)$")
 GROUP_ROOM_PATTERN = re.compile(r"^group-(\d+)$")
+#message length limit
 MAX_MESSAGE_LENGTH = 2000
 
-
+# Chat consumer for handling WebSocket connections
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # room_name is taken from the URL: /ws/chat/<room_name>/
@@ -26,7 +33,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if not user or not user.is_authenticated:
             await self.close(code=4401)
             return
-
+        
+        # Authorization check
         room = self.room_name or ""
         dm_match = DM_ROOM_PATTERN.match(room)
         group_match = GROUP_ROOM_PATTERN.match(room)
@@ -96,6 +104,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = (data.get("message") or "").strip()
         if len(message) > MAX_MESSAGE_LENGTH:
             message = message[:MAX_MESSAGE_LENGTH]
+        message = sanitize_text(message)
         if not message:
             return
 

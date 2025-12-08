@@ -1,17 +1,18 @@
-{% load static %}
+
+<!--The html template was heavily edited using AI Generated Code -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>{{ profile_user.username }} – Profile · Calibration</title>
+  <title>{{ profile_user.username }} - Profile - Calibration</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
   <style>
-    :root {
-      /* --- OCEAN TEAL CALIBRATION THEME (SAME AS USER PROFILE) --- */
-      --bg-main: #EEEEEE;
+        :root {
+      /* --- CALIBRATION THEME --- */
+      --bg: #EEEEEE;
       --bg-soft: #C3E4E9;
-      --bg-sidebar: #023653;
 
       --card: #FFFFFF;
       --card-soft: #EAF3F6;
@@ -33,6 +34,7 @@
 
       --sidebar-w: 260px;
 
+      --bg-sidebar: #023653;
       --danger: #ef4444;
       --success: #22c55e;
     }
@@ -44,16 +46,11 @@
       padding: 0;
       min-height: 100%;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif;
-      background: var(--bg-main);
+      background: var(--bg);
       color: var(--text-main);
     }
 
     a { color: inherit; text-decoration: none; }
-
-    .muted {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
 
     /* APP SHELL */
     .app-shell {
@@ -135,67 +132,12 @@
       color: #D1E2F2;
     }
 
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 6px;
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px 10px;
-      position: relative;
-      border-radius: 10px;
-      font-size: 0.86rem;
-      color: #e5e7eb;
-      background: rgba(2, 16, 32, 0.8);
-      border: 1px solid transparent;
-      transition:
-        background 0.16s ease,
-        border-color 0.16s ease,
-        box-shadow 0.16s ease,
-        transform 0.12s ease,
-        color 0.16s ease;
-    }
-
-    .nav-link:hover {
-      background: #011524;
-      border-color: #056C89;
-      color: #ffffff;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
-      transform: translateY(-1px);
-    }
-
-    .nav-link.active {
-      background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-      color: #ffffff;
-      font-weight: 600;
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
-      border-color: transparent;
-    }
-
-    .nav-link.has-unread::after {
-      content: "";
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #ef4444;
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
-    }
-
     /* MAIN LAYOUT */
     .site-main {
       padding-bottom: 40px;
       background:
         radial-gradient(circle at top left, rgba(136, 180, 190, 0.22), transparent 60%),
-        var(--bg-main);
+        var(--bg);
     }
 
     .container {
@@ -580,21 +522,7 @@
       margin-bottom: 4px;
     }
 
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .pill {
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: #F5FAFB;
-      border: 1px solid #C5D4D8;
-      font-size: 0.76rem;
-      color: var(--accent-strong);
-    }
+    .pill-row { margin-top: 4px; gap: 6px; }
 
     /* BADGES */
     .badge-grid {
@@ -929,7 +857,7 @@
       <div class="brand-mark">CB</div>
       <div class="brand-text">
         <div class="brand-title">Calibration</div>
-        <div class="brand-subtitle">Discipline · Habits · Skills</div>
+        <div class="brand-subtitle">Discipline - Habits - Skills</div>
       </div>
     </div>
 
@@ -970,10 +898,10 @@
     <header class="site-header">
       <div class="site-header-title">
         <h1>Profile</h1>
-        <span>Viewing {{ profile_user.username }}’s Calibration identity.</span>
+        <span>Viewing {{ profile_user.username }}'s Calibration identity.</span>
       </div>
       <div class="header-actions">
-        <a href="{% url 'dashboard' %}" class="btn btn-ghost">← Back</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-ghost"><- Back</a>
         <a href="{% url 'messages' %}" class="btn btn-primary">Open Messages</a>
       </div>
     </header>
@@ -998,7 +926,7 @@
                 <h2>{{ profile_user.username }}</h2>
                 <div class="profile-tagline">
                   <span id="greeting-label">Good day</span>
-                  <span>·</span>
+                  <span>-</span>
                   <span>Calibrating habits & skills</span>
                   <span class="profile-pill">Member since {{ profile_user.date_joined|date:"M Y" }}</span>
                 </div>
@@ -1087,9 +1015,9 @@
                 <div class="mini-card-title">Top Skills</div>
                 <div class="pill-row">
                   {% for s in skills_data|slice:":4" %}
-                    <span class="pill">{{ s.name }} · L{{ s.level }}</span>
+                    <span class="pill">{{ s.name }} - L{{ s.level }}</span>
                   {% empty %}
-                    <span class="muted">{{ profile_user.username }} hasn’t added skills yet.</span>
+                    <span class="muted">{{ profile_user.username }} hasn't added skills yet.</span>
                   {% endfor %}
                 </div>
               </div>
@@ -1099,7 +1027,7 @@
                   {% for h in habits_data|slice:":4" %}
                     <span class="pill">{{ h.name }}</span>
                   {% empty %}
-                    <span class="muted">{{ profile_user.username }} hasn’t added habits yet.</span>
+                    <span class="muted">{{ profile_user.username }} hasn't added habits yet.</span>
                   {% endfor %}
                 </div>
               </div>
@@ -1173,7 +1101,7 @@
                       {% endif %}
                     </div>
                     <span class="chip">
-                      ?? {{ g.members.count }} member{{ g.members.count|pluralize }}
+                      Members {{ g.members.count }} member{{ g.members.count|pluralize }}
                     </span>
                   </a>
                 {% endfor %}
@@ -1186,7 +1114,7 @@
           <article class="about-card reveal profile-section" id="section-buddies">
             <h2 class="section-heading">Buddies</h2>
             <p class="section-subtext">
-              A quick look at some of {{ profile_user.username }}’s buddies.
+              A quick look at some of {{ profile_user.username }}'s buddies.
             </p>
             <div class="buddies-mini-list">
               {% for buddy in friends|slice:":6" %}
