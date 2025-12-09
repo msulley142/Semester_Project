@@ -1,10 +1,10 @@
-<!--The html template was created using AI Generated Code as a starting point-->
+﻿<!--The html template was created using AI Generated Code as a starting point-->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calibration – Habit & Skill Progress Tracker</title>
+  <title>Calibration â€“ Habit & Skill Progress Tracker</title>
   <meta name="description" content="Calibration is a habit and skill progress tracker that helps you build discipline, break bad habits, and grow new skills with community support." />
 
   <style>
@@ -169,10 +169,19 @@
       background: #045975;
     }
 
-    .btn-outline {
-      background: transparent;
-      border-color: rgba(148, 163, 184, 0.7);
-    }
+   .btn-outline {
+  background: #88B4BE;         /* lighter teal-blue */
+  border-color: #056C89;       /* medium teal border */
+  color: #022432;              /* dark text for readability */
+}
+
+.btn-outline:hover {
+  background: #056C89;         
+  border-color: #023653;       
+  color: #EAF3F6;             
+  box-shadow: 0 12px 28px rgba(2, 54, 83, 0.55);
+  transform: translateY(-1px);
+}
 
     /* HERO SECTION */
     .hero {
@@ -390,7 +399,7 @@
       <div class="brand-mark">CB</div>
       <div class="brand-text">
         <div class="brand-title">Calibration</div>
-        <div class="brand-subtitle">Discipline · Habits · Skills</div>
+        <div class="brand-subtitle">Discipline Â· Habits Â· Skills</div>
       </div>
     </div>
     <div class="header-actions">
@@ -412,15 +421,16 @@
         <div class="cta-row">
           <a class="btn btn-primary" href="/accounts/signup/">Get started for free</a>
           <a class="btn btn-outline" href="/accounts/login/">Already have an account?</a>
+                  <a class="btn btn-secondary" href="{% url 'community' %}" style="background:#056C89; color:#fff;">Visit Community</a>
         </div>
-        <p class="hero-note">No perfection required—just tiny, honest progress.</p>
+        <p class="hero-note">No perfection requiredâ€”just tiny, honest progress.</p>
       </div>
 
       <aside class="hero-card">
         <h2>Preview Your Progress</h2>
         <p>Visualize streaks, XP, and skill levels as you show up day after day.</p>
         <div class="hero-meta-row">
-          <span class="hero-pill">Habits · Skills · Journals</span>
+          <span class="hero-pill">Habits Â· Skills Â· Journals</span>
           <span class="hero-pill">Badges & streaks</span>
           <span class="hero-pill">Buddies coming soon</span>
         </div>
@@ -433,7 +443,7 @@
     <div class="container">
       <h2>Everything you need to stay consistent</h2>
       <p class="kicker">
-        Tools for habits, skills, reflection, and accountability—without the overwhelm.
+        Tools for habits, skills, reflection, and accountabilityâ€”without the overwhelm.
       </p>
 
       <div class="skills-card-grid">
@@ -466,10 +476,10 @@
       <div class="panel">
         <h2>How Calibration Works</h2>
         <ol class="small">
-          <li><strong>Create habits & skills</strong> – choose what to track and set gentle reminders.</li>
-          <li><strong>Log progress daily</strong> – tiny actions, big momentum.</li>
-          <li><strong>Join a challenge</strong> – show up with others who get it.</li>
-          <li><strong>Review weekly</strong> – see growth, earn badges, adjust goals.</li>
+          <li><strong>Create habits & skills</strong> â€“ choose what to track and set gentle reminders.</li>
+          <li><strong>Log progress daily</strong> â€“ tiny actions, big momentum.</li>
+          <li><strong>Join a challenge</strong> â€“ show up with others who get it.</li>
+          <li><strong>Review weekly</strong> â€“ see growth, earn badges, adjust goals.</li>
         </ol>
       </div>
     </div>
@@ -480,9 +490,9 @@
     <div class="container footer-grid">
       <div class="footer-brand">
         <span>Calibration</span>
-        <span>Discipline · Habits · Skills</span>
+        <span>Discipline Â· Habits Â· Skills</span>
       </div>
-      <div>© {{ current_year|default:"2025" }} Calibration. All rights reserved.</div>
+      <div>Â© {{ current_year|default:"2025" }} Calibration. All rights reserved.</div>
     </div>
   </footer>
 </body>

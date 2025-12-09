@@ -10,23 +10,26 @@ from django.views import View
 from django.views.generic import ( CreateView, DeleteView, DetailView, TemplateView,)
 from calibration_app.analytics import streak_analytics
 from calibration_app.progress_tracker import goal_date_tracker
-from .forms import ( BuddyRequestForm, BuddyRespondForm, CommunityGroupForm, ForumForm, PostForm, UserForm,)
+from .forms import ( BuddyRequestForm, BuddyRespondForm, CommunityGroupForm, ForumForm, PostForm, UserForm, ProfileForm,)
 from .models import ( BuddyRequest, ChatMessage, CommunityGroup, Forum, ForumVote, Friendship, Goals, Habit, Journal, Mood, Post, Profile, Reward, Skill,Task, Topics, UserBlock, User_Badge,)
 from django.db.models import Sum
 from django.contrib.auth import get_user_model
-from .utils import sanitize_text
+from .utils import sanitize_text, sanitize_int
 #The following code is heavily edited by ChatGPT.
 # Social/communication views: forums, groups, buddies, messaging, and profile displays .
 
 
-class CommunityView(LoginRequiredMixin, TemplateView):
+class CommunityView(TemplateView):
     template_name = 'community.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        profile, _ = Profile.objects.get_or_create(user=self.request.user)
+        user = self.request.user
+        profile = None
+        if user.is_authenticated:
+            profile, _ = Profile.objects.get_or_create(user=user)
 
-        selected_topic = self.request.GET.get("topic")
+        selected_topic = sanitize_int(self.request.GET.get("topic"))
 
         # Public threads with optional topic filter
         context["topics"] = Topics.objects.all().order_by("name")
@@ -40,47 +43,50 @@ class CommunityView(LoginRequiredMixin, TemplateView):
             .filter(group__isnull=True)
             .order_by("-created_at")
         )
-        if selected_topic:
+        if selected_topic is not None:
             threads = threads.filter(topic_id=selected_topic)
 
-        context["selected_topic"] = selected_topic
+        context["selected_topic"] = selected_topic if selected_topic is not None else ""
         context["threads"] = threads[:50]
         # Buddy request widgets on community page
-        context["buddies"] = profile.buddies_list()
-        context["incoming"] = BuddyRequest.objects.filter(receiver=profile, status=BuddyRequest.PENDING)
-        context["outgoing"] = BuddyRequest.objects.filter(sender=profile, status=BuddyRequest.PENDING)
-        context["buddy_form"] = BuddyRequestForm()
-        context["respond_form"] = BuddyRespondForm()
+        context["buddies"] = profile.buddies_list() if profile else []
+        context["incoming"] = BuddyRequest.objects.filter(receiver=profile, status=BuddyRequest.PENDING) if profile else []
+        context["outgoing"] = BuddyRequest.objects.filter(sender=profile, status=BuddyRequest.PENDING) if profile else []
+        context["buddy_form"] = BuddyRequestForm() if profile else None
+        context["respond_form"] = BuddyRespondForm() if profile else None
         context["user_votes"] = dict(
-            ForumVote.objects.filter(user=self.request.user).values_list("forum_id", "value")
-        )
+            ForumVote.objects.filter(user=user).values_list("forum_id", "value")
+        ) if user.is_authenticated else {}
         # Simple group cards with membership flag
         groups_payload = []
         groups = CommunityGroup.objects.all().order_by("name")
         for g in groups:
             groups_payload.append({
                 "obj": g,
-                "is_member": g.members.filter(pk=profile.pk).exists(),
+                "is_member": g.members.filter(pk=profile.pk).exists() if profile else False,
                 "member_count": g.members.count(),
             })
         context["groups"] = groups_payload
-        context["group_form"] = CommunityGroupForm()
+        context["group_form"] = CommunityGroupForm() if profile else None
 
         return context 
 
     def post(self, request, *args, **kwargs):
         # Create a new public forum thread (or topic on the fly)
-        topic_id = request.POST.get("topic")
+        if not request.user.is_authenticated:
+            messages.info(request, "Please sign up or log in to post in the community.")
+            return redirect("login")
+        topic_id = sanitize_int(request.POST.get("topic"))
         topic_name = sanitize_text((request.POST.get("topic_name") or "").strip())
         title = sanitize_text((request.POST.get("title") or "").strip())
         body = sanitize_text((request.POST.get("body") or "").strip())
 
-        if not topic_id and not topic_name:
+        if topic_id is None and not topic_name:
             messages.error(request, "Pick an existing topic or create a new one.")
             return redirect("community")
 
         topic = None
-        if topic_id:
+        if topic_id is not None:
             topic = Topics.objects.filter(id=topic_id).first()
             if not topic:
                 messages.error(request, "Topic not found.")
@@ -105,6 +111,7 @@ class CommunityView(LoginRequiredMixin, TemplateView):
 #--- Forum Vote View ----#
 def forum_vote(request, pk):
     if not request.user.is_authenticated:
+        messages.info(request, "Log in or sign up to vote on threads.")
         return redirect("login")
     forum = get_object_or_404(Forum, pk=pk)
 
@@ -659,7 +666,7 @@ class ForumCreateView(LoginRequiredMixin, CreateView):
         messages.success(self.request, "Discussion thread created.")
         return redirect("community_thread", pk=obj.pk)
 
-class ForumDetailView(LoginRequiredMixin, DetailView):
+class ForumDetailView(DetailView):
     model= Forum
     template_name = "forum/forum_detail.html"
     context_object_name = "forum"
@@ -676,11 +683,14 @@ class ForumDetailView(LoginRequiredMixin, DetailView):
         context["locked"] = forum.locked_forum
         context["up_count"] = ForumVote.objects.filter(forum=forum, value=ForumVote.UP).count()
         context["down_count"] = ForumVote.objects.filter(forum=forum, value=ForumVote.DOWN).count()
-        context["user_vote"] = ForumVote.objects.filter(forum=forum, user=self.request.user).values_list("value", flat=True).first()
+        context["user_vote"] = ForumVote.objects.filter(forum=forum, user=self.request.user).values_list("value", flat=True).first() if self.request.user.is_authenticated else None
         return context
     #edited by ChatGPT
     #--- Handle new post submission ---#
     def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.info(request, "Please log in or sign up to reply.")
+            return redirect("login")
         self.object = self.get_object()
         body = sanitize_text((request.POST.get("body") or "").strip())
 

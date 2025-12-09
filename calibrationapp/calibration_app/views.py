@@ -1,7 +1,7 @@
 from django.db.models import Count, Max, Sum, Q
 from django.db.models.functions import TruncDate
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView, CreateView
 from django.views import View
 from django.contrib.auth.models import User
@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import login
-from .models import Skill,  Habit, Reward, Journal, Badge, User_Badge,Task, Profile, Goals
+from .models import Skill,  Habit, Reward, Journal, Badge, User_Badge,Task, Profile, Goals, Mood
 
 from django.contrib import messages
 
@@ -21,6 +21,7 @@ from calibration_app.mood_tracker import create_mood_entry
 from django.utils import timezone
 import json
 from datetime import timedelta
+from .utils import sanitize_text, sanitize_choice
 
 
 
@@ -168,6 +169,44 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         context["calendar_events_json"] = json.dumps(events)
         return context
+
+
+class AdminHubView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    """
+    Lightweight admin landing page for site staff.
+    """
+    template_name = "admin_hub.html"
+
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        messages.error(self.request, "You do not have access to the admin hub.")
+        return redirect("dashboard")
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["stats"] = {
+            "users": User.objects.count(),
+            "skills": Skill.objects.count(),
+            "habits": Habit.objects.count(),
+            "tasks": Task.objects.count(),
+            "goals": Goals.objects.count(),
+            "journals": Journal.objects.count(),
+            "moods": Mood.objects.count(),
+        }
+        ctx["admin_links"] = [
+            {"label": "Skills", "list": "skill_list", "create": "skill_create"},
+            {"label": "Habits", "list": "habit_list", "create": "habit_create"},
+            {"label": "Tasks", "list": "task_list", "create": "task_create"},
+            {"label": "Goals", "list": "goal_list", "create": "goal_create"},
+            {"label": "Journals", "list": "journal_list", "create": "journal_create"},
+            {"label": "Moods", "list": "mood_list", "create": "mood_create"},
+            {"label": "Badges", "list": "admin:calibration_app_badge_changelist", "create": "admin:calibration_app_badge_add"},
+            {"label": "Rewards", "list": "rewards", "create": None},
+            {"label": "Users", "list": "admin:auth_user_changelist", "create": "admin:auth_user_add"},
+        ]
+        return ctx
     
 
 #----Discipline Buidler View----#
@@ -226,13 +265,25 @@ class ProgressTrackerView(LoginRequiredMixin, TemplateView):
         user = self.request.user
 
         # ---- FILTER INPUTS ----
-        q = (self.request.GET.get("q") or "").strip()
-        task_status = self.request.GET.get("task_status") or ""
-        goal_status = self.request.GET.get("goal_status") or ""
-        date_from = parse_date(self.request.GET.get("date_from") or "")
-        date_to = parse_date(self.request.GET.get("date_to") or "")
-        task_sort = self.request.GET.get("task_sort") or "recent"
-        goal_sort = self.request.GET.get("goal_sort") or "due"
+        q = sanitize_text(self.request.GET.get("q")) or ""
+        task_status = sanitize_choice(
+            self.request.GET.get("task_status"),
+            {Task.NOTSTARTED, Task.INPROGRESS, Task.COMPLETED},
+        ) or ""
+        goal_status = sanitize_choice(
+            self.request.GET.get("goal_status"),
+            {"not_started", "in_progress", "completed", "abandoned"},
+        ) or ""
+        date_from = parse_date(sanitize_text(self.request.GET.get("date_from")) or "")
+        date_to = parse_date(sanitize_text(self.request.GET.get("date_to")) or "")
+        task_sort = sanitize_choice(
+            self.request.GET.get("task_sort"),
+            {"recent", "oldest", "points"},
+        ) or "recent"
+        goal_sort = sanitize_choice(
+            self.request.GET.get("goal_sort"),
+            {"due", "priority", "recent"},
+        ) or "due"
 
         # ---- BASE QUERYSETS ----
         tasks_qs = Task.objects.filter(account_user=user)

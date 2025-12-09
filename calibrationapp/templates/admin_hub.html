@@ -1,0 +1,139 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin Hub - Calibration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <style>
+    :root {
+      --bg: #0c1020;
+      --panel: #0f162b;
+      --card: #141d36;
+      --border: #1f2a45;
+      --accent: #21a1ff;
+      --muted: #9babc9;
+      --text: #e9f1ff;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif; }
+    .shell { min-height: 100vh; padding: 28px 16px 48px; display: flex; justify-content: center; background: radial-gradient(circle at 20% 20%, #162447 0%, var(--bg) 50%); }
+    .panel { width: min(1200px, 100%); background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 22px 50px rgba(0,0,0,0.35); }
+    .header { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+    .title { margin: 0; font-size: 24px; font-weight: 800; }
+    .sub { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+    .tag { background: rgba(33,161,255,0.12); color: #79c6ff; border: 1px solid rgba(33,161,255,0.35); padding: 6px 10px; border-radius: 999px; font-size: 12px; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .button { display: inline-flex; align-items: center; gap: 6px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--text); text-decoration: none; font-weight: 600; transition: border-color 120ms ease, transform 120ms ease; }
+    .button:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); margin-bottom: 16px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+    .card h3 { margin: 0 0 8px; font-size: 16px; }
+    .muted { color: var(--muted); font-size: 13px; margin: 0; }
+    .stat-value { font-size: 24px; font-weight: 800; margin: 2px 0; }
+    .table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    .table th, .table td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .table th { color: var(--muted); font-weight: 600; }
+    .link { color: var(--text); text-decoration: none; font-weight: 600; }
+    .link:hover { color: var(--accent); }
+    @media (max-width: 720px) {
+      .header { align-items: flex-start; }
+      .actions { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="panel">
+      <div class="header">
+        <div>
+          <h1 class="title">Admin Hub</h1>
+          <p class="sub">Operational shortcuts for staff. Use these links to manage data and launch the Django admin.</p>
+        </div>
+        <div class="actions">
+          <span class="tag">Staff access</span>
+          <a class="button" href="/admin/">Open Django Admin</a>
+          <a class="button" href="{% url 'dashboard' %}">Back to dashboard</a>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Users</h3>
+          <div class="stat-value">{{ stats.users|default:"0" }}</div>
+          <p class="muted">Total registered accounts</p>
+        </div>
+        <div class="card">
+          <h3>Content</h3>
+          <div class="stat-value">{{ stats.skills|default:"0" }} skills / {{ stats.habits|default:"0" }} habits</div>
+          <p class="muted">Core tracked items</p>
+        </div>
+        <div class="card">
+          <h3>Progress</h3>
+          <div class="stat-value">{{ stats.tasks|default:"0" }} tasks / {{ stats.goals|default:"0" }} goals</div>
+          <p class="muted">Tasks and goals in the system</p>
+        </div>
+        <div class="card">
+          <h3>Journals & Mood</h3>
+          <div class="stat-value">{{ stats.journals|default:"0" }} journals / {{ stats.moods|default:"0" }} mood entries</div>
+          <p class="muted">Latest reflective data points</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Model management</h3>
+        <p class="muted">Open list views or add new records without digging through menus.</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th style="width: 160px;">List</th>
+              <th style="width: 160px;">Add</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for link in admin_links %}
+              <tr>
+                <td>{{ link.label }}</td>
+                <td>
+                  {% if link.list %}
+                    <a class="link" href="{% url link.list %}">Open list</a>
+                  {% else %}-{% endif %}
+                </td>
+                <td>
+                  {% if link.create %}
+                    <a class="link" href="{% url link.create %}">Add new</a>
+                  {% else %}-{% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid" style="margin-top: 12px;">
+        <div class="card">
+          <h3>User & account</h3>
+          <p class="muted">Inspect your staff account or adjust profile details.</p>
+          <div style="display:grid; gap:8px; margin-top:8px;">
+            <a class="link" href="{% url 'user_profile' %}">My profile</a>
+            <a class="link" href="{% url 'user_settings' %}">Account settings</a>
+            <a class="link" href="{% url 'buddies' %}">Buddies</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Community moderation</h3>
+          <p class="muted">Jump to community areas to review posts or threads.</p>
+          <div style="display:grid; gap:8px; margin-top:8px;">
+            <a class="link" href="{% url 'community' %}">Community threads</a>
+            <a class="link" href="{% url 'groups' %}">Groups</a>
+            <a class="link" href="/admin/calibration_app/forum/">Forums (admin)</a>
+            <a class="link" href="/admin/calibration_app/post/">Posts (admin)</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

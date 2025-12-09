@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.views.generic import TemplateView
-from calibration_app.views import DashboardView, DisciplineBuilderView, ProgressTrackerView, RewardsTrackerView
+from calibration_app.views import DashboardView, DisciplineBuilderView, ProgressTrackerView, RewardsTrackerView, AdminHubView
 from calibration_app.socialview import MessageView, CommunityView, BuddiesView, UserSettingsView, UserProfileView
 
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path('disciplinebuilder/', DisciplineBuilderView.as_view(), name='disciplinebuilder'),
     path('progresstracker/', ProgressTrackerView.as_view(), name='progresstracker'),
     path('rewards/', RewardsTrackerView.as_view(), name='rewards'),
+    path('admin-hub/', AdminHubView.as_view(), name='admin_hub'),
     path('community/', CommunityView.as_view(), name='community'),
     path('messages/', MessageView.as_view(), name='messages'),
     path('buddies/', BuddiesView.as_view(), name='buddies'),

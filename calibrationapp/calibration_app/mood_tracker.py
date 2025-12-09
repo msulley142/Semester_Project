@@ -1,7 +1,9 @@
 # calibration_app/mood_tracker.py
 from django.utils import timezone
 from .models import Mood
-from .utils import sanitize_text
+from .utils import sanitize_text, sanitize_choice
+
+ALLOWED_MOOD_TYPES = {code for code, _ in Mood.MOOD_TYPES}
 
 #helps create a mood entry from user input
 def create_mood_entry(
@@ -25,6 +27,7 @@ def create_mood_entry(
     except (TypeError, ValueError):
         return
 
+    mood_type = sanitize_choice(mood_type, ALLOWED_MOOD_TYPES)
     if timestamp is None:
         timestamp = timezone.now()
 

@@ -1,7 +1,208 @@
+<!--The html template was heavily eddited using AI Generated Code -->
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Edit Profile - Calibration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <style>
+    :root {
+      --bg: #eef2f5;
+      --panel: #ffffff;
+      --panel-soft: #e7f3f8;
+      --accent: #056c89;
+      --accent-2: #0b9fbf;
+      --text: #0f1b2d;
+      --muted: #5d6b7a;
+      --border: #d8e3ec;
+    }
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 10% 20%, #f8fbff, #e8f2f7 40%, #e3edf5 75%);
+      color: var(--text);
+    }
+    .shell {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+    .card {
+      width: min(900px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(5, 108, 137, 0.1);
+      overflow: hidden;
+    }
+    .card__header {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .pill {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+    }
+    .card__title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .card__body {
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #f9fcff 100%);
+    }
+    .intro {
+      color: var(--muted);
+      margin: 0;
+      font-size: 15px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px 18px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--panel-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 14px 12px;
+    }
+    .field label {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      outline: 2px solid rgba(5, 108, 137, 0.25);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(5, 108, 137, 0.12);
+    }
+    .help {
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .error {
+      margin: 0;
+      font-size: 12px;
+      color: #b00020;
+      font-weight: 600;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      box-shadow: 0 12px 30px rgba(5, 108, 137, 0.25);
+    }
+    .btn-secondary {
+      background: #f0f4f7;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+    .errors {
+      padding: 12px;
+      border-radius: 10px;
+      background: #ffeef0;
+      color: #8a0e22;
+      border: 1px solid #f5c2c7;
+      margin: 0;
+    }
+    @media (max-width: 640px) {
+      .card__body { padding: 20px; }
+      .card__header { flex-direction: column; align-items: flex-start; }
+      .actions { justify-content: stretch; }
+      .btn { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="card">
+      <div class="card__header">
+        <div>
+          <div class="pill">Profile</div>
+          <h1 class="card__title">Edit your profile</h1>
+        </div>
+      </div>
+      <div class="card__body">
+        <p class="intro">Update your contact info, bio, and avatar. Changes apply across Calibration.</p>
 
-  <h1>Edit Profile</h1>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Save</button>
-  </form>
+        {% if form.non_field_errors %}
+          <div class="errors">
+            {% for err in form.non_field_errors %}{{ err }}<br>{% endfor %}
+          </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-grid">
+            {% for field in form %}
+              <div class="field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}<p class="help">{{ field.help_text }}</p>{% endif %}
+                {% for error in field.errors %}<p class="error">{{ error }}</p>{% endfor %}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="actions">
+            <a class="btn btn-secondary" href="{% url 'dashboard' %}">Cancel</a>
+            <button class="btn btn-primary" type="submit">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
