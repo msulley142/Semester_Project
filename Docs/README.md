@@ -11,19 +11,21 @@ Docker:https://docs.docker.com/desktop/setup/install/windows-install/
 ## Installation
 ```bash
 git clone https://github.com/msulley142/Semester_Project
-cd  Semester_Poject
+cd  Semester_Poject/calibrationapp/
+python manage.py makemigrations
+python manage.py migrate 
 docker compose up -d --build
 ```
 Then open your browser and go to http://127.0.0.1:8000
-
+Deployed website link: https://aircalibration.com/
 
 ## Getting Started 
-1. Once you are on the landing page click sign up.
-2. After Signing up, you will be directed to the dashboard. 
-2. from the Dashboard you can add new skills you are learning or want to learn in the future and or habits that you want to make or break.
-3. Log journal entries and set and complete task to earn XP,tokens, and unlock badges. 
-4. You can Track your growth through visually thorugh the Disicpline Builder for now. 
-5. more features are comming soon.
+1. Once you are on the landing page, click Sign Up.
+2. After signing up, you will be directed to the dashboard.
+3. From the dashboard, you can add new skills you’re learning (or want to learn in the future) and habits you want to make or break.
+4. Log journal entries, set tasks, and complete them to earn XP, tokens, and unlock badges.
+5. Track your growth visually through the Discipline Builder for now.
+
 
 ## License
 The MIT License (MIT)

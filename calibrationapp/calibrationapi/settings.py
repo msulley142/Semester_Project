@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os 
+import os
+import socket 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +21,51 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!9bn!!bk^s#kreh92zxpics=93ytvq3_zxsk@$31b)y!kn53f*'
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-change-me")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+
+#CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+
+def get_container_ip():
+    try:
+        hostname = socket.gethostname()
+        container_ip = socket.gethostbyname(hostname)
+        return container_ip
+    except:
+        return '127.0.0.1'
+CONTAINER_IP = get_container_ip()
+
+hosts_env = os.environ.get("ALLOWED_HOSTS")
+if hosts_env:
+    ALLOWED_HOSTS = [h.strip() for h in hosts_env.split(",") if h.strip()]
+else:
+    
+    ALLOWED_HOSTS = [
+        "aircalibration.com",
+        "www.aircalibration.com",
+        "calibration-alb-567732998.us-east-1.elb.amazonaws.com",
+        CONTAINER_IP,
+        'localhost', 
+        '127.0.0.1',
+        '172.31.*',
+        "*",
+    ]
+
+csrf_env = os.environ.get("CSRF_TRUSTED_ORIGINS")
+if csrf_env:
+    CSRF_TRUSTED_ORIGINS = [o.strip() for o in csrf_env.split(",") if o.strip()]
+else:
+    CSRF_TRUSTED_ORIGINS = [
+    "https://aircalibration.com",
+    "https://www.aircalibration.com",
+    "https://calibration-alb-567732998.us-east-1.elb.amazonaws.com",
+    "http://calibration-alb-567732998.us-east-1.elb.amazonaws.com",
+]
+
+
 
 
 # Application definition
@@ -42,6 +82,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
 ]
 
 ASGI_APPLICATION = "calibrationapi.asgi.application"
@@ -66,6 +107,7 @@ MEDIA_URL = '/media/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -102,24 +144,17 @@ WSGI_APPLICATION = 'calibrationapi.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-  
-      'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-         'USER': 'postgres',
-         'PASSWORD': 'postgres',
-         'HOST': 'db',
-         'PORT': '5432',
-    }
- } 
-
-
-DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DB_NAME", "postgres"),
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", ""),
+        "HOST": os.environ.get("DB_HOST", "localhost"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -154,11 +189,22 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+STATIC_URL = "/static/"
 
-STATIC_URL = 'static/'
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -173,6 +219,7 @@ X_FRAME_OPTIONS = "DENY"
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin"
 
 # Cookie settings: keep secure flags in production (when DEBUG is False)
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SAMESITE = "Lax"

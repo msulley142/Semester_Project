@@ -24,14 +24,6 @@ from datetime import timedelta
 from .utils import sanitize_text, sanitize_choice
 
 
-
-
-# Create your views here.
-
-
-
-
-
 #----Signup View----#
 
 class SignUpView(CreateView):

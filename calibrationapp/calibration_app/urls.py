@@ -1,5 +1,16 @@
 from django.urls import path
-from . import crudviews, socialview, views
+from . import crudviews, socialview
+
+
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
+
+# Create your views here.
+@csrf_exempt
+def health(request):
+    return HttpResponse("OK", content_type="text/plain")
+
 
 urlpatterns = [
 
@@ -66,6 +77,12 @@ urlpatterns = [
     path("buddies/remove/<int:user_id>/", socialview.BuddyRemoveView.as_view(), name="buddy-remove"),
     path("blocks/<int:user_id>/", socialview.BlockUserView.as_view(), name="block-user"),
     path("blocks/<int:user_id>/unblock/", socialview.UnblockUserView.as_view(), name="unblock-user"),
+
+
+
+
+  
+    path("health/", health, name="health"),
 
 
 ]

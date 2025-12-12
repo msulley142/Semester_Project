@@ -15,10 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.http import HttpResponse
+from django.urls import path, include
 from django.views.generic import TemplateView
 from calibration_app.views import DashboardView, DisciplineBuilderView, ProgressTrackerView, RewardsTrackerView, AdminHubView
 from calibration_app.socialview import MessageView, CommunityView, BuddiesView, UserSettingsView, UserProfileView
+
+
 
 
 urlpatterns = [
@@ -35,6 +38,7 @@ urlpatterns = [
     path('settings/', UserSettingsView.as_view(), name='user_settings'),
     path('profile/', UserProfileView.as_view(), name= 'user_profile'),
     path('', TemplateView.as_view(template_name="index.html"), name='home'),
+
     path('app/', include('calibration_app.urls')),
 
 
