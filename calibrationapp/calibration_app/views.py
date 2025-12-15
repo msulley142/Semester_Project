@@ -37,8 +37,6 @@ class SignUpView(CreateView):
         login(self.request, user)
         messages.success(self.request, f"Hi, {user.username}! Please complete your profile before continuing.")
         return redirect(self.success_url)
-
-
 #----Dashboard View----#
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -164,9 +162,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
 
 class AdminHubView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
-    """
-    Lightweight admin landing page for site staff.
-    """
+   
     template_name = "admin_hub.html"
 
     def test_func(self):
@@ -243,10 +239,6 @@ class DisciplineBuilderView(LoginRequiredMixin, TemplateView):
     
        
      #allows users to log tasks through the on the progress tracker/ discipline builder webpage.
-
-    
-
-
 class ProgressTrackerView(LoginRequiredMixin, TemplateView):
     template_name = 'progresstracker.html'
 

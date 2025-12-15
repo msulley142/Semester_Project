@@ -45,10 +45,7 @@ class Skill(models.Model):
         left_over = max(0, (to_level_up - skill_progress_tracked)) # Chatgpt fixed mistake and told me to use round and  max(0, n) so that numbers stay postives and are handled well in the database. prompt:my progress bars are off. 
         
         return { "to_level_up": to_level_up , "skill_progress_tracked": skill_progress_tracked, "left_over": left_over }
-    
-    
-
-    
+      
 #-------Habit Model-------#
 class Habit(models.Model):
     Build = 'Build'
@@ -58,7 +55,6 @@ class Habit(models.Model):
         (Break, 'Break'),
     ]
     
-
     account_user = models.ForeignKey(User, on_delete=models.CASCADE , null=True, blank=True)
     name = models.CharField(max_length=120)
     description = models.TextField(blank=True, null=True)
@@ -115,9 +111,6 @@ class Goals(models.Model):
     return self.title
 
 
-
-
-
 #-------Rewards Model-------#
 class Reward(models.Model):
     account_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -168,8 +161,6 @@ class Mood(models.Model):
     mood_type = models.CharField(max_length=30, choices=MOOD_TYPES, blank=True, null=True)
 
     note = models.TextField(blank=True, null=True)  # journal-like free text
-
-  
     energy_level = models.IntegerField(
         blank=True,
         null=True,
@@ -223,10 +214,7 @@ class Journal(models.Model):
 
     def __str__(self):
         return f"{self.note} - {self.date} "
-
-
     
-
 #-----Task Model-----#
 class Task(models.Model):
     NOTSTARTED, INPROGRESS, COMPLETED = ('NOTSTARTED', 'INPROGRESS', 'COMPLETED')
@@ -245,13 +233,6 @@ class Task(models.Model):
 
     def __str__(self):
         return f"{self.title}"
-    
-
-
-
-
-
-
 #This model was created with the help of ChatGPT to manage user profiles and friendships.
 #------User_Profile------#
 

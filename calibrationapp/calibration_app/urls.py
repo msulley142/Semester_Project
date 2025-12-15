@@ -77,11 +77,6 @@ urlpatterns = [
     path("buddies/remove/<int:user_id>/", socialview.BuddyRemoveView.as_view(), name="buddy-remove"),
     path("blocks/<int:user_id>/", socialview.BlockUserView.as_view(), name="block-user"),
     path("blocks/<int:user_id>/unblock/", socialview.UnblockUserView.as_view(), name="unblock-user"),
-
-
-
-
-  
     path("health/", health, name="health"),
 
 

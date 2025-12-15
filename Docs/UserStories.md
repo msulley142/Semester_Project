@@ -7,7 +7,7 @@ As a **user**, I want to **create a skill/habit** so that I can **monitor and lo
 3. When the Add button is clicked, the user will recieve a confirmation message. (Skill/habbit added successfully) 
 
 
-As a **user**, I want to **track bad habbits** so that I **can make note of relaspes, triggers,  and urges**. 
+As a **user**, I want to **track bad habits** so that I **can make note of relaspes, triggers,  and urges**. 
 **Acceptance Criteria** 
 1. The user clicks the feather symbol on the dashboard or the Journal Entry button on the Discipline Builder webpage.
 2. The user selected the habit name, specidied the type of log (progress,Lapse, urge, or reflection).

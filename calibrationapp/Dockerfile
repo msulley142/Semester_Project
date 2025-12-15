@@ -20,4 +20,4 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 # Start Gunicorn
-CMD ["gunicorn", "calibrationapi.wsgi:application", "--bind", "0.0.0.0:8000", "--access-logfile", "-", "--error-logfile", "-", "--workers", "2", "--timeout", "60"]
+CMD ["gunicorn",  "-k", "uvicorn.workers.UvicornWorker","calibrationapi.asgi:application", "--bind", "0.0.0.0:8000", "--access-logfile", "-", "--error-logfile", "-", "--workers", "2", "--timeout", "60"]
